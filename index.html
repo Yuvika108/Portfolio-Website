@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Srishti — Creative Developer & Artist</title>
+  <meta name="description" content="Personal portfolio of Srishti, a B.Tech student at University of Lucknow exploring the intersection of technology, design, and art." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- MediaPipe AI Agent Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+  </div>
+
+  <!-- Grain & Lofi Overlays -->
+  <div class="grain-overlay"></div>
+  <div class="vignette"></div>
+  <div class="scanlines"></div>
+  <canvas class="rain-canvas" id="rainCanvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-char">srishti</span><span class="logo-dot">.</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">about</a>
+        <a href="#projects" class="nav-link">projects</a>
+        <a href="#skills" class="nav-link">skills</a>
+        <a href="#creative" class="nav-link">creative</a>
+        <a href="#vision" class="nav-link">vision</a>
+        <a href="mailto:srishti@email.com" class="nav-link nav-link--cta">contact</a>
+      </div>
+      <div class="nav-music">
+        <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
+          <span class="music-icon">♪</span>
+          <span class="music-label">music player</span>
+          <div class="visualizer" id="visualizer">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    
+    <div class="hero-ambient">
+      <div class="ambient-orb orb-1"></div>
+      <div class="ambient-orb orb-2"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="tag-dot"></span>
+          <span>B.Tech Student @ Lucknow Uni · Creative Developer · Artist at Heart 🎨</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="title-line line-1">building digital</span>
+          <span class="title-line line-2">experiences with</span>
+          <span class="title-line line-3">atmosphere, aesthetics &amp; <em>intention</em>.</span>
+        </h1>
+
+        <p class="hero-sub">I’m Srishti — a creative developer and artist exploring the intersection of technology, design, AI, and immersive digital experiences.</p>
+
+        <div class="hero-status">
+          <span class="status-label">currently</span>
+          <div class="status-items">
+            <div class="status-item"><span class="status-icon">→</span><span>learning react</span></div>
+            <div class="status-item"><span class="status-icon">→</span><span>solving dsa</span></div>
+            <div class="status-item"><span class="status-icon">→</span><span>exploring ui/ux</span></div>
+            <div class="status-item"><span class="status-icon">→</span><span>building machine learning projects</span></div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">view work</a>
+          <a href="#about" class="btn-ghost">who am i?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-terminal">
+      <div class="terminal-bar">
+        <span class="t-dot green"></span>
+        <span class="t-title">~/srishti/creative-mind</span>
+      </div>
+      <div class="terminal-body" id="terminalBody">
+        <p class="t-line"><span class="t-prompt">$</span> <span class="t-cmd typed-text"></span><span class="t-cursor">▌</span></p>
+        <p class="t-output" id="t-out-1">// drawn to books, cinema, and music</p>
+        <p class="t-output" id="t-out-2">// quietly exploring creativity</p>
+        <p class="t-output" id="t-out-3">// INTP | Artist at heart 🎨</p>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>scroll</span>
+    </div>
+  </section>
+
+  <!-- About Section - Editorial Layout -->
+  <section class="section about-section" id="about">
+    <div class="section-inner">
+      <div class="section-label">01 — about me</div>
+      <h2 class="section-heading">technology as a form of creativity</h2>
+      
+      <div class="about-editorial">
+        <div class="ae-text">
+          <p class="ae-lead">I’m a B.Tech CSE(AI) student who sees technology as more than just code — for me, it’s also a form of creativity and expression.</p>
+          <p>I enjoy building visually immersive interfaces, experimenting with digital aesthetics, and creating projects that combine clean functionality with artistic atmosphere.</p>
+          
+          <div class="ae-details">
+            <div class="ae-detail">
+              <span class="ae-label">persona</span>
+              <span class="ae-value">INTP / Artist at Heart</span>
+            </div>
+            <div class="ae-detail">
+              <span class="ae-label">education</span>
+              <span class="ae-value">B.Tech @ University of Lucknow</span>
+            </div>
+            <div class="ae-detail">
+              <span class="ae-label">inspirations</span>
+              <span class="ae-value">Cinema, Late-night playlists, Visual design</span>
+            </div>
+          </div>
+        </div>
+        <div class="ae-visuals">
+          <div class="ae-card"><span class="ae-icon">✦</span></div>
+          <div class="ae-card"><span class="ae-icon">{}</span></div>
+          <div class="ae-card"><span class="ae-icon">🎨</span></div>
+          <div class="ae-card"><span class="ae-icon">⟡</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="section projects-section" id="projects">
+    <div class="section-inner">
+      <div class="section-header-row">
+        <div class="section-label">02 — projects</div>
+        <h2 class="section-heading">selected works &amp; experiments</h2>
+      </div>
+
+      <div class="projects-list">
+
+        <article class="project-row" id="proj-1">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">01</span>
+              <span class="pr-stack">Python / NLP</span>
+            </div>
+            <h3 class="pr-title">WhatsApp Chat Analyser</h3>
+            <p class="pr-desc">Transforms raw chat exports into beautiful, artistic visualizations. Features activity heatmaps, word clouds, and emoji tracking.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"I wanted to see if our digital conversations had a visible rhythm. The challenge was mapping messy human chat data into something that felt like art."</p>
+            </div>
+            <a href="#" class="btn-ghost">view case study</a>
+          </div>
+          <div class="pr-image">
+            <img src="whatsapp_analyser_mockup_1778252579753.png" alt="WhatsApp Chat Analyser Mockup">
+          </div>
+        </article>
+
+        <article class="project-row" id="proj-2">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">02</span>
+              <span class="pr-stack">Machine Learning</span>
+            </div>
+            <h3 class="pr-title">Sentiment Analysis</h3>
+            <p class="pr-desc">An NLP-based system identifying emotions from textual data using machine learning techniques.</p>
+            <a href="#" class="pr-link">view project →</a>
+          </div>
+          <div class="pr-image">
+            <img src="sentiment_analysis_mockup_1778252606022.png" alt="Sentiment Analysis Mockup">
+          </div>
+        </article>
+
+        <article class="project-row" id="proj-3">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">03</span>
+              <span class="pr-stack">Python</span>
+            </div>
+            <h3 class="pr-title">Movie Recommendations</h3>
+            <p class="pr-desc">A cinemaphile's companion tool that suggests films based on similarity patterns and user preferences.</p>
+            <a href="#" class="pr-link">view project →</a>
+          </div>
+          <div class="pr-image">
+            <img src="movie_rec_mockup_1778252630398.png" alt="Movies Recommendation Mockup">
+          </div>
+        </article>
+
+        <article class="project-row pr-text-only" id="proj-4">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">04</span><span class="pr-stack">Data Science</span></div>
+            <h3 class="pr-title">House Data Cleaning</h3>
+            <p class="pr-desc">Cleaning and preprocessing Bangalore housing datasets for predictive modeling.</p>
+            <a href="#" class="pr-link">view project →</a>
+          </div>
+        </article>
+
+        <article class="project-row pr-text-only" id="proj-5">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">05</span><span class="pr-stack">Machine Learning</span></div>
+            <h3 class="pr-title">Car Price Prediction</h3>
+            <p class="pr-desc">Machine learning model predicting car prices based on brand, model, and fuel type.</p>
+            <a href="#" class="pr-link">view project →</a>
+          </div>
+        </article>
+
+        <article class="project-row pr-text-only" id="proj-6">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">06</span><span class="pr-stack">Frontend</span></div>
+            <h3 class="pr-title">Rock-Paper-Scissor</h3>
+            <p class="pr-desc">Interactive game focused on frontend interaction and smooth user experience.</p>
+            <a href="#" class="pr-link">play game →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="section skills-section" id="skills">
+    <div class="section-inner">
+      <div class="section-label">03 — toolkit</div>
+      <h2 class="section-heading">the craft &amp; the tools</h2>
+
+      <div class="toolkit-grid">
+        <div class="tk-category">
+          <h3 class="tk-heading">Core Languages</h3>
+          <ul class="tk-list">
+            <li>Python</li>
+            <li>JavaScript</li>
+            <li>C++</li>
+          </ul>
+        </div>
+        <div class="tk-category">
+          <h3 class="tk-heading">Frameworks & Tools</h3>
+          <ul class="tk-list">
+            <li>React</li>
+            <li>Tailwind CSS</li>
+            <li>Figma</li>
+            <li>Git</li>
+          </ul>
+        </div>
+        <div class="tk-category">
+          <h3 class="tk-heading">Specializations</h3>
+          <ul class="tk-list">
+            <li>Machine Learning</li>
+            <li>Data Structures (DSA)</li>
+            <li>NLP</li>
+            <li>UI/UX Design</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creative Corner -->
+  <section class="section creative-section" id="creative">
+    <div class="section-inner">
+      <div class="section-label">04 — creative corner</div>
+      <h2 class="section-heading">experiments &amp; aesthetics</h2>
+      <div class="creative-grid">
+        <div class="creative-card cc-wide" id="cc-1">
+          <div class="cc-visual">
+            <div class="cc-art cc-art--gradient">
+              <span class="cc-art-label">visual concepts</span>
+            </div>
+          </div>
+          <div class="cc-content">
+            <h3 class="cc-title">Cinematic Inspirations</h3>
+            <p class="cc-desc">Visual ideas that shape the atmospheric soul of my projects.</p>
+          </div>
+        </div>
+        <div class="creative-card" id="cc-2">
+          <div class="cc-visual">
+            <div class="cc-art cc-art--wave">
+              <canvas class="wave-canvas" id="waveCanvas"></canvas>
+              <span class="cc-art-label">generative art</span>
+            </div>
+          </div>
+          <div class="cc-content">
+            <h3 class="cc-title">Aesthetic Ideas</h3>
+            <p class="cc-desc">Code-based art and smooth motion explorations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Future Vision -->
+  <section class="section vision-section" id="vision">
+    <div class="section-inner">
+      <div class="vision-wrapper">
+        <div class="section-label">05 — future vision</div>
+        <div class="vision-text-block">
+          <h2 class="vision-heading">I want to build things that <em>feel human</em>.</h2>
+          <p class="vision-body">I want to create digital experiences that feel artistic, immersive, and emotionally memorable — blending technology, design, AI, interaction, and visual creativity into something meaningful and human.</p>
+        </div>
+        <div class="vision-cta">
+          <h3 class="cta-heading">let's connect</h3>
+          <p class="cta-sub">Whether it’s technology, design, films, music, creativity, or interesting ideas — I’m always open to meaningful conversations and collaborations.</p>
+          <a href="mailto:srishti@email.com" class="btn-primary">let's talk →</a>
+          <div class="vision-links">
+            <a href="#" class="vision-link">github</a>
+            <a href="#" class="vision-link">linkedin</a>
+            <a href="#" class="vision-link">instagram</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-name">srishti mishra ✦</span>
+        <span class="footer-copy">designed &amp; developed by srishti mishra</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-note">late-night ideas, soft music &amp; visual creativity.</span>
+        <span class="footer-time" id="footerTime"></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" title="Back to Top">↑</button>
+
+  <!-- AI Agent: Aanya -->
+  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent">✨ Aanya</button>
+  
+  <div class="agent-ui hidden" id="agentUi">
+    <div class="agent-header">
+      <span>Aanya — Live Feed</span>
+      <button id="agentClose">✕</button>
+    </div>
+    <video class="agent-video" id="agentVideo" autoPlay playsInline muted></video>
+    <div class="agent-status" id="agentStatus">Awaiting Gesture...</div>
+  </div>
+
+  <audio id="ambientAudio" loop>
+    <source src="bg-music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

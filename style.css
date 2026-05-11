@@ -109,12 +109,12 @@ body {
 
 .bg-art {
   position: absolute;
-  opacity: 0.4;
-  filter: grayscale(10%) contrast(1.2);
-  mix-blend-mode: normal; 
+  opacity: 0.15;
+  filter: grayscale(20%) blur(1px) contrast(1.1);
+  mix-blend-mode: screen; 
   max-width: 300px;
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
   animation: floatArt 25s infinite alternate ease-in-out;
 }
 

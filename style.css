@@ -448,20 +448,21 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   transform-origin: bottom center;
   cursor: pointer;
+  transform: translateX(var(--x)) rotate(var(--r));
 }
 
-.project-row:nth-child(1) { transform: translateX(-200px) rotate(-15deg); z-index: 1; }
-.project-row:nth-child(2) { transform: translateX(-120px) rotate(-9deg); z-index: 2; }
-.project-row:nth-child(3) { transform: translateX(-40px) rotate(-3deg); z-index: 3; }
-.project-row:nth-child(4) { transform: translateX(40px) rotate(3deg); z-index: 4; }
-.project-row:nth-child(5) { transform: translateX(120px) rotate(9deg); z-index: 5; }
-.project-row:nth-child(6) { transform: translateX(200px) rotate(15deg); z-index: 6; }
+.project-row:nth-child(1) { --x: -200px; --r: -15deg; z-index: 1; }
+.project-row:nth-child(2) { --x: -120px; --r: -9deg; z-index: 2; }
+.project-row:nth-child(3) { --x: -40px; --r: -3deg; z-index: 3; }
+.project-row:nth-child(4) { --x: 40px; --r: 3deg; z-index: 4; }
+.project-row:nth-child(5) { --x: 120px; --r: 9deg; z-index: 5; }
+.project-row:nth-child(6) { --x: 200px; --r: 15deg; z-index: 6; }
 
 article.project-row:hover {
   background: rgba(20,20,25,0.95);
   border-color: rgba(167, 139, 250, 0.6);
   box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(167, 139, 250, 0.2);
-  transform: translateY(-80px) rotate(0deg) scale(1.1);
+  transform: translateX(var(--x)) translateY(-80px) rotate(0deg) scale(1.1);
   z-index: 100;
 }
 

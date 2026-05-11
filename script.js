@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initWave();
   updateTime();
   initAgent();
+  initTextScrollAnimation();
 });
 
 // Custom Cursor
@@ -539,4 +540,88 @@ function initAgent() {
       isPinching = false;
     }
   }
+}
+
+// Text Scroll Animation (Parallax Variants)
+function initTextScrollAnimation() {
+  const elements = document.querySelectorAll('.text-scroll-anim');
+  if (!elements.length) return;
+
+  elements.forEach(el => {
+    let variant = 1;
+    if (el.classList.contains('ts-variant-2')) variant = 2;
+    if (el.classList.contains('ts-variant-3')) variant = 3;
+
+    function splitTextNodes(node) {
+      if (node.nodeType === 3) {
+        const text = node.textContent;
+        if (!text.trim() && text.length < 2) return; 
+
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < text.length; i++) {
+          const charSpan = document.createElement('span');
+          charSpan.textContent = text[i];
+          charSpan.className = 'ts-char';
+          charSpan.style.display = 'inline-block';
+          charSpan.style.willChange = 'transform, opacity, filter';
+          if (text[i] === ' ') charSpan.style.whiteSpace = 'pre';
+          fragment.appendChild(charSpan);
+        }
+        node.parentNode.replaceChild(fragment, node);
+      } else if (node.nodeType === 1 && !node.classList.contains('ts-char')) { 
+        Array.from(node.childNodes).forEach(child => splitTextNodes(child));
+      }
+    }
+    
+    if (!el.querySelector('.ts-char')) {
+      Array.from(el.childNodes).forEach(child => splitTextNodes(child));
+    }
+    
+    const chars = el.querySelectorAll('.ts-char');
+
+    const updateAnimation = () => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress relative to viewport
+      let progress = (windowHeight - rect.top) / (windowHeight / 1.5);
+      progress = Math.max(0, Math.min(1, progress));
+
+      chars.forEach((char, index) => {
+        const delay = index * 0.015; // cascading effect
+        let charProgress = (progress - delay) * 2;
+        charProgress = Math.max(0, Math.min(1, charProgress));
+
+        const easeProgress = 1 - Math.pow(1 - charProgress, 3); // ease-out cubic
+
+        if (variant === 1) {
+          // Translate Y
+          const y = 40 * (1 - easeProgress);
+          char.style.opacity = easeProgress;
+          char.style.transform = `translateY(${y}px)`;
+        } else if (variant === 2) {
+          // Scale & Blur
+          const scale = 1 + 1.5 * (1 - easeProgress);
+          const blur = 10 * (1 - easeProgress);
+          char.style.opacity = easeProgress;
+          char.style.transform = `scale(${scale})`;
+          char.style.filter = `blur(${blur}px)`;
+        } else if (variant === 3) {
+          // Rotate, Scatter & Translate
+          const rotate = -60 * (1 - easeProgress);
+          const y = 60 * (1 - easeProgress);
+          const x = (index % 2 === 0 ? 30 : -30) * (1 - easeProgress);
+          char.style.opacity = easeProgress;
+          char.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
+        }
+      });
+    };
+
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(updateAnimation);
+    });
+    
+    // Initial state trigger
+    updateAnimation();
+  });
 }

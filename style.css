@@ -95,6 +95,39 @@ body {
   opacity: 0.3;
 }
 
+/* Background Art Gallery Translucent Icons */
+.bg-art-gallery {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -3; /* Above rain, behind everything else */
+  overflow: hidden;
+}
+
+.bg-art {
+  position: absolute;
+  opacity: 0.12; /* highly translucent */
+  filter: grayscale(30%) blur(1px) contrast(1.1);
+  mix-blend-mode: screen; 
+  max-width: 300px;
+  border-radius: 12px;
+  animation: floatArt 25s infinite alternate ease-in-out;
+}
+
+.art-1 { top: -5%; left: 5%; --r: -12deg; width: 260px; animation-delay: 0s; }
+.art-2 { top: 55%; left: -2%; --r: 18deg; width: 320px; animation-delay: -5s; }
+.art-3 { top: 10%; right: 2%; --r: 8deg; width: 280px; animation-delay: -10s; }
+.art-4 { top: 60%; right: 5%; --r: -15deg; width: 240px; animation-delay: -15s; }
+.art-5 { bottom: -15%; left: 35%; --r: 5deg; width: 300px; animation-delay: -8s; }
+
+@keyframes floatArt {
+  0% { transform: translateY(0) rotate(var(--r)); }
+  100% { transform: translateY(-40px) rotate(calc(var(--r) + 8deg)); }
+}
+
 /* Custom Cursor */
 .cursor {
   width: 8px;

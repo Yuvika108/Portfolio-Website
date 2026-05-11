@@ -440,6 +440,8 @@ body {
   border-radius: 16px;
   overflow: hidden;
   transition: var(--transition-smooth);
+  position: relative;
+  z-index: 1;
 }
 
 #proj-1 {
@@ -451,8 +453,9 @@ body {
 .project-row:hover {
   background: rgba(255,255,255,0.02);
   border-color: rgba(167, 139, 250, 0.4);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+  transform: translateY(-8px) scale(1.03);
+  z-index: 10;
 }
 
 .pr-content {

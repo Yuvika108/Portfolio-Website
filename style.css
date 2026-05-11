@@ -109,8 +109,8 @@ body {
 
 .bg-art {
   position: absolute;
-  opacity: 0.22;
-  filter: grayscale(20%) contrast(1.1);
+  opacity: 0.08;
+  filter: grayscale(20%) blur(1.5px) contrast(1.1);
   mix-blend-mode: screen; 
   max-width: 300px;
   border-radius: 12px;

@@ -25,6 +25,8 @@ html {
   color: var(--text-primary);
   font-family: var(--font-main);
   overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -93,40 +95,6 @@ body {
   pointer-events: none;
   z-index: -5;
   opacity: 0.3;
-}
-
-/* Background Art Gallery Translucent Icons */
-.bg-art-gallery {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: -3; /* Above rain, behind everything else */
-  overflow: hidden;
-}
-
-.bg-art {
-  position: absolute;
-  opacity: 0.08;
-  filter: grayscale(20%) blur(1.5px) contrast(1.1);
-  mix-blend-mode: screen; 
-  max-width: 300px;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  animation: floatArt 25s infinite alternate ease-in-out;
-}
-
-.art-1 { top: -5%; left: 5%; --r: -12deg; width: 260px; animation-delay: 0s; }
-.art-2 { top: 55%; left: -2%; --r: 18deg; width: 320px; animation-delay: -5s; }
-.art-3 { top: 10%; right: 2%; --r: 8deg; width: 280px; animation-delay: -10s; }
-.art-4 { top: 60%; right: 5%; --r: -15deg; width: 240px; animation-delay: -15s; }
-.art-5 { bottom: -15%; left: 35%; --r: 5deg; width: 300px; animation-delay: -8s; }
-
-@keyframes floatArt {
-  0% { transform: translateY(0) rotate(var(--r)); }
-  100% { transform: translateY(-40px) rotate(calc(var(--r) + 8deg)); }
 }
 
 /* Custom Cursor */
@@ -377,7 +345,23 @@ body {
   margin-bottom: 1.5rem; 
   opacity: 0.8;
 }
-.section-heading { font-family: var(--font-heading); font-size: 3.5rem; font-weight: 600; margin-bottom: 3rem; letter-spacing: -0.03em; }
+.section-heading { 
+  font-family: var(--font-heading); 
+  font-size: 3.5rem; 
+  font-weight: 600; 
+  margin-bottom: 3rem; 
+  letter-spacing: -0.03em; 
+  text-wrap: balance; 
+  line-height: 1.1;
+}
+
+.ts-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.5rem;
+  color: var(--accent-soft);
+  opacity: 0.8;
+}
 
 /* About Editorial Layout */
 .about-editorial {
@@ -397,13 +381,16 @@ body {
   font-size: 1.4rem;
   font-family: var(--font-heading);
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
 }
 
 .ae-text p {
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 1.05rem;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .ae-details {

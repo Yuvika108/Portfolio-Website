@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+  initSmoothScroll();
   initCursor();
   initRain();
   initTerminal();
+  initRoleTypewriter();
   initMusic();
   initScrollEffects();
   initWave();
@@ -10,8 +12,107 @@ document.addEventListener('DOMContentLoaded', () => {
   initTextScrollAnimation();
 });
 
+// ─── Smooth Scroll Engine ───────────────────────────────────────────────────
+function initSmoothScroll() {
+  // Skip on devices that prefer reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const ease = 0.085;          // lower = more momentum / glide
+  const wheelMultiplier = 0.8; // scroll speed scale (1 = native speed)
+  const touchMultiplier = 1.6;
+
+  let current = window.scrollY;
+  let target  = window.scrollY;
+  let rafId   = null;
+  let isTicking = false;
+
+  // Expose a flag so the gesture agent can bypass smooth scroll
+  window._smoothScrollActive = true;
+
+  // ── Wheel ──────────────────────────────────────────────────────────────────
+  window.addEventListener('wheel', (e) => {
+    // Let gesture-agent native scrollBy pass through
+    if (!window._smoothScrollActive) return;
+
+    e.preventDefault();
+
+    // Normalize across browsers & trackpads
+    let delta = e.deltaY;
+    if (e.deltaMode === 1) delta *= 24;   // Firefox line mode
+    if (e.deltaMode === 2) delta *= window.innerHeight; // page mode
+
+    target += delta * wheelMultiplier;
+    target  = clampTarget(target);
+
+    scheduleTick();
+  }, { passive: false });
+
+  // ── Touch ──────────────────────────────────────────────────────────────────
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!window._smoothScrollActive) return;
+    const dy = (touchStartY - e.touches[0].clientY) * touchMultiplier;
+    touchStartY = e.touches[0].clientY;
+    target += dy;
+    target  = clampTarget(target);
+    scheduleTick();
+  }, { passive: true });
+
+  // ── Anchor / nav link clicks  ──────────────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (!el) return;
+      e.preventDefault();
+      target = el.getBoundingClientRect().top + window.scrollY;
+      target = clampTarget(target);
+      scheduleTick();
+    });
+  });
+
+  // ── RAF loop ───────────────────────────────────────────────────────────────
+  function scheduleTick() {
+    if (!isTicking) {
+      isTicking = true;
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  function tick() {
+    current += (target - current) * ease;
+
+    // Snap to rest when close enough
+    if (Math.abs(target - current) < 0.5) {
+      current = target;
+      window.scrollTo(0, current);
+      isTicking = false;
+      return;
+    }
+
+    window.scrollTo(0, current);
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // ── Clamp to valid scroll range ────────────────────────────────────────────
+  function clampTarget(val) {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return Math.max(0, Math.min(val, max));
+  }
+
+  // ── Keep current in sync if user resizes / other code scrolls ─────────────
+  window.addEventListener('scroll', () => {
+    if (!isTicking) current = window.scrollY;
+  }, { passive: true });
+}
+
 // Custom Cursor
 function initCursor() {
+
   const cursor = document.getElementById('cursor');
   const trail = document.getElementById('cursorTrail');
 
@@ -132,6 +233,55 @@ function initTerminal() {
     }
   }
   setTimeout(type, 1500);
+}
+
+// Role Typewriter for Hero
+function initRoleTypewriter() {
+  const el = document.getElementById('roleTypewriter');
+  if (!el) return;
+
+  const roles = [
+    'build immersive UIs',
+    'explore AI & ML',
+    'design with intention',
+    'write creative code',
+    'love cinema & music',
+  ];
+
+  let roleIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+  const typingSpeed = 80;
+  const erasingSpeed = 40;
+  const pauseAfterType = 1800;
+  const pauseAfterErase = 400;
+
+  function tick() {
+    const current = roles[roleIndex];
+
+    if (!deleting) {
+      el.textContent = current.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === current.length) {
+        deleting = true;
+        setTimeout(tick, pauseAfterType);
+        return;
+      }
+      setTimeout(tick, typingSpeed);
+    } else {
+      el.textContent = current.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        setTimeout(tick, pauseAfterErase);
+        return;
+      }
+      setTimeout(tick, erasingSpeed);
+    }
+  }
+
+  setTimeout(tick, 800);
 }
 
 // Music Player Logic
@@ -476,7 +626,7 @@ function initAgent() {
         }
 
       } else if (finalGesture === "scroll") {
-        document.documentElement.style.scrollBehavior = 'auto'; // Disable CSS smooth scroll to prevent lag
+        window._smoothScrollActive = false; // Pause smooth scroll during gesture
         const trackY = mainGesture.indexTip.y;
         
         if (window.lastScrollY != null) {
@@ -495,7 +645,7 @@ function initAgent() {
         cursor.classList.add('active');
         cursor.style.background = '#ff3b9a'; // Visual cue for scrolling
       } else {
-        document.documentElement.style.scrollBehavior = ''; // Restore CSS smooth scroll
+        window._smoothScrollActive = true; // Restore smooth scroll
         cursor.classList.remove('active');
         cursor.style.background = '';
         window.lastScrollY = null;

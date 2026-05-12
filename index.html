@@ -27,17 +27,7 @@
   <!-- Grain & Lofi Overlays -->
   <div class="grain-overlay"></div>
   <div class="vignette"></div>
-  <div class="scanlines"></div>
   <canvas class="rain-canvas" id="rainCanvas"></canvas>
-
-  <!-- Background Art Gallery -->
-  <div class="bg-art-gallery">
-    <img src="art-1.jpg" alt="Art Background" class="bg-art art-1">
-    <img src="art-2.jpg" alt="Art Background" class="bg-art art-2">
-    <img src="art-3.jpg" alt="Art Background" class="bg-art art-3">
-    <img src="art-4.jpg" alt="Art Background" class="bg-art art-4">
-    <img src="art-5.jpg" alt="Art Background" class="bg-art art-5">
-  </div>
 
   <!-- Navigation -->
   <nav class="nav" id="nav">
@@ -67,55 +57,111 @@
 
   <!-- Hero Section -->
   <section class="hero" id="hero">
-    
-    <div class="hero-ambient">
-      <div class="ambient-orb orb-1"></div>
-      <div class="ambient-orb orb-2"></div>
+
+
+    <!-- Animated background mesh -->
+    <div class="hero-mesh">
+      <div class="mesh-orb orb-a"></div>
+      <div class="mesh-orb orb-b"></div>
+      <div class="mesh-orb orb-c"></div>
+    </div>
+
+    <!-- Floating decorative glyphs -->
+    <div class="hero-glyphs" aria-hidden="true">
+      <span class="glyph g1">✦</span>
+      <span class="glyph g2">{}</span>
+      <span class="glyph g3">⟡</span>
+      <span class="glyph g4">∿</span>
+      <span class="glyph g5">◈</span>
     </div>
 
     <div class="hero-inner">
-      <div class="hero-content">
-        <div class="hero-tag">
-          <span class="tag-dot"></span>
-          <span>B.Tech Student @ Lucknow Uni · Creative Developer · Artist at Heart 🎨</span>
+
+      <!-- LEFT: Text content -->
+      <div class="hero-left">
+
+        <div class="hero-badge">
+          <span class="badge-pulse"></span>
+          <span class="badge-text">available for collaboration</span>
         </div>
 
-        <h1 class="hero-title text-scroll-anim ts-variant-2">
-          <span class="title-line line-1">building digital</span>
-          <span class="title-line line-2">experiences with</span>
-          <span class="title-line line-3">atmosphere, aesthetics &amp; <em>intention</em>.</span>
-        </h1>
+        <div class="hero-name-block">
+          <p class="hero-greeting">hey there, I'm</p>
+          <h1 class="hero-name">
+            <span class="name-line">Srishti</span>
+            <span class="name-line name-last">Mishra<span class="name-dot">.</span></span>
+          </h1>
+        </div>
 
-        <p class="hero-sub">I’m Srishti — a creative developer and artist exploring the intersection of technology, design, AI, and immersive digital experiences.</p>
+        <div class="hero-role-line">
+          <span class="role-prefix">I </span>
+          <span class="role-typewriter" id="roleTypewriter"></span>
+          <span class="role-cursor">|</span>
+        </div>
 
-        <div class="hero-status">
-          <span class="status-label">currently</span>
-          <div class="status-items">
-            <div class="status-item"><span class="status-icon">→</span><span>learning react</span></div>
-            <div class="status-item"><span class="status-icon">→</span><span>solving dsa</span></div>
-            <div class="status-item"><span class="status-icon">→</span><span>exploring ui/ux</span></div>
-            <div class="status-item"><span class="status-icon">→</span><span>building machine learning projects</span></div>
-          </div>
+        <p class="hero-sub">A B.Tech CSE(AI) student at University of Lucknow — building immersive digital experiences at the intersection of code, design &amp; art.</p>
+
+        <div class="hero-pills">
+          <span class="pill">🎨 Artist at Heart</span>
+          <span class="pill">🤖 AI Enthusiast</span>
+          <span class="pill">⚡ Creative Coder</span>
+          <span class="pill">🎬 Cinephile</span>
         </div>
 
         <div class="hero-actions">
-          <a href="#projects" class="btn-primary">view work</a>
-          <a href="#about" class="btn-ghost">who am i?</a>
+          <a href="#projects" class="btn-primary" id="hero-cta-work">view my work</a>
+          <a href="#about" class="btn-ghost" id="hero-cta-about">about me ↓</a>
+        </div>
+
+        <div class="hero-socials">
+          <a href="#" class="hs-link" id="hero-github">gh</a>
+          <span class="hs-sep"></span>
+          <a href="#" class="hs-link" id="hero-linkedin">in</a>
+          <span class="hs-sep"></span>
+          <a href="mailto:srishti@email.com" class="hs-link" id="hero-mail">✉</a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Visual card -->
+      <div class="hero-right">
+        <div class="hero-card">
+
+          <!-- Portrait placeholder with glow -->
+          <div class="hc-portrait">
+            <div class="portrait-glow"></div>
+            <div class="portrait-inner">
+              <div class="portrait-initials">SM</div>
+              <div class="portrait-ring ring-1"></div>
+              <div class="portrait-ring ring-2"></div>
+              <div class="portrait-ring ring-3"></div>
+            </div>
+          </div>
+
+          <!-- Terminal snippet -->
+          <div class="hc-terminal">
+            <div class="hct-bar">
+              <span class="hct-dot"></span>
+              <span class="hct-dot"></span>
+              <span class="hct-dot"></span>
+              <span class="hct-title">srishti.json</span>
+            </div>
+            <div class="hct-body" id="terminalBody">
+              <p class="t-line"><span class="t-prompt">$</span> <span class="t-cmd typed-text"></span><span class="t-cursor">▌</span></p>
+              <p class="t-output" id="t-out-1">// books, cinema &amp; late-night playlists</p>
+              <p class="t-output" id="t-out-2">// quietly building cool things</p>
+              <p class="t-output" id="t-out-3">// INTP · artist at heart 🎨</p>
+            </div>
+          </div>
+
+          <!-- Floating stat chips -->
+          <div class="hc-chip chip-a">6+ projects</div>
+          <div class="hc-chip chip-b">UI/UX · AI · NLP</div>
+          <div class="hc-chip chip-c">✦ creative dev</div>
+
         </div>
       </div>
-    </div>
 
-    <div class="hero-terminal">
-      <div class="terminal-bar">
-        <span class="t-dot green"></span>
-        <span class="t-title">~/srishti/creative-mind</span>
-      </div>
-      <div class="terminal-body" id="terminalBody">
-        <p class="t-line"><span class="t-prompt">$</span> <span class="t-cmd typed-text"></span><span class="t-cursor">▌</span></p>
-        <p class="t-output" id="t-out-1">// drawn to books, cinema, and music</p>
-        <p class="t-output" id="t-out-2">// quietly exploring creativity</p>
-        <p class="t-output" id="t-out-3">// INTP | Artist at heart 🎨</p>
-      </div>
     </div>
 
     <div class="scroll-hint">
@@ -124,11 +170,14 @@
     </div>
   </section>
 
+
   <!-- About Section - Editorial Layout -->
   <section class="section about-section" id="about">
     <div class="section-inner">
       <div class="section-label">01 — about me</div>
-      <h2 class="section-heading text-scroll-anim ts-variant-1">technology as a form of creativity</h2>
+      <h2 class="section-heading text-scroll-anim ts-variant-1">
+        <span class="ts-icon">✦</span> technology as a form of creativity <span class="ts-icon">✦</span>
+      </h2>
       
       <div class="about-editorial">
         <div class="ae-text">
@@ -165,7 +214,9 @@
     <div class="section-inner">
       <div class="section-header-row">
         <div class="section-label">02 — projects</div>
-        <h2 class="section-heading text-scroll-anim ts-variant-3">selected works &amp; experiments</h2>
+        <h2 class="section-heading text-scroll-anim ts-variant-3">
+          <span class="ts-icon">{}</span> selected works & experiments <span class="ts-icon">{}</span>
+        </h2>
       </div>
 
       <div class="projects-list">
@@ -326,7 +377,9 @@
       <div class="vision-wrapper">
         <div class="section-label">05 — future vision</div>
         <div class="vision-text-block">
-          <h2 class="vision-heading text-scroll-anim ts-variant-2">I want to build things that <em>feel human</em>.</h2>
+          <h2 class="vision-heading text-scroll-anim ts-variant-2">
+            <span class="ts-icon">⟡</span> I want to build things that <em>feel human</em>. <span class="ts-icon">⟡</span>
+          </h2>
           <p class="vision-body">I want to create digital experiences that feel artistic, immersive, and emotionally memorable — blending technology, design, AI, interaction, and visual creativity into something meaningful and human.</p>
         </div>
         <div class="vision-cta">

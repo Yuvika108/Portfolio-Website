@@ -568,8 +568,16 @@ function initTextScrollAnimation() {
           fragment.appendChild(charSpan);
         }
         node.parentNode.replaceChild(fragment, node);
-      } else if (node.nodeType === 1 && !node.classList.contains('ts-char')) { 
-        Array.from(node.childNodes).forEach(child => splitTextNodes(child));
+      } else if (node.nodeType === 1) {
+        if (node.classList.contains('ts-icon')) {
+          // Add basic styles to icons if not present
+          node.style.display = 'inline-block';
+          node.style.willChange = 'transform, opacity, filter';
+          return;
+        }
+        if (!node.classList.contains('ts-char')) {
+          Array.from(node.childNodes).forEach(child => splitTextNodes(child));
+        }
       }
     }
     
@@ -577,42 +585,45 @@ function initTextScrollAnimation() {
       Array.from(el.childNodes).forEach(child => splitTextNodes(child));
     }
     
-    const chars = el.querySelectorAll('.ts-char');
+    // We want to animate both characters AND icons
+    const animateItems = el.querySelectorAll('.ts-char, .ts-icon');
 
     const updateAnimation = () => {
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // Calculate scroll progress relative to viewport
       let progress = (windowHeight - rect.top) / (windowHeight / 1.5);
       progress = Math.max(0, Math.min(1, progress));
 
-      chars.forEach((char, index) => {
-        const delay = index * 0.015; // cascading effect
-        let charProgress = (progress - delay) * 2;
-        charProgress = Math.max(0, Math.min(1, charProgress));
+      animateItems.forEach((item, index) => {
+        const isIcon = item.classList.contains('ts-icon');
+        const delay = index * 0.015;
+        let itemProgress = (progress - delay) * 2;
+        itemProgress = Math.max(0, Math.min(1, itemProgress));
 
-        const easeProgress = 1 - Math.pow(1 - charProgress, 3); // ease-out cubic
+        const easeProgress = 1 - Math.pow(1 - itemProgress, 3);
+        
+        // Multipliers for icons to make them more "dynamic"
+        const moveMult = isIcon ? 2 : 1;
+        const rotateMult = isIcon ? 2.5 : 1;
+        const scaleMult = isIcon ? 1.5 : 1;
 
         if (variant === 1) {
-          // Translate Y
-          const y = 40 * (1 - easeProgress);
-          char.style.opacity = easeProgress;
-          char.style.transform = `translateY(${y}px)`;
+          const y = 30 * (1 - easeProgress) * moveMult;
+          item.style.opacity = easeProgress;
+          item.style.transform = `translateY(${y}px)`;
         } else if (variant === 2) {
-          // Scale & Blur
-          const scale = 1 + 1.5 * (1 - easeProgress);
-          const blur = 10 * (1 - easeProgress);
-          char.style.opacity = easeProgress;
-          char.style.transform = `scale(${scale})`;
-          char.style.filter = `blur(${blur}px)`;
+          const scale = 1 + (0.3 * (1 - easeProgress) * scaleMult);
+          const blur = 4 * (1 - easeProgress);
+          item.style.opacity = easeProgress;
+          item.style.transform = `scale(${scale})`;
+          item.style.filter = `blur(${blur}px)`;
         } else if (variant === 3) {
-          // Rotate, Scatter & Translate
-          const rotate = -60 * (1 - easeProgress);
-          const y = 60 * (1 - easeProgress);
-          const x = (index % 2 === 0 ? 30 : -30) * (1 - easeProgress);
-          char.style.opacity = easeProgress;
-          char.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
+          const rotate = -30 * (1 - easeProgress) * rotateMult;
+          const y = 40 * (1 - easeProgress) * moveMult;
+          const x = (index % 2 === 0 ? 15 : -15) * (1 - easeProgress) * moveMult;
+          item.style.opacity = easeProgress;
+          item.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
         }
       });
     };
@@ -621,7 +632,6 @@ function initTextScrollAnimation() {
       requestAnimationFrame(updateAnimation);
     });
     
-    // Initial state trigger
     updateAnimation();
   });
 }

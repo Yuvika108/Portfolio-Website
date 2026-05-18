@@ -1,0 +1,8 @@
+{
+  "name": "portfolio-website-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm install --prefix my-portfolio && npm run build --prefix my-portfolio && mkdir -p dist && cp -r my-portfolio/dist/* dist/"
+  }
+}

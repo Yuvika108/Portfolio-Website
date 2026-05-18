@@ -12,102 +12,77 @@ document.addEventListener('DOMContentLoaded', () => {
   initTextScrollAnimation();
 });
 
-// ─── Smooth Scroll Engine ───────────────────────────────────────────────────
 function initSmoothScroll() {
-  // Skip on devices that prefer reduced motion
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const ease = 0.085;          // lower = more momentum / glide
-  const wheelMultiplier = 0.8; // scroll speed scale (1 = native speed)
-  const touchMultiplier = 1.6;
-
-  let current = window.scrollY;
-  let target  = window.scrollY;
-  let rafId   = null;
-  let isTicking = false;
-
-  // Expose a flag so the gesture agent can bypass smooth scroll
-  window._smoothScrollActive = true;
-
-  // ── Wheel ──────────────────────────────────────────────────────────────────
-  window.addEventListener('wheel', (e) => {
-    // Let gesture-agent native scrollBy pass through
-    if (!window._smoothScrollActive) return;
-
-    e.preventDefault();
-
-    // Normalize across browsers & trackpads
-    let delta = e.deltaY;
-    if (e.deltaMode === 1) delta *= 24;   // Firefox line mode
-    if (e.deltaMode === 2) delta *= window.innerHeight; // page mode
-
-    target += delta * wheelMultiplier;
-    target  = clampTarget(target);
-
-    scheduleTick();
-  }, { passive: false });
-
-  // ── Touch ──────────────────────────────────────────────────────────────────
-  let touchStartY = 0;
-  window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  window.addEventListener('touchmove', (e) => {
-    if (!window._smoothScrollActive) return;
-    const dy = (touchStartY - e.touches[0].clientY) * touchMultiplier;
-    touchStartY = e.touches[0].clientY;
-    target += dy;
-    target  = clampTarget(target);
-    scheduleTick();
-  }, { passive: true });
-
-  // ── Anchor / nav link clicks  ──────────────────────────────────────────────
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const id = link.getAttribute('href').slice(1);
-      const el = document.getElementById(id);
-      if (!el) return;
-      e.preventDefault();
-      target = el.getBoundingClientRect().top + window.scrollY;
-      target = clampTarget(target);
-      scheduleTick();
+  if (typeof Lenis === 'undefined') {
+    console.warn('Lenis library not loaded. Falling back to native scrolling.');
+    let _scrollActive = true;
+    Object.defineProperty(window, '_smoothScrollActive', {
+      get: () => _scrollActive,
+      set: (val) => { _scrollActive = val; }
     });
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const id = link.getAttribute('href');
+        if (id === '#') return;
+        const el = document.querySelector(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+    return;
+  }
+
+  const lenis = new Lenis({
+    duration: 1.5,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 2,
+    infinite: false,
   });
 
-  // ── RAF loop ───────────────────────────────────────────────────────────────
-  function scheduleTick() {
-    if (!isTicking) {
-      isTicking = true;
-      rafId = requestAnimationFrame(tick);
+  window.lenis = lenis;
+
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     }
+    requestAnimationFrame(raf);
   }
 
-  function tick() {
-    current += (target - current) * ease;
-
-    // Snap to rest when close enough
-    if (Math.abs(target - current) < 0.5) {
-      current = target;
-      window.scrollTo(0, current);
-      isTicking = false;
-      return;
+  let _scrollActive = true;
+  Object.defineProperty(window, '_smoothScrollActive', {
+    get: () => _scrollActive,
+    set: (val) => {
+      _scrollActive = val;
+      if (val) lenis.start();
+      else lenis.stop();
     }
+  });
 
-    window.scrollTo(0, current);
-    rafId = requestAnimationFrame(tick);
-  }
-
-  // ── Clamp to valid scroll range ────────────────────────────────────────────
-  function clampTarget(val) {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    return Math.max(0, Math.min(val, max));
-  }
-
-  // ── Keep current in sync if user resizes / other code scrolls ─────────────
-  window.addEventListener('scroll', () => {
-    if (!isTicking) current = window.scrollY;
-  }, { passive: true });
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href');
+      if (id === '#') return;
+      const el = document.querySelector(id);
+      if (el) {
+        e.preventDefault();
+        lenis.scrollTo(el, { offset: 0, duration: 1.5 });
+      }
+    });
+  });
 }
 
 // Custom Cursor
@@ -193,7 +168,7 @@ function initRain() {
     ctx.lineCap = 'round';
 
     drops.forEach(d => {
-      ctx.strokeStyle = `rgba(167, 139, 250, ${d.opacity})`;
+      ctx.strokeStyle = `rgba(224, 122, 95, ${d.opacity})`;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(d.x, d.y);
@@ -288,6 +263,7 @@ function initRoleTypewriter() {
 function initMusic() {
   const btn = document.getElementById('musicToggle');
   const audio = document.getElementById('ambientAudio');
+  const rainCanvas = document.getElementById('rainCanvas');
   const visualizerBars = document.querySelectorAll('.visualizer span');
   let playing = false;
 
@@ -296,11 +272,13 @@ function initMusic() {
       audio.play();
       btn.classList.add('playing');
       btn.querySelector('.music-label').textContent = 'playing';
+      if (rainCanvas) rainCanvas.style.opacity = '1';
       animateVisualizer();
     } else {
       audio.pause();
       btn.classList.remove('playing');
       btn.querySelector('.music-label').textContent = 'music player';
+      if (rainCanvas) rainCanvas.style.opacity = '0.25';
     }
     playing = !playing;
   });
@@ -315,54 +293,107 @@ function initMusic() {
   }
 }
 
-// Scroll Effects (Progress, Back to Top, Reveal)
+// Scroll Effects (Progress, Back to Top, Reveal via GSAP)
 function initScrollEffects() {
   const progressBar = document.getElementById('scrollProgress');
   const backToTop = document.getElementById('backToTop');
 
-  window.addEventListener('scroll', () => {
-    // Progress Bar
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    progressBar.style.width = scrolled + "%";
-
-    // Back to Top Button
-    if (winScroll > 500) {
-      backToTop.classList.add('visible');
-    } else {
-      backToTop.classList.remove('visible');
-    }
-  });
-
-  backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // Reveal Animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('reveal');
+  if (progressBar && window.gsap && window.ScrollTrigger) {
+    gsap.to(progressBar, {
+      width: "100%",
+      ease: "none",
+      scrollTrigger: {
+        scrub: 0.3
       }
     });
-  }, { threshold: 0.1 });
+  }
 
-  document.querySelectorAll('section, .bento-item, .project-card, .creative-card').forEach(el => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(30px)";
-    el.style.transition = "all 1s cubic-bezier(0.16, 1, 0.3, 1)";
-    observer.observe(el);
-  });
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+    backToTop.addEventListener('click', () => {
+      window.lenis ? window.lenis.scrollTo(0, { duration: 1.5 }) : window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
-  const style = document.createElement('style');
-  style.textContent = `
-    .reveal {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
+  if (window.gsap && window.ScrollTrigger) {
+    // Add load animation to cinematic hero elements
+    const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-glow');
+    heroElements.forEach(el => el.style.transition = 'none');
+    
+    gsap.fromTo(heroElements, 
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.3, 
+        onComplete: () => heroElements.forEach(el => { el.style.transition = ''; gsap.set(el, { clearProps: "transform" }); }) 
+      }
+    );
+    
+    // Animate float cards entering
+    const floatCards = document.querySelectorAll('.float-card');
+    gsap.fromTo(floatCards,
+      { opacity: 0, scale: 0.8, y: 50 },
+      { opacity: 1, scale: 1, y: 0, duration: 2, stagger: 0.2, ease: "expo.out", delay: 0.6 }
+    );
+    
+    // Continuous subtle floating animation for cards
+    floatCards.forEach((card, i) => {
+      gsap.to(card, {
+        y: (i % 2 === 0) ? -15 : 15,
+        rotation: (i % 2 === 0) ? 2 : -2,
+        duration: 4 + i,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut",
+        delay: 2
+      });
+    });
+
+    // Slight parallax on background image
+    const bgImage = document.querySelector('.hero-bg-image');
+    if (bgImage) {
+      gsap.to(bgImage, {
+        yPercent: 20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".cinematic-hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      });
     }
-  `;
-  document.head.appendChild(style);
+    
+    // Smooth reveal for sections and cards
+    const revealElements = document.querySelectorAll('section:not(.hero), .bento-item, .creative-card, .project-row, .tk-category, .ae-card');
+    revealElements.forEach(el => {
+      // Disable CSS transitions during setup to prevent conflicting with GSAP's initial state
+      el.style.transition = 'none';
+      
+      gsap.fromTo(el, 
+        { opacity: 0, y: 80 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1.2, 
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          },
+          onComplete: () => {
+            el.style.transition = '';
+            gsap.set(el, { clearProps: "transform" });
+          }
+        }
+      );
+    });
+  }
 }
 
 // Wave Animation for Creative Corner
@@ -381,7 +412,7 @@ function initWave() {
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = 'rgba(167, 139, 250, 0.3)';
+    ctx.strokeStyle = 'rgba(224, 122, 95, 0.3)';
     ctx.lineWidth = 2;
 
     ctx.beginPath();
@@ -422,8 +453,8 @@ function initAgent() {
   const cursorTrail = document.getElementById('cursorTrail');
   const musicToggle = document.getElementById('musicToggle');
 
-  // Make rain invisible by default, only visible on Open Palm
-  rainCanvas.style.opacity = '0';
+  // Set rain to soft cozy lofi background opacity by default
+  rainCanvas.style.opacity = '0.25';
   rainCanvas.style.transition = 'opacity 1s ease';
 
   let agentActive = false;
@@ -663,13 +694,13 @@ function initAgent() {
               audio.pause();
               musicToggle.classList.remove('playing');
               musicToggle.querySelector('.music-label').textContent = 'music player';
-              rainCanvas.style.opacity = '0';
+              rainCanvas.style.opacity = '0.25';
             } else if (finalGesture === "bye_bye") {
-              statusElement.textContent = '👋 BYE BYE!';
+              statusElement.textContent = 'BYE BYE!';
               setTimeout(() => { closeBtn.click(); }, 800);
             } else if (finalGesture === "open_palm") {
               rainCanvas.style.opacity = '1';
-              setTimeout(() => { if (audio.paused) rainCanvas.style.opacity = '0'; }, 5000);
+              setTimeout(() => { if (audio.paused) rainCanvas.style.opacity = '0.25'; }, 5000);
             }
 
             if (finalGesture !== "open_palm") {

@@ -1,33 +1,63 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import { PortfolioContext } from "./App";
 
 export default function GestureDetector() {
+    const { 
+      isMusicPlaying, 
+      setIsMusicPlaying, 
+      isAgentActive, 
+      setIsAgentActive,
+      isRainActive,
+      setIsRainActive,
+      gesture,
+      setGesture
+    } = useContext(PortfolioContext);
+
     const videoRef = useRef(null);
-    const audioRef = useRef(null);
+    const cameraRef = useRef(null);
+    const handsRef = useRef(null);
     const navigate = useNavigate();
 
-    // States
-    const [gesture, setGesture] = useState("");
+    // Local state
     const [particlesInit, setParticlesInit] = useState(false);
-    const [userStarted, setUserStarted] = useState(false);
 
-    // Internal state refs
+    // Refs for gesture historical tracking
     const cooldownRef = useRef(false);
     const waveHistoryRef = useRef([]);
     const lastScrollYRef = useRef(null);
     const lastPinchTimeRef = useRef(0);
     const isPinchingRef = useRef(false);
 
-    // Setup MediaPipe Camera and Hand Tracking & Particles Engine
+    // Setup Particles Engine on mount
     useEffect(() => {
         initParticlesEngine(async (engine) => {
             await loadSlim(engine);
         }).then(() => {
             setParticlesInit(true);
         });
+    }, []);
+
+    // Setup MediaPipe Camera and Hand Tracking dynamically
+    useEffect(() => {
+        if (!isAgentActive) {
+            // Turn off camera stream completely to stop green light and save CPU cycles
+            if (cameraRef.current) {
+                try {
+                    cameraRef.current.stop();
+                } catch(e) {
+                    console.log("Error turning off camera tracks:", e);
+                }
+                cameraRef.current = null;
+            }
+            setGesture("");
+            return;
+        }
+
+        let active = true;
 
         const initMediaPipe = () => {
             if (!window.Hands || !window.Camera) {
@@ -35,34 +65,57 @@ export default function GestureDetector() {
                 return;
             }
 
-            const hands = new window.Hands({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
-            });
+            if (!active) return;
 
-            hands.setOptions({
-                maxNumHands: 2,
-                modelComplexity: 1,
-                minDetectionConfidence: 0.7,
-                minTrackingConfidence: 0.7,
-            });
+            // Instantiate Hands model if not already done
+            if (!handsRef.current) {
+                const hands = new window.Hands({
+                    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/${file}`,
+                });
 
-            hands.onResults(onResults);
+                hands.setOptions({
+                    maxNumHands: 2,
+                    modelComplexity: 1,
+                    minDetectionConfidence: 0.7,
+                    minTrackingConfidence: 0.7,
+                });
 
-            if (videoRef.current) {
+                hands.onResults(onResults);
+                handsRef.current = hands;
+            }
+
+            if (videoRef.current && !cameraRef.current) {
                 const camera = new window.Camera(videoRef.current, {
                     onFrame: async () => {
-                        await hands.send({ image: videoRef.current });
+                        if (active && handsRef.current) {
+                            await handsRef.current.send({ image: videoRef.current });
+                        }
                     },
                     width: 640,
                     height: 480,
                 });
                 camera.start();
+                cameraRef.current = camera;
             }
         };
 
         initMediaPipe();
 
+        return () => {
+            active = false;
+            if (cameraRef.current) {
+                try {
+                    cameraRef.current.stop();
+                } catch(e) {
+                    console.log("Error turning off camera tracks:", e);
+                }
+                cameraRef.current = null;
+            }
+        };
+
         function onResults(results) {
+            if (!active) return;
+
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 let currentGestures = [];
 
@@ -132,6 +185,16 @@ export default function GestureDetector() {
                     const y = main.indexTip.y * window.innerHeight;
                     lastScrollYRef.current = null;
 
+                    // Update custom cursor positioning if custom cursor elements are loaded
+                    const cursor = document.getElementById('cursor');
+                    const cursorTrail = document.getElementById('cursorTrail');
+                    if (cursor) cursor.style.transform = `translate(${x}px, ${y}px)`;
+                    if (cursorTrail) {
+                        setTimeout(() => {
+                            cursorTrail.style.transform = `translate(${x - 16}px, ${y - 16}px)`;
+                        }, 50);
+                    }
+
                     if (final === "pinch") {
                         if (!isPinchingRef.current) {
                             isPinchingRef.current = true;
@@ -174,55 +237,99 @@ export default function GestureDetector() {
                 isPinchingRef.current = false;
             }
         }
-    }, []);
+    }, [isAgentActive]);
 
-    // Effect: Handle Global Actions
+    // Handle Gesture Global State Actions
     useEffect(() => {
         if (!gesture || cooldownRef.current) return;
 
         if (gesture === "thumbs_up") {
-            audioRef.current?.play().catch(() => { });
+            setIsMusicPlaying(true);
+            setIsRainActive(true);
             cooldownRef.current = true;
             setTimeout(() => { cooldownRef.current = false; }, 1500);
         } else if (gesture === "rock_on") {
-            audioRef.current?.pause();
+            setIsMusicPlaying(false);
+            setIsRainActive(false);
             cooldownRef.current = true;
             setTimeout(() => { cooldownRef.current = false; }, 1500);
+        } else if (gesture === "open_palm") {
+            setIsRainActive(true);
+            // Let the rain fade out after 5s if music is paused
+            setTimeout(() => {
+                if (!isMusicPlaying) setIsRainActive(false);
+            }, 5000);
         } else if (gesture === "bye_bye") {
-            setUserStarted(false);
+            // Turn off Aanya and stream
+            setIsAgentActive(false);
         }
-    }, [gesture]);
+    }, [gesture, isMusicPlaying]);
 
     return (
         <>
-            {!userStarted && (
-                <div onClick={() => setUserStarted(true)} className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer text-white">
-                    <h1 className="text-4xl font-bold mb-4 animate-pulse">✨ Meet Aanya — Click to Start</h1>
-                    <p className="text-gray-400">Controls: 👍 Play, 🤘 Stop, ✌️ Scroll, 👌 Click, 👉 Point</p>
-                </div>
+            {/* Floating Enable Button */}
+            {!isAgentActive && (
+                <button 
+                    onClick={() => setIsAgentActive(true)}
+                    className="fixed bottom-6 right-6 z-50 px-5 py-2.5 bg-orange-400/10 border border-orange-400/30 hover:border-orange-400 hover:bg-orange-400/25 text-orange-300 font-mono text-[9px] tracking-[0.15em] uppercase rounded-full shadow-[0_0_20px_rgba(224,122,95,0.15)] hover:shadow-[0_0_30px_rgba(224,122,95,0.35)] hover:-translate-y-0.5 backdrop-blur-md transition-all duration-300 cursor-pointer flex items-center gap-1.5"
+                    title="Enable Aanya AI Gesture Agent"
+                >
+                    <i className="bi bi-stars text-xs text-orange-300"></i>
+                    Aanya Agent
+                </button>
             )}
 
-            <div className="fixed bottom-4 right-4 z-50 w-64 h-48 bg-black border-2 border-purple-500 rounded-xl overflow-hidden shadow-lg shadow-purple-500/20">
-                <video ref={videoRef} className="w-full h-full object-cover transform -scale-x-100" autoPlay playsInline muted />
-                <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded text-[10px] text-purple-300 font-mono">
-                    AANYA: {gesture ? gesture.replace('_', ' ').toUpperCase() : "LISTENING"}
-                </div>
-            </div>
+            {/* Glassmorphic Video Widget Panel */}
+            <AnimatePresence>
+                {isAgentActive && (
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        className="fixed bottom-6 right-6 z-50 w-64 h-48 bg-[#120917]/85 border border-orange-400/30 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-md flex flex-col justify-between"
+                    >
+                        {/* Header controls bar */}
+                        <div className="flex justify-between items-center px-4 py-2 border-b border-white/[0.06] bg-black/40 font-mono text-[9px] text-gray-400 select-none">
+                            <span>Aanya — Live Feed</span>
+                            <button 
+                                onClick={() => setIsAgentActive(false)}
+                                className="text-gray-500 hover:text-white transition-colors cursor-pointer text-xs font-bold"
+                                title="Disable Aanya"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        
+                        {/* Live stream view */}
+                        <div className="relative w-full h-[calc(100%-28px)] bg-black/20">
+                            <video ref={videoRef} className="w-full h-full object-cover transform -scale-x-100" autoPlay playsInline muted />
+                            
+                            {/* Live Indicator */}
+                            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 px-2 py-0.5 bg-red-500/10 border border-red-500/30 rounded-full">
+                                <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
+                                <span className="font-mono text-[8px] uppercase text-red-400 tracking-wider font-semibold">live</span>
+                            </div>
 
-            <audio loop ref={audioRef} className="hidden">
-                <source src="/music/lofi.mp3" />
-            </audio>
+                            {/* Recognized Gesture Overlay Tag */}
+                            <div className="absolute bottom-2.5 left-2.5 px-2 py-1 bg-black/70 border border-orange-400/20 rounded font-mono text-[9px] text-orange-300">
+                                {gesture ? gesture.replace('_', ' ').toUpperCase() : "AWAITING GESTURE"}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
+            {/* Gesture Particles Spill Effect */}
             {(gesture === "open_palm" || gesture === "thumbs_up") && particlesInit && (
                 <Particles id="tsparticles" className="fixed inset-0 pointer-events-none z-0" options={{
                     fullScreen: { enable: true, zIndex: 0 },
                     particles: {
-                        number: { value: 80, density: { enable: true, area: 800 } },
-                        color: { value: ["#aa3bff", "#ff3b9a", "#ffffff"] },
+                        number: { value: 50, density: { enable: true, area: 800 } },
+                        color: { value: ["#a78bfa", "#f43f5e", "#ffffff"] },
                         shape: { type: "circle" },
-                        opacity: { value: 0.8, random: true },
-                        size: { value: 4, random: true },
-                        move: { enable: true, speed: 3, direction: "none", random: true, straight: false, outModes: { default: "out" } }
+                        opacity: { value: 0.6, random: true },
+                        size: { value: 3.5, random: true },
+                        move: { enable: true, speed: 2.5, direction: "none", random: true, straight: false, outModes: { default: "out" } }
                     }
                 }} />
             )}

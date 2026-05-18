@@ -10,9 +10,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <!-- MediaPipe AI Agent Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js"
     crossorigin="anonymous"></script>
@@ -37,21 +39,21 @@
 
   <!-- Navigation -->
   <nav class="nav" id="nav">
-    <div class="nav-inner">
+    <div class="nav-container">
       <div class="nav-logo">
-        <span class="logo-char">srishti</span><span class="logo-dot">.</span>
+        srishti mishra<span class="logo-dot">.</span>
       </div>
       <div class="nav-links">
         <a href="#about" class="nav-link">about</a>
         <a href="#projects" class="nav-link">projects</a>
         <a href="#skills" class="nav-link">skills</a>
-        <a href="#creative" class="nav-link">creative</a>
+        <a href="#creative" class="nav-link"><i class="bi bi-controller" style="margin-right: 4px;"></i>creative</a>
         <a href="#vision" class="nav-link">vision</a>
         <a href="mailto:srishti@email.com" class="nav-link nav-link--cta">contact</a>
       </div>
       <div class="nav-music">
         <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
-          <span class="music-icon">♪</span>
+          <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
           <span class="music-label">music player</span>
           <div class="visualizer" id="visualizer">
             <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
@@ -131,43 +133,50 @@
       </div>
 
       <!-- RIGHT: Visual card -->
-      <div class="hero-right">
-        <div class="hero-card">
-
-          <!-- Portrait placeholder with glow -->
-          <div class="hc-portrait">
-            <div class="portrait-glow"></div>
-            <div class="portrait-inner">
-              <div class="portrait-initials">SM</div>
-              <div class="portrait-ring ring-1"></div>
-              <div class="portrait-ring ring-2"></div>
-              <div class="portrait-ring ring-3"></div>
-            </div>
-          </div>
-
-          <!-- Terminal snippet -->
-          <div class="hc-terminal">
-            <div class="hct-bar">
-              <span class="hct-dot"></span>
-              <span class="hct-dot"></span>
-              <span class="hct-dot"></span>
-              <span class="hct-title">srishti.json</span>
-            </div>
-            <div class="hct-body" id="terminalBody">
-              <p class="t-line"><span class="t-prompt">$</span> <span class="t-cmd typed-text"></span><span
-                  class="t-cursor">▌</span></p>
-              <p class="t-output" id="t-out-1">// books, cinema &amp; late-night playlists</p>
-              <p class="t-output" id="t-out-2">// quietly building cool things</p>
-              <p class="t-output" id="t-out-3">// INTP · artist at heart 🎨</p>
-            </div>
-          </div>
-
-          <!-- Floating stat chips -->
-          <div class="hc-chip chip-a">6+ projects</div>
-          <div class="hc-chip chip-b">UI/UX · AI · NLP</div>
-          <div class="hc-chip chip-c">✦ creative dev</div>
-
+      <div class="hero-right" style="padding-top: 5rem;">
+        <!-- Handcrafted lofi sticky note -->
+        <div class="hc-sticky-note" style="position: absolute; top: -50px; right: 15%; pointer-events: auto;">
+          <div class="sticky-tape"></div>
+          <p class="sticky-title">NOTE TO SELF</p>
+          <p class="sticky-text">
+            keep coding, keep dreaming. don't forget to drink water.<br><br>
+            lofi beats looping.<br>
+            rain is falling.
+          </p>
         </div>
+
+        <!-- Portrait placeholder with glow -->
+        <div class="hc-portrait">
+          <div class="portrait-glow"></div>
+          <div class="portrait-inner">
+            <div class="portrait-initials">SM</div>
+            <div class="portrait-ring ring-1"></div>
+            <div class="portrait-ring ring-2"></div>
+            <div class="portrait-ring ring-3"></div>
+          </div>
+        </div>
+
+        <!-- Terminal snippet -->
+        <div class="hc-terminal">
+          <div class="hct-bar">
+            <span class="hct-dot"></span>
+            <span class="hct-dot"></span>
+            <span class="hct-dot"></span>
+            <span class="hct-title">srishti.json</span>
+          </div>
+          <div class="hct-body" id="terminalBody">
+            <p class="t-line"><span class="t-prompt">$</span> <span class="t-cmd typed-text"></span><span
+                class="t-cursor">▌</span></p>
+            <p class="t-output" id="t-out-1">// books, cinema &amp; late-night playlists</p>
+            <p class="t-output" id="t-out-2">// quietly building cool things</p>
+            <p class="t-output" id="t-out-3">// INTP · artist at heart</p>
+          </div>
+        </div>
+
+        <!-- Floating stat chips -->
+        <div class="hc-chip chip-a">6+ projects</div>
+        <div class="hc-chip chip-b">UI/UX · AI · NLP</div>
+        <div class="hc-chip chip-c">creative dev</div>
       </div>
 
     </div>
@@ -184,7 +193,7 @@
     <div class="section-inner">
       <div class="section-label">01 — about me</div>
       <h2 class="section-heading text-scroll-anim ts-variant-1">
-        <span class="ts-icon">✦</span> technology as a form of creativity <span class="ts-icon">✦</span>
+        technology as a form of creativity
       </h2>
 
       <div class="about-editorial">
@@ -210,10 +219,10 @@
           </div>
         </div>
         <div class="ae-visuals">
-          <div class="ae-card"><span class="ae-icon">✦</span></div>
-          <div class="ae-card"><span class="ae-icon">{}</span></div>
-          <div class="ae-card"><span class="ae-icon">🎨</span></div>
-          <div class="ae-card"><span class="ae-icon">⟡</span></div>
+          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i class="bi bi-cpu text-2xl text-purple-300"></i><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Systems</span></div>
+          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><span style="font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #d8b4fe;">{}</span><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Code</span></div>
+          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i class="bi bi-palette text-2xl text-purple-300"></i><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Design</span></div>
+          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i class="bi bi-compass text-2xl text-purple-300"></i><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Explore</span></div>
         </div>
       </div>
     </div>
@@ -231,7 +240,7 @@
 
       <div class="projects-list">
 
-        <article class="project-row" id="proj-1">
+        <article class="project-row pr-text-only" id="proj-1">
           <div class="pr-content">
             <div class="pr-meta">
               <span class="pr-number">01</span>
@@ -247,13 +256,9 @@
             </div>
             <a href="https://whatsinurchat.streamlit.app/" class="btn-ghost">View Project</a>
           </div>
-          <div class="pr-image">
-            <img src="/Users/skmishra19/Downloads/Gemini_Generated_Image_5mrdb95mrdb95mrd.png"
-              alt="WhatsApp Chat Analyser Mockup">
-          </div>
         </article>
 
-        <article class="project-row" id="proj-2">
+        <article class="project-row pr-text-only" id="proj-2">
           <div class="pr-content">
             <div class="pr-meta">
               <span class="pr-number">02</span>
@@ -264,12 +269,9 @@
               techniques.</p>
             <a href="https://missbhawna.streamlit.app/" class="pr-link">view project →</a>
           </div>
-          <div class="pr-image">
-            <img src="/Users/skmishra19/Downloads/emotion.jpg" alt="Sentiment Analysis Mockup">
-          </div>
         </article>
 
-        <article class="project-row" id="proj-3">
+        <article class="project-row pr-text-only" id="proj-3">
           <div class="pr-content">
             <div class="pr-meta">
               <span class="pr-number">03</span>
@@ -279,9 +281,6 @@
             <p class="pr-desc">A cinemaphile's companion tool that suggests films based on similarity patterns and user
               preferences.</p>
             <a href="#" class="pr-link">view project →</a>
-          </div>
-          <div class="pr-image">
-            <img src="movie_rec_mockup_1778252630398.png" alt="Movies Recommendation Mockup">
           </div>
         </article>
 
@@ -357,7 +356,9 @@
   <section class="section creative-section" id="creative">
     <div class="section-inner">
       <div class="section-label">04 — creative corner</div>
-      <h2 class="section-heading">experiments &amp; aesthetics</h2>
+      <h2 class="section-heading text-scroll-anim ts-variant-3">
+        experiments &amp; aesthetics
+      </h2>
       <div class="creative-grid">
         <div class="creative-card cc-wide" id="cc-1">
           <div class="cc-visual">
@@ -393,8 +394,7 @@
         <div class="section-label">05 — future vision</div>
         <div class="vision-text-block">
           <h2 class="vision-heading text-scroll-anim ts-variant-2">
-            <span class="ts-icon">⟡</span> I want to build things that <em>feel human</em>. <span
-              class="ts-icon">⟡</span>
+            I want to build things that <em>feel human</em>.
           </h2>
           <p class="vision-body">I want to create digital experiences that feel artistic, immersive, and emotionally
             memorable — blending technology, design, AI, interaction, and visual creativity into something meaningful
@@ -419,8 +419,8 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-left">
-        <span class="footer-name">srishti mishra ✦</span>
-        <span class="footer-copy">designed &amp; developed by srishti mishra</span>
+        <span class="footer-name">srishti mishra</span>
+        <span class="footer-copy" style="font-family: var(--font-mono); font-style: italic; font-size: 11px; opacity: 0.85;">lovingly crafted with code, cold coffee &amp; late-night lofi playlists.</span>
       </div>
       <div class="footer-right">
         <span class="footer-note">late-night ideas, soft music &amp; visual creativity.</span>
@@ -430,10 +430,10 @@
   </footer>
 
   <!-- Back to Top -->
-  <button class="back-to-top" id="backToTop" title="Back to Top">↑</button>
+  <button class="back-to-top" id="backToTop" title="Back to Top"><i class="bi bi-chevron-up"></i></button>
 
   <!-- AI Agent: Aanya -->
-  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent">✨ Aanya</button>
+  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars" style="margin-right: 6px;"></i> Aanya</button>
 
   <div class="agent-ui hidden" id="agentUi">
     <div class="agent-header">
@@ -448,6 +448,10 @@
     <source src="bg-music.mp3" type="audio/mpeg" />
   </audio>
 
+  <!-- GSAP & Lenis -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
 </body>
 

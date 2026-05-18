@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm install --prefix my-portfolio && npm run build --prefix my-portfolio",
+  "outputDirectory": "my-portfolio/dist",
   "cleanUrls": true,
   "rewrites": [
     {

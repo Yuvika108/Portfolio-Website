@@ -46,10 +46,11 @@
       <div class="nav-links">
         <a href="#about" class="nav-link">about</a>
         <a href="#projects" class="nav-link">projects</a>
+        <a href="#experience" class="nav-link">experience</a>
         <a href="#skills" class="nav-link">skills</a>
         <a href="#creative" class="nav-link"><i class="bi bi-controller" style="margin-right: 4px;"></i>creative</a>
         <a href="#vision" class="nav-link">vision</a>
-        <a href="mailto:srishti@email.com" class="nav-link nav-link--cta">contact</a>
+        <a href="#contact" class="nav-link nav-link--cta">contact</a>
       </div>
       <div class="nav-music">
         <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
@@ -107,8 +108,35 @@
           <span class="role-cursor">|</span>
         </div>
 
-        <p class="hero-sub">A B.Tech CSE(AI) student at University of Lucknow — building immersive digital experiences
-          at the intersection of code, design &amp; art.</p>
+        <div class="hero-sub-layout"
+          style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3rem; position: relative; margin: 2rem 0; width: 100%;">
+          <!-- Handcrafted lofi sticky note -->
+          <div class="hc-sticky-note"
+            style="position: relative; top: auto; right: auto; left: auto; transform: rotate(-3deg); margin: 0;">
+            <div class="sticky-tape"></div>
+            <p class="sticky-title">NOTE TO SELF</p>
+            <p class="sticky-text">
+              keep coding, keep dreaming. don't forget to drink water.<br><br>
+              lofi beats looping.<br>
+              rain is falling.
+            </p>
+          </div>
+
+          <p class="hero-sub" style="max-width: 450px; margin: 0;">A B.Tech CSE(AI) student at University of Lucknow —
+            building immersive digital experiences
+            at the intersection of code, design &amp; art.</p>
+
+          <!-- Portrait placeholder with glow -->
+          <div class="hc-portrait" style="width: 130px; margin: 0; flex-shrink: 0;">
+            <div class="portrait-glow"></div>
+            <div class="portrait-inner">
+              <div class="portrait-initials">SM</div>
+              <div class="portrait-ring ring-1"></div>
+              <div class="portrait-ring ring-2"></div>
+              <div class="portrait-ring ring-3"></div>
+            </div>
+          </div>
+        </div>
 
         <div class="hero-pills">
           <span class="pill">🎨 Artist at Heart</span>
@@ -132,59 +160,11 @@
 
       </div>
 
-      <!-- RIGHT: Visual card -->
-      <div class="hero-right" style="padding-top: 5rem;">
-        <!-- Handcrafted lofi sticky note -->
-        <div class="hc-sticky-note" style="position: absolute; top: -50px; right: 15%; pointer-events: auto;">
-          <div class="sticky-tape"></div>
-          <p class="sticky-title">NOTE TO SELF</p>
-          <p class="sticky-text">
-            keep coding, keep dreaming. don't forget to drink water.<br><br>
-            lofi beats looping.<br>
-            rain is falling.
-          </p>
-        </div>
 
-        <!-- Portrait placeholder with glow -->
-        <div class="hc-portrait">
-          <div class="portrait-glow"></div>
-          <div class="portrait-inner">
-            <div class="portrait-initials">SM</div>
-            <div class="portrait-ring ring-1"></div>
-            <div class="portrait-ring ring-2"></div>
-            <div class="portrait-ring ring-3"></div>
-          </div>
-        </div>
-
-        <!-- Terminal snippet -->
-        <div class="hc-terminal">
-          <div class="hct-bar">
-            <span class="hct-dot"></span>
-            <span class="hct-dot"></span>
-            <span class="hct-dot"></span>
-            <span class="hct-title">srishti.json</span>
-          </div>
-          <div class="hct-body" id="terminalBody">
-            <p class="t-line"><span class="t-prompt">$</span> <span class="t-cmd typed-text"></span><span
-                class="t-cursor">▌</span></p>
-            <p class="t-output" id="t-out-1">// books, cinema &amp; late-night playlists</p>
-            <p class="t-output" id="t-out-2">// quietly building cool things</p>
-            <p class="t-output" id="t-out-3">// INTP · artist at heart</p>
-          </div>
-        </div>
-
-        <!-- Floating stat chips -->
-        <div class="hc-chip chip-a">6+ projects</div>
-        <div class="hc-chip chip-b">UI/UX · AI · NLP</div>
-        <div class="hc-chip chip-c">creative dev</div>
-      </div>
 
     </div>
 
-    <div class="scroll-hint">
-      <div class="scroll-line"></div>
-      <span>scroll</span>
-    </div>
+
   </section>
 
 
@@ -219,10 +199,26 @@
           </div>
         </div>
         <div class="ae-visuals">
-          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i class="bi bi-cpu text-2xl text-purple-300"></i><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Systems</span></div>
-          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><span style="font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #d8b4fe;">{}</span><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Code</span></div>
-          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i class="bi bi-palette text-2xl text-purple-300"></i><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Design</span></div>
-          <div class="ae-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i class="bi bi-compass text-2xl text-purple-300"></i><span style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Explore</span></div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-cpu text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Systems</span>
+          </div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><span
+              style="font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #d8b4fe;">{}</span><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Code</span>
+          </div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-palette text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Design</span>
+          </div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-compass text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Explore</span>
+          </div>
         </div>
       </div>
     </div>
@@ -238,9 +234,9 @@
         </h2>
       </div>
 
-      <div class="projects-list">
+      <div class="cards-deck-container">
 
-        <article class="project-row pr-text-only" id="proj-1">
+        <article class="project-row playing-card playing-card-1" id="proj-1">
           <div class="pr-content">
             <div class="pr-meta">
               <span class="pr-number">01</span>
@@ -258,7 +254,7 @@
           </div>
         </article>
 
-        <article class="project-row pr-text-only" id="proj-2">
+        <article class="project-row playing-card playing-card-2" id="proj-2">
           <div class="pr-content">
             <div class="pr-meta">
               <span class="pr-number">02</span>
@@ -267,11 +263,16 @@
             <h3 class="pr-title">Sentiment Analysis</h3>
             <p class="pr-desc">An NLP-based system identifying emotions from textual data using machine learning
               techniques.</p>
-            <a href="https://missbhawna.streamlit.app/" class="pr-link">view project →</a>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Behind the neural network is a desire to decode human sentiment. I built this to explore the subtlety
+                of language and emotion."</p>
+            </div>
+            <a href="https://missbhawna.streamlit.app/" class="btn-ghost">View Project</a>
           </div>
         </article>
 
-        <article class="project-row pr-text-only" id="proj-3">
+        <article class="project-row playing-card playing-card-3" id="proj-3">
           <div class="pr-content">
             <div class="pr-meta">
               <span class="pr-number">03</span>
@@ -280,34 +281,54 @@
             <h3 class="pr-title">Movie Recommendations</h3>
             <p class="pr-desc">A cinemaphile's companion tool that suggests films based on similarity patterns and user
               preferences.</p>
-            <a href="#" class="pr-link">view project →</a>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Every movie recommend is a vector match in a high-dimensional space. I wanted to build a portal that
+                maps a cinephile's soul."</p>
+            </div>
+            <a href="https://cinematix.streamlit.app/" class="btn-ghost">View Project</a>
           </div>
         </article>
 
-        <article class="project-row pr-text-only" id="proj-4">
+        <article class="project-row playing-card playing-card-4" id="proj-4">
           <div class="pr-content">
             <div class="pr-meta"><span class="pr-number">04</span><span class="pr-stack">Data Science</span></div>
             <h3 class="pr-title">House Data Cleaning</h3>
             <p class="pr-desc">Cleaning and preprocessing Bangalore housing datasets for predictive modeling.</p>
-            <a href="#" class="pr-link">view project →</a>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Data is chaotic before cleaning. I designed this to reveal the clean, underlying geometry of
+                real-estate pricing dynamics."</p>
+            </div>
+            <a href="#" class="btn-ghost">View Project</a>
           </div>
         </article>
 
-        <article class="project-row pr-text-only" id="proj-5">
+        <article class="project-row playing-card playing-card-5" id="proj-5">
           <div class="pr-content">
             <div class="pr-meta"><span class="pr-number">05</span><span class="pr-stack">Machine Learning</span></div>
             <h3 class="pr-title">Car Price Prediction</h3>
             <p class="pr-desc">Machine learning model predicting car prices based on brand, model, and fuel type.</p>
-            <a href="#" class="pr-link">view project →</a>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Pricing is a complex function of history, utility, and market sentiment. The challenge was finding
+                order inside thousands of disparate listings."</p>
+            </div>
+            <a href="#" class="btn-ghost">View Project</a>
           </div>
         </article>
 
-        <article class="project-row pr-text-only" id="proj-6">
+        <article class="project-row playing-card playing-card-6" id="proj-6">
           <div class="pr-content">
             <div class="pr-meta"><span class="pr-number">06</span><span class="pr-stack">Frontend</span></div>
             <h3 class="pr-title">Rock-Paper-Scissor</h3>
             <p class="pr-desc">Interactive game focused on frontend interaction and smooth user experience.</p>
-            <a href="#" class="pr-link">play game →</a>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"A simple childhood game rebuilt to focus on tactile feedback and fluid motion. The magic is making the
+                mundane feel extremely responsive."</p>
+            </div>
+            <a href="#" class="btn-ghost">Play Game</a>
           </div>
         </article>
 
@@ -315,10 +336,63 @@
     </div>
   </section>
 
+  <!-- Experience Section -->
+  <section class="section experience-section" id="experience">
+    <div class="section-inner">
+      <div class="section-label">03 — experience</div>
+      <h2 class="section-heading text-scroll-anim ts-variant-2">my journey</h2>
+
+      <div class="timeline">
+        <!-- Item 1 (Active) -->
+        <div class="tl-item">
+          <div class="tl-marker">
+            <div class="tl-dot tl-dot--active"></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <span class="tl-date">2022 — PRESENT</span>
+            <h3 class="tl-title">B.Tech in Computer Science (Artificial Intelligence)</h3>
+            <span class="tl-org">UNIVERSITY OF LUCKNOW</span>
+            <p class="tl-desc">Focusing on core Computer Science, Machine Learning models, Natural Language Processing,
+              and Advanced Data Structures. Applying theoretical computational methods to build intelligent tools.</p>
+            <div class="tl-tags">
+              <span class="tl-tag">Machine Learning</span>
+              <span class="tl-tag">AI</span>
+              <span class="tl-tag">NLP</span>
+              <span class="tl-tag">Python</span>
+              <span class="tl-tag">DSA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="tl-item tl-item--last">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <span class="tl-date">2023 — PRESENT</span>
+            <h3 class="tl-title">Creative Web Developer & Designer</h3>
+            <span class="tl-org">INDEPENDENT PROJECT WORK</span>
+            <p class="tl-desc">Exploring human-computer interaction, browser-based hand gesture recognition via Google
+              MediaPipe, custom Canvas animation engines, and responsive glassmorphic UI systems.</p>
+            <div class="tl-tags">
+              <span class="tl-tag">React</span>
+              <span class="tl-tag">MediaPipe</span>
+              <span class="tl-tag">Canvas API</span>
+              <span class="tl-tag">UX Design</span>
+              <span class="tl-tag">GSAP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Skills Section -->
   <section class="section skills-section" id="skills">
     <div class="section-inner">
-      <div class="section-label">03 — toolkit</div>
+      <div class="section-label">04 — toolkit</div>
       <h2 class="section-heading text-scroll-anim ts-variant-1">the craft &amp; the tools</h2>
 
       <div class="toolkit-grid">
@@ -355,34 +429,55 @@
   <!-- Creative Corner -->
   <section class="section creative-section" id="creative">
     <div class="section-inner">
-      <div class="section-label">04 — creative corner</div>
+      <div class="section-label">05 — creative corner</div>
       <h2 class="section-heading text-scroll-anim ts-variant-3">
         experiments &amp; aesthetics
       </h2>
-      <div class="creative-grid">
-        <div class="creative-card cc-wide" id="cc-1">
-          <div class="cc-visual">
-            <div class="cc-art cc-art--gradient">
-              <span class="cc-art-label">visual concepts</span>
+      <div class="art-wall-container" id="artWallContainer">
+        <div class="art-wall" id="artSlider">
+          <div class="polaroid-card pc-1">
+            <div class="polaroid-img-wrap">
+              <img src="art-1.jpg" alt="Portrait Study" class="polaroid-img">
             </div>
+            <p class="polaroid-label">Portrait Study</p>
           </div>
-          <div class="cc-content">
-            <h3 class="cc-title">Cinematic Inspirations</h3>
-            <p class="cc-desc">Visual ideas that shape the atmospheric soul of my projects.</p>
+
+          <div class="polaroid-card pc-2">
+            <div class="polaroid-img-wrap">
+              <img src="art-2.jpg" alt="Watercolour Chess" class="polaroid-img">
+            </div>
+            <p class="polaroid-label">Watercolour Chess</p>
+          </div>
+
+          <div class="polaroid-card pc-3">
+            <div class="polaroid-img-wrap">
+              <img src="art-3.jpg" alt="Ink & Butterflies" class="polaroid-img">
+            </div>
+            <p class="polaroid-label">Ink & Butterflies</p>
+          </div>
+
+          <div class="polaroid-card pc-4">
+            <div class="polaroid-img-wrap">
+              <img src="art-4.jpg" alt="Botanical Bloom" class="polaroid-img">
+            </div>
+            <p class="polaroid-label">Botanical Bloom</p>
+          </div>
+
+          <div class="polaroid-card pc-5">
+            <div class="polaroid-img-wrap">
+              <img src="art-5.jpg" alt="Zentangle Eye" class="polaroid-img">
+            </div>
+            <p class="polaroid-label">Zentangle Eye</p>
           </div>
         </div>
-        <div class="creative-card" id="cc-2">
-          <div class="cc-visual">
-            <div class="cc-art cc-art--wave">
-              <canvas class="wave-canvas" id="waveCanvas"></canvas>
-              <span class="cc-art-label">generative art</span>
-            </div>
-          </div>
-          <div class="cc-content">
-            <h3 class="cc-title">Aesthetic Ideas</h3>
-            <p class="cc-desc">Code-based art and smooth motion explorations.</p>
-          </div>
-        </div>
+        <div class="art-wall-fade"></div>
+      </div>
+
+      <div class="view-more-container">
+        <button id="viewMoreArtBtn" class="btn-view-more">
+          <span class="btn-text">View More</span>
+          <i class="bi bi-chevron-down btn-icon"></i>
+        </button>
       </div>
     </div>
   </section>
@@ -391,7 +486,7 @@
   <section class="section vision-section" id="vision">
     <div class="section-inner">
       <div class="vision-wrapper">
-        <div class="section-label">05 — future vision</div>
+        <div class="section-label">06 — future vision</div>
         <div class="vision-text-block">
           <h2 class="vision-heading text-scroll-anim ts-variant-2">
             I want to build things that <em>feel human</em>.
@@ -400,17 +495,59 @@
             memorable — blending technology, design, AI, interaction, and visual creativity into something meaningful
             and human.</p>
         </div>
-        <div class="vision-cta">
-          <h3 class="cta-heading">let's connect</h3>
-          <p class="cta-sub">Whether it’s technology, design, films, music, creativity, or interesting ideas — I’m
-            always open to meaningful conversations and collaborations.</p>
-          <a href="mailto:srishti@email.com" class="btn-primary">let's talk →</a>
-          <div class="vision-links">
-            <a href="#" class="vision-link">github</a>
-            <a href="#" class="vision-link">linkedin</a>
-            <a href="#" class="vision-link">instagram</a>
-          </div>
-        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Let's Connect & Contact -->
+  <section class="section connect-section" id="contact">
+    <!-- Marquee Ticker -->
+    <div class="connect-ticker">
+      <div class="ticker-track">
+        <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
+        <span>ART &amp; TECHNOLOGY • </span>
+        <span>CREATIVE DEVELOPMENT • </span>
+        <span>MACHINE LEARNING • </span>
+        <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
+        <span>ART &amp; TECHNOLOGY • </span>
+        <span>CREATIVE DEVELOPMENT • </span>
+        <span>MACHINE LEARNING • </span>
+      </div>
+    </div>
+
+    <div class="connect-inner">
+      <div>
+        <span class="connect-eyebrow">07 — get in touch</span>
+        <h2 class="connect-heading">
+          <span class="ch-line">LET'S</span>
+          <span class="ch-line ch-line--accent">TALK<span class="ch-dot">.</span></span>
+        </h2>
+        <p class="connect-sub">
+          Whether you want to discuss machine learning, generative art, design systems, cinematic narratives, or just
+          say hello — my inbox is always open.
+        </p>
+      </div>
+
+      <!-- Socials Grid -->
+      <div class="connect-socials">
+        <a href="https://github.com/Yuvika108" class="cs-tile">
+          <i class="bi bi-github cs-icon"></i>
+          <span class="cs-label">GitHub</span>
+          <span class="cs-handle">@Yuvika108</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/mishrasrishti108/" class="cs-tile">
+          <i class="bi bi-linkedin cs-icon"></i>
+          <span class="cs-label">LinkedIn</span>
+          <span class="cs-handle">srishti-mishra</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
+        <a href="https://www.instagram.com/srii_mishra/" class="cs-tile">
+          <i class="bi bi-instagram cs-icon"></i>
+          <span class="cs-label">Instagram</span>
+          <span class="cs-handle">@srishti</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
       </div>
     </div>
   </section>
@@ -420,7 +557,9 @@
     <div class="footer-inner">
       <div class="footer-left">
         <span class="footer-name">srishti mishra</span>
-        <span class="footer-copy" style="font-family: var(--font-mono); font-style: italic; font-size: 11px; opacity: 0.85;">lovingly crafted with code, cold coffee &amp; late-night lofi playlists.</span>
+        <span class="footer-copy"
+          style="font-family: var(--font-mono); font-style: italic; font-size: 11px; opacity: 0.85;">lovingly crafted
+          with code, cold coffee &amp; late-night lofi playlists.</span>
       </div>
       <div class="footer-right">
         <span class="footer-note">late-night ideas, soft music &amp; visual creativity.</span>
@@ -433,15 +572,27 @@
   <button class="back-to-top" id="backToTop" title="Back to Top"><i class="bi bi-chevron-up"></i></button>
 
   <!-- AI Agent: Aanya -->
-  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars" style="margin-right: 6px;"></i> Aanya</button>
+  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars"
+      style="margin-right: 6px;"></i> Aanya</button>
 
   <div class="agent-ui hidden" id="agentUi">
     <div class="agent-header">
-      <span>Aanya — Live Feed</span>
+      <span>Aanya — AI Assistant</span>
       <button id="agentClose">✕</button>
     </div>
     <video class="agent-video" id="agentVideo" autoPlay playsInline muted></video>
-    <div class="agent-status" id="agentStatus">Awaiting Gesture...</div>
+    <div class="agent-status" id="agentStatus">Awaiting AI...</div>
+    <div class="agent-instructions">
+      <small><strong>Gestures:</strong></small>
+      <ul>
+        <li>✌️ Select / Click</li>
+        <li>👍 Scroll Up</li>
+        <li>👎 Scroll Down</li>
+        <li>👌 Play Music</li>
+        <li>🤘 Stop Music</li>
+        <li>👋 Wave to Close</li>
+      </ul>
+    </div>
   </div>
 
   <audio id="ambientAudio" loop>

@@ -140,35 +140,73 @@ body {
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s, border-color 0.5s, background-color 0.5s, z-index 0.5s !important;
   }
   
-  /* Overlapping deck coordinates with fanning rotations */
+  /* Overlapping deck coordinates with fanning rotations for tablet/medium screens (min-width: 768px) */
   .playing-card-1 {
-    left: calc(50% - 350px);
-    transform: rotate(-6deg) translateY(8px);
+    left: calc(50% - 340px);
+    transform: rotate(-10deg) translateY(18px);
     z-index: 10;
   }
   .playing-card-2 {
-    left: calc(50% - 210px);
-    transform: rotate(-2deg) translateY(-2px);
+    left: calc(50% - 260px);
+    transform: rotate(-6deg) translateY(8px);
     z-index: 20;
   }
   .playing-card-3 {
-    left: calc(50% - 70px);
-    transform: rotate(2deg) translateY(-2px);
+    left: calc(50% - 180px);
+    transform: rotate(-2deg) translateY(-2px);
     z-index: 30;
   }
   .playing-card-4 {
-    left: calc(50% + 70px);
-    transform: rotate(6deg) translateY(8px);
+    left: calc(50% - 100px);
+    transform: rotate(2deg) translateY(-2px);
     z-index: 40;
+  }
+  .playing-card-5 {
+    left: calc(50% - 20px);
+    transform: rotate(6deg) translateY(8px);
+    z-index: 50;
+  }
+  .playing-card-6 {
+    left: calc(50% + 60px);
+    transform: rotate(10deg) translateY(18px);
+    z-index: 60;
   }
   
   /* Hover state: lifts up, straightens, zooms, glows, and floats to front */
   .playing-card:hover {
     transform: rotate(0deg) translateY(-32px) scale(1.05) !important;
-    z-index: 50 !important;
+    z-index: 100 !important;
     border-color: rgba(224, 122, 95, 0.3) !important;
     background: rgba(224, 122, 95, 0.06) !important;
     box-shadow: 0 20px 40px rgba(224, 122, 95, 0.12) !important;
+  }
+}
+
+/* Wider desktop settings with more space to fan out cards (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .playing-card-1 {
+    left: calc(50% - 465px);
+    transform: rotate(-10deg) translateY(18px);
+  }
+  .playing-card-2 {
+    left: calc(50% - 335px);
+    transform: rotate(-6deg) translateY(8px);
+  }
+  .playing-card-3 {
+    left: calc(50% - 205px);
+    transform: rotate(-2deg) translateY(-2px);
+  }
+  .playing-card-4 {
+    left: calc(50% - 75px);
+    transform: rotate(2deg) translateY(-2px);
+  }
+  .playing-card-5 {
+    left: calc(50% + 55px);
+    transform: rotate(6deg) translateY(8px);
+  }
+  .playing-card-6 {
+    left: calc(50% + 185px);
+    transform: rotate(10deg) translateY(18px);
   }
 }
 

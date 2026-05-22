@@ -570,14 +570,14 @@ function initAgent() {
             gesture = "open_palm";
           }
         }
-        // Two Fingers -> Scroll
+        // Two Fingers -> Peace (Click)
         else if (
           indexTip.y < landmarks[6].y &&
           middleTip.y < landmarks[10].y &&
           ringTip.y > landmarks[14].y &&
           pinkyTip.y > landmarks[18].y
         ) {
-          gesture = "scroll";
+          gesture = "peace";
         }
         else if (
           indexTip.y < landmarks[6].y &&
@@ -587,21 +587,13 @@ function initAgent() {
         ) {
           gesture = "rock_on";
         }
-        // Point -> Move Cursor
+        // OK Sign (O symbol)
         else if (
-          indexTip.y < landmarks[6].y &&
-          middleTip.y > landmarks[10].y &&
-          ringTip.y > landmarks[14].y &&
-          pinkyTip.y > landmarks[18].y
+          Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y) < 0.06 &&
+          middleTip.y < landmarks[9].y &&
+          ringTip.y < landmarks[13].y
         ) {
-          gesture = "point";
-        }
-        
-        // Pinch (Select/Click)
-        const distance = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
-        if (distance < 0.05) {
-          gesture = "pinch";
-          pinchPoint = { x: indexTip.x, y: indexTip.y };
+          gesture = "ok_sign";
         }
 
         currentGestures.push({ type: gesture, landmarks, indexTip });
@@ -618,74 +610,62 @@ function initAgent() {
         waveHistory = [];
       }
 
-      if (finalGesture === "point" || finalGesture === "pinch") {
-        const indexTip = mainGesture.indexTip;
-        const x = (1 - indexTip.x) * window.innerWidth;
-        const y = indexTip.y * window.innerHeight;
+      // Always update cursor position smoothly
+      const indexTip = mainGesture.indexTip;
+      const targetX = (1 - indexTip.x) * window.innerWidth;
+      const targetY = indexTip.y * window.innerHeight;
 
-        cursor.style.transform = `translate(${x}px, ${y}px)`;
-        cursor.classList.add('active');
-        setTimeout(() => {
-          cursorTrail.style.transform = `translate(${x - 16}px, ${y - 16}px)`;
-        }, 50);
+      if (!window.cursorX) { window.cursorX = targetX; window.cursorY = targetY; }
+      window.cursorX += (targetX - window.cursorX) * 0.3; // Smooth interpolation
+      window.cursorY += (targetY - window.cursorY) * 0.3;
 
-        statusElement.textContent = finalGesture === "pinch" ? 'PINCHING' : 'POINT (CURSOR MOVED)';
-        window.lastScrollY = null;
+      cursor.style.transform = `translate(${window.cursorX}px, ${window.cursorY}px)`;
+      cursor.classList.add('active');
+      cursorTrail.style.transform = `translate(${window.cursorX - 16}px, ${window.cursorY - 16}px)`;
 
-        // Click Logic
-        if (finalGesture === "pinch") {
-          if (!isPinching) {
-            isPinching = true;
-            const now = Date.now();
-            const el = document.elementFromPoint(x, y);
-            
-            if (now - lastPinchTime < 500) {
-              statusElement.textContent = 'DOUBLE CLICK!';
-              if (el) {
-                el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window }));
-                el.click(); // Standard click for safety
-              }
-              lastPinchTime = 0; // Reset
-            } else {
-              statusElement.textContent = 'CLICK!';
-              if (el) el.click();
-              lastPinchTime = now;
-            }
-          }
-        } else {
-          isPinching = false;
-        }
-
-      } else if (finalGesture === "scroll") {
-        window._smoothScrollActive = false; // Pause smooth scroll during gesture
-        const trackY = mainGesture.indexTip.y;
-        
-        if (window.lastScrollY != null) {
-          const deltaY = trackY - window.lastScrollY;
-          if (Math.abs(deltaY) > 0.005) {
-            // Negative multiplier so pulling hand down pulls content down (scrolling page UP)
-            window.scrollBy(0, -(deltaY * 3000));
-            // ONLY update lastScrollY when we actually move the page (prevents slow movement from being ignored)
-            window.lastScrollY = trackY; 
-          }
-        } else {
-          window.lastScrollY = trackY; // Initial grab point
-        }
-        
-        statusElement.textContent = '✌️ TWO-FINGER SCROLL';
-        cursor.classList.add('active');
-        cursor.style.background = '#ff3b9a'; // Visual cue for scrolling
+      // Handle continuous actions (Scrolling)
+      if (finalGesture === "thumbs_up") {
+        window._smoothScrollActive = false;
+        statusElement.textContent = '👍 SCROLL UP';
+        window.scrollBy(0, -30);
+      } else if (finalGesture === "thumbs_down") {
+        window._smoothScrollActive = false;
+        statusElement.textContent = '👎 SCROLL DOWN';
+        window.scrollBy(0, 30);
       } else {
         window._smoothScrollActive = true; // Restore smooth scroll
-        cursor.classList.remove('active');
-        cursor.style.background = '';
-        window.lastScrollY = null;
+      }
 
-        if (finalGesture && finalGesture !== "point" && finalGesture !== "pinch" && finalGesture !== "scroll") {
-          statusElement.textContent = finalGesture.replace('_', ' ').toUpperCase();
+      // Handle discrete actions (Clicking)
+      if (finalGesture === "peace") {
+        statusElement.textContent = '✌️ CLICKING';
+        if (!isPinching) {
+          isPinching = true; // reusing isPinching flag for click cooldown
+          const now = Date.now();
+          const el = document.elementFromPoint(window.cursorX, window.cursorY);
+          
+          if (now - lastPinchTime < 500) {
+            statusElement.textContent = 'DOUBLE CLICK!';
+            if (el) {
+              el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window }));
+              el.click();
+            }
+            lastPinchTime = 0;
+          } else {
+            if (el) el.click();
+            lastPinchTime = now;
+          }
+        }
+      } else {
+        isPinching = false;
+      }
+
+      // Handle single-fire actions (Thumbs up/down, etc)
+      if (finalGesture && !["thumbs_up", "thumbs_down", "peace", "open_palm"].includes(finalGesture)) {
+        statusElement.textContent = finalGesture.replace('_', ' ').toUpperCase();
 
           if (!cooldown || finalGesture === "bye_bye") {
-            if (finalGesture === "thumbs_up") {
+            if (finalGesture === "ok_sign") {
               audio.play().catch(() => { });
               musicToggle.classList.add('playing');
               musicToggle.querySelector('.music-label').textContent = 'playing';
@@ -712,7 +692,6 @@ function initAgent() {
             }
           }
         }
-      }
     } else {
       if (agentActive) statusElement.textContent = 'AWAITING GESTURE...';
       cursor.classList.remove('active');
@@ -814,5 +793,68 @@ function initTextScrollAnimation() {
     });
     
     updateAnimation();
+  });
+}
+
+// Artwork Slider Logic
+const artSlider = document.getElementById('artSlider');
+const artPrevBtn = document.getElementById('artPrevBtn');
+const artNextBtn = document.getElementById('artNextBtn');
+
+async function loadArtworksIntoSlider() {
+  if (!artSlider) return;
+  
+  try {
+    const res = await fetch('/api/artworks').catch(() => fetch('artworks.json'));
+    if (res.ok) {
+      const artworks = await res.json();
+      if (artworks && artworks.length > 0) {
+        artSlider.innerHTML = ''; // clear static ones
+        artworks.forEach((art, index) => {
+          const div = document.createElement('div');
+          const tiltClass = `pc-${(index % 5) + 1}`;
+          div.className = `polaroid-card ${tiltClass}`;
+          div.innerHTML = `
+            <div class="polaroid-img-wrap">
+              <img src="${art.filename}" alt="${art.title}" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">${art.title}</p>
+          `;
+          artSlider.appendChild(div);
+        });
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load artworks:', err);
+  }
+}
+
+if (artSlider) {
+  loadArtworksIntoSlider();
+}
+
+const viewMoreArtBtn = document.getElementById('viewMoreArtBtn');
+const artWallContainer = document.getElementById('artWallContainer');
+
+if (viewMoreArtBtn && artWallContainer) {
+  viewMoreArtBtn.addEventListener('click', () => {
+    artWallContainer.classList.toggle('expanded');
+    const btnText = viewMoreArtBtn.querySelector('.btn-text');
+    const btnIcon = viewMoreArtBtn.querySelector('.btn-icon');
+    
+    if (artWallContainer.classList.contains('expanded')) {
+      if (btnText) btnText.textContent = 'View Less';
+      if (btnIcon) {
+        btnIcon.classList.remove('bi-chevron-down');
+        btnIcon.classList.add('bi-chevron-up');
+      }
+    } else {
+      if (btnText) btnText.textContent = 'View More';
+      if (btnIcon) {
+        btnIcon.classList.remove('bi-chevron-up');
+        btnIcon.classList.add('bi-chevron-down');
+      }
+      artWallContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   });
 }

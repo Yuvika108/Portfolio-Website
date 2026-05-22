@@ -426,6 +426,54 @@ function Home() {
               </a>
             </article>
 
+            {/* Project 5 */}
+            <article className="glass-card playing-card playing-card-5 p-8 flex flex-col justify-between gap-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-mono text-xs text-orange-400/60 font-semibold">05</span>
+                  <span className="font-mono text-[9px] tracking-wider uppercase bg-orange-400/10 border border-orange-400/20 text-orange-300 px-3 py-1 rounded-full">Machine Learning</span>
+                </div>
+                <h3 className="font-['Playfair_Display'] text-2xl font-normal text-white">Car Price Prediction</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Machine learning model predicting car prices based on brand, model, and fuel type.
+                </p>
+                {/* Behind the code segment */}
+                <div className="bg-white/[0.01] border-l-2 border-orange-400/30 pl-3 py-1.5 mt-1">
+                  <span className="font-mono text-[8px] tracking-widest text-orange-400 uppercase block mb-0.5">behind the code</span>
+                  <p className="text-gray-400 text-[10px] italic leading-snug">
+                    "Pricing is a complex function of history, utility, and market sentiment. The challenge was finding order inside thousands of disparate listings."
+                  </p>
+                </div>
+              </div>
+              <a href="#" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
+                View Project
+              </a>
+            </article>
+
+            {/* Project 6 */}
+            <article className="glass-card playing-card playing-card-6 p-8 flex flex-col justify-between gap-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-mono text-xs text-orange-400/60 font-semibold">06</span>
+                  <span className="font-mono text-[9px] tracking-wider uppercase bg-orange-400/10 border border-orange-400/20 text-orange-300 px-3 py-1 rounded-full">Frontend</span>
+                </div>
+                <h3 className="font-['Playfair_Display'] text-2xl font-normal text-white">Rock-Paper-Scissor</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Interactive game focused on frontend interaction and smooth user experience.
+                </p>
+                {/* Behind the code segment */}
+                <div className="bg-white/[0.01] border-l-2 border-orange-400/30 pl-3 py-1.5 mt-1">
+                  <span className="font-mono text-[8px] tracking-widest text-orange-400 uppercase block mb-0.5">behind the code</span>
+                  <p className="text-gray-400 text-[10px] italic leading-snug">
+                    "A simple childhood game rebuilt to focus on tactile feedback and fluid motion. The magic is making the mundane feel extremely responsive."
+                  </p>
+                </div>
+              </div>
+              <a href="#" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
+                View Project
+              </a>
+            </article>
+
           </div>
         </div>
       </section>

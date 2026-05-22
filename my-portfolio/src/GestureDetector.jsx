@@ -152,9 +152,10 @@ export default function GestureDetector() {
                             g = "open_palm";
                         }
                     }
-                    // Two Fingers -> Scroll
+                    // Two Fingers -> Scroll or Peace Sign
                     else if (indexTip.y < landmarks[6].y && middleTip.y < landmarks[10].y && ringTip.y > landmarks[14].y && pinkyTip.y > landmarks[18].y) {
-                        g = "scroll";
+                        const spread = Math.abs(indexTip.x - middleTip.x);
+                        g = spread > 0.06 ? "peace" : "scroll";
                     }
                     // Rock On -> Spider Stop
                     else if (indexTip.y < landmarks[6].y && middleTip.y > landmarks[10].y && ringTip.y > landmarks[14].y && pinkyTip.y < landmarks[18].y) {
@@ -262,8 +263,14 @@ export default function GestureDetector() {
         } else if (gesture === "bye_bye") {
             // Turn off Aanya and stream
             setIsAgentActive(false);
+        } else if (gesture === "peace") {
+            if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
+                navigate("/creative");
+            }
+            cooldownRef.current = true;
+            setTimeout(() => { cooldownRef.current = false; }, 1500);
         }
-    }, [gesture, isMusicPlaying]);
+    }, [gesture, isMusicPlaying, navigate]);
 
     return (
         <>

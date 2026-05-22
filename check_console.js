@@ -13,8 +13,8 @@ async function run() {
   });
 
   try {
-    console.log('Navigating to http://localhost:5500/index.html...');
-    await page.goto('http://localhost:5500/index.html', { waitUntil: 'load', timeout: 5000 });
+    console.log('Navigating to http://localhost:5173/...');
+    await page.goto('http://localhost:5173/', { waitUntil: 'load', timeout: 5000 });
     console.log('Navigation completed. Waiting 2 seconds...');
     await new Promise(resolve => setTimeout(resolve, 2000));
   } catch (e) {

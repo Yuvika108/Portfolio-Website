@@ -220,7 +220,9 @@ function initRoleTypewriter() {
     'explore AI & ML',
     'design with intention',
     'write creative code',
-    'love cinema & music',
+    'love cinema & art',
+    'love cinema & AI',
+    'love cinema & design',
   ];
 
   let roleIndex = 0;
@@ -479,7 +481,9 @@ function initAgent() {
 
   function startMediaPipe() {
     if (hands) {
-      camera.start();
+      camera.start().catch(err => {
+        statusElement.textContent = 'Camera Access Denied';
+      });
       return;
     }
 
@@ -517,7 +521,9 @@ function initAgent() {
       height: 480
     });
 
-    camera.start();
+    camera.start().catch(err => {
+      statusElement.textContent = 'Camera Access Denied';
+    });
     statusElement.textContent = 'Awaiting Gesture...';
   }
 
@@ -855,6 +861,31 @@ if (viewMoreArtBtn && artWallContainer) {
         btnIcon.classList.add('bi-chevron-down');
       }
       artWallContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+}
+
+// Lightbox Viewer Logic
+const lightboxModal = document.getElementById('lightboxModal');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+if (lightboxModal && lightboxImg && lightboxClose) {
+  document.addEventListener('click', (e) => {
+    const clickedImg = e.target.closest('.polaroid-img');
+    if (clickedImg) {
+      lightboxImg.src = clickedImg.src;
+      lightboxModal.classList.add('active');
+    }
+  });
+
+  lightboxClose.addEventListener('click', () => {
+    lightboxModal.classList.remove('active');
+  });
+
+  lightboxModal.addEventListener('click', (e) => {
+    if (e.target === lightboxModal) {
+      lightboxModal.classList.remove('active');
     }
   });
 }

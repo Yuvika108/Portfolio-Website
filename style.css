@@ -1193,13 +1193,6 @@ body {
     gap: 0.75rem;
   }
 
-  .tk-list li::before {
-    content: '→';
-    color: var(--accent-soft);
-    opacity: 0.5;
-    font-size: 0.9rem;
-  }
-
 
   /* ── Polaroid Art Wall ── */
   .art-wall-container {
@@ -2692,65 +2685,105 @@ body {
     }
   }
 
-/* Playing Cards Style Layout for Projects */
+/* Responsive Grid Layout for Projects */
 .cards-deck-container {
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  margin-top: 2rem;
 }
 
 @media (min-width: 768px) {
   .cards-deck-container {
-    height: 520px;
-    margin-top: 48px;
-    margin-bottom: 24px;
-  }
-  
-  .playing-card {
-    position: absolute !important;
-    width: 330px !important;
-    height: 480px !important;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s, border-color 0.5s, background-color 0.5s, z-index 0.5s !important;
-    background: rgba(28, 18, 33, 0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    overflow-y: auto;
-  }
-  
-  .playing-card::-webkit-scrollbar {
-    width: 4px;
-  }
-  .playing-card::-webkit-scrollbar-thumb {
-    background: rgba(224, 122, 95, 0.4);
-    border-radius: 4px;
-  }
-  
-  .playing-card-1 { left: calc(50% - 340px); transform: rotate(-10deg) translateY(18px); z-index: 10; }
-  .playing-card-2 { left: calc(50% - 260px); transform: rotate(-6deg) translateY(8px); z-index: 20; }
-  .playing-card-3 { left: calc(50% - 180px); transform: rotate(-2deg) translateY(-2px); z-index: 30; }
-  .playing-card-4 { left: calc(50% - 100px); transform: rotate(2deg) translateY(-2px); z-index: 40; }
-  .playing-card-5 { left: calc(50% - 20px); transform: rotate(6deg) translateY(8px); z-index: 50; }
-  .playing-card-6 { left: calc(50% + 60px); transform: rotate(10deg) translateY(18px); z-index: 60; }
-  
-  .playing-card:hover {
-    transform: rotate(0deg) translateY(-32px) scale(1.05) !important;
-    z-index: 100 !important;
-    border-color: var(--accent-soft) !important;
-    background: rgba(38, 25, 42, 0.85) !important;
-    box-shadow: 0 20px 40px rgba(224, 122, 95, 0.12) !important;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1024px) {
-  .playing-card-1 { left: calc(50% - 465px); transform: rotate(-10deg) translateY(18px); }
-  .playing-card-2 { left: calc(50% - 335px); transform: rotate(-6deg) translateY(8px); }
-  .playing-card-3 { left: calc(50% - 205px); transform: rotate(-2deg) translateY(-2px); }
-  .playing-card-4 { left: calc(50% - 75px); transform: rotate(2deg) translateY(-2px); }
-  .playing-card-5 { left: calc(50% + 55px); transform: rotate(6deg) translateY(8px); }
-  .playing-card-6 { left: calc(50% + 185px); transform: rotate(10deg) translateY(18px); }
+  .cards-deck-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.playing-card {
+  position: relative !important;
+  width: 100% !important;
+  height: 480px !important;
+  left: auto !important;
+  transform: none !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, border-color 0.4s, background-color 0.4s !important;
+  background: rgba(28, 18, 33, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow-y: auto;
+  z-index: 1 !important;
+}
+
+.playing-card::-webkit-scrollbar {
+  width: 4px;
+}
+.playing-card::-webkit-scrollbar-thumb {
+  background: rgba(224, 122, 95, 0.4);
+  border-radius: 4px;
+}
+
+.playing-card:hover {
+  transform: translateY(-12px) !important;
+  z-index: 10 !important;
+  border-color: var(--accent-soft) !important;
+  background: rgba(38, 25, 42, 0.85) !important;
+  box-shadow: 0 20px 40px rgba(224, 122, 95, 0.12) !important;
+}
+
+/* Lightbox Modal */
+.lightbox-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 5, 12, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.lightbox-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  transform: scale(0.95);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-modal.active .lightbox-img {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
 }

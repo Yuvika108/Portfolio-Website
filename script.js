@@ -481,9 +481,7 @@ function initAgent() {
 
   function startMediaPipe() {
     if (hands) {
-      camera.start().catch(err => {
-        statusElement.textContent = 'Camera Access Denied';
-      });
+      camera.start();
       return;
     }
 
@@ -521,9 +519,7 @@ function initAgent() {
       height: 480
     });
 
-    camera.start().catch(err => {
-      statusElement.textContent = 'Camera Access Denied';
-    });
+    camera.start();
     statusElement.textContent = 'Awaiting Gesture...';
   }
 
@@ -861,31 +857,6 @@ if (viewMoreArtBtn && artWallContainer) {
         btnIcon.classList.add('bi-chevron-down');
       }
       artWallContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  });
-}
-
-// Lightbox Viewer Logic
-const lightboxModal = document.getElementById('lightboxModal');
-const lightboxImg = document.getElementById('lightboxImg');
-const lightboxClose = document.getElementById('lightboxClose');
-
-if (lightboxModal && lightboxImg && lightboxClose) {
-  document.addEventListener('click', (e) => {
-    const clickedImg = e.target.closest('.polaroid-img');
-    if (clickedImg) {
-      lightboxImg.src = clickedImg.src;
-      lightboxModal.classList.add('active');
-    }
-  });
-
-  lightboxClose.addEventListener('click', () => {
-    lightboxModal.classList.remove('active');
-  });
-
-  lightboxModal.addEventListener('click', (e) => {
-    if (e.target === lightboxModal) {
-      lightboxModal.classList.remove('active');
     }
   });
 }

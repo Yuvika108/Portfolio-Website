@@ -807,7 +807,7 @@ async function loadArtworksIntoSlider() {
   if (!artSlider) return;
   
   try {
-    const res = await fetch('/api/artworks').catch(() => fetch('artworks.json'));
+    const res = await fetch('/api/artworks').catch(() => fetch('assets/artworks.json'));
     if (res.ok) {
       const artworks = await res.json();
       if (artworks && artworks.length > 0) {
@@ -832,7 +832,7 @@ async function loadArtworksIntoSlider() {
 }
 
 if (artSlider) {
-  loadArtworksIntoSlider();
+  // loadArtworksIntoSlider(); // Disabled: Images are now hardcoded in HTML
 }
 
 const viewMoreArtBtn = document.getElementById('viewMoreArtBtn');

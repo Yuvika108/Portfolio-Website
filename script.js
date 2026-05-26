@@ -139,12 +139,12 @@ function initStars() {
   draw();
 }
 
-// Generative Art Background
+// Generative Art Background (Interactive Sakura Petals & Leaves)
 function initRain() {
   const canvas = document.getElementById('rainCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
+  let w, h, sakuraPetals = [];
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -153,9 +153,6 @@ function initRain() {
 
   window.addEventListener('resize', resize);
   resize();
-
-  const numParticles = Math.min(Math.floor(w * h / 12000), 120);
-  const connectionDistance = 160;
 
   let mouse = { x: null, y: null };
   window.addEventListener('mousemove', (e) => {
@@ -167,65 +164,86 @@ function initRain() {
     mouse.y = null;
   });
 
-  for (let i = 0; i < numParticles; i++) {
-    particles.push({
+  // Init sakura petals (cherry blossom particles & green leaves)
+  const numSakura = 80;
+  for (let i = 0; i < numSakura; i++) {
+    const isLeaf = Math.random() < 0.25; // 25% Japanese green leaves, 75% pink petals
+    sakuraPetals.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      radius: Math.random() * 1.5 + 0.5
+      radiusX: Math.random() * 6 + 4,
+      radiusY: Math.random() * 3 + 2,
+      vx: (Math.random() * 0.4) + 0.15, // Drift slowly to the right
+      vy: (Math.random() * 0.8) + 0.6,  // Fall slowly down
+      angle: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.012,
+      opacity: Math.random() * 0.4 + 0.25,
+      type: isLeaf ? 'leaf' : 'petal'
     });
   }
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
 
-    for (let i = 0; i < particles.length; i++) {
-      let p = particles[i];
-      p.x += p.vx;
+    // Draw sakura petals & leaves
+    for (let i = 0; i < sakuraPetals.length; i++) {
+      let p = sakuraPetals[i];
+      
+      // Update position with a gentle horizontal wind sway (sine wave)
       p.y += p.vy;
+      p.x += p.vx + Math.sin(p.y * 0.01) * 0.35;
+      p.angle += p.rotationSpeed;
 
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-
+      // Mouse wind gust repulsion!
       if (mouse.x != null && mouse.y != null) {
         let dx = mouse.x - p.x;
         let dy = mouse.y - p.y;
         let dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 180) {
-          p.x -= dx * 0.015;
-          p.y -= dy * 0.015;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(224, 122, 95, ${(1 - dist / 180) * 0.3})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
+        if (dist < 150) {
+          let force = (1 - dist / 150) * 1.2;
+          p.x -= (dx / dist) * force;
+          p.y -= (dy / dist) * force;
         }
       }
 
+      // Draw sakura petal/leaf as filled ellipse with details
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(224, 122, 95, 0.7)`;
+      ctx.ellipse(0, 0, p.radiusX, p.radiusY, 0, 0, Math.PI * 2);
+      
+      // Color coding: pink petals vs soft green leaves
+      if (p.type === 'leaf') {
+        ctx.fillStyle = `rgba(143, 168, 130, ${p.opacity})`; // Cozy Japanese Sage Green leaf
+      } else {
+        ctx.fillStyle = `rgba(240, 162, 142, ${p.opacity})`; // Soft Pink Sakura petal
+      }
       ctx.fill();
 
-      for (let j = i + 1; j < particles.length; j++) {
-        let p2 = particles[j];
-        let dx = p.x - p2.x;
-        let dy = p.y - p2.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
+      // CREASE LINE for extra realism and design
+      if (p.type === 'leaf') {
+        ctx.strokeStyle = `rgba(110, 130, 99, ${p.opacity * 0.4})`;
+      } else {
+        ctx.strokeStyle = `rgba(224, 122, 95, ${p.opacity * 0.4})`;
+      }
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(-p.radiusX, 0);
+      ctx.lineTo(p.radiusX, 0);
+      ctx.stroke();
 
-        if (dist < connectionDistance) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          let opacity = 1 - (dist / connectionDistance);
-          ctx.strokeStyle = `rgba(224, 122, 95, ${opacity * 0.25})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
+      ctx.restore();
+
+      // Reset when off bottom or sides
+      if (p.y > h + 10 || p.x > w + 10 || p.x < -10) {
+        p.y = -15;
+        p.x = Math.random() * w;
+        p.opacity = Math.random() * 0.4 + 0.25;
       }
     }
+
     requestAnimationFrame(draw);
   }
   draw();
@@ -396,20 +414,6 @@ function initScrollEffects() {
       });
     });
 
-    // Slight parallax on background image
-    const bgImage = document.querySelector('.hero-bg-image');
-    if (bgImage) {
-      gsap.to(bgImage, {
-        yPercent: 20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".cinematic-hero",
-          start: "top top",
-          end: "bottom top",
-          scrub: true
-        }
-      });
-    }
     
     // Smooth reveal for sections and cards
     const revealElements = document.querySelectorAll('section:not(.hero), .bento-item, .creative-card, .project-row, .tk-category, .ae-card');

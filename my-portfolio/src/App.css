@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #121216;
+  background-color: var(--bg);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -12,18 +12,22 @@ body {
 
 /* Glassmorphic elements */
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(224, 122, 95, 0.12);
   border-radius: 16px;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 
+              0 8px 32px 0 rgba(0, 0, 0, 0.3);
   transition: var(--transition-smooth);
 }
 
 .glass-card:hover {
-  background: rgba(224, 122, 95, 0.03);
-  border-color: rgba(224, 122, 95, 0.25);
+  background: linear-gradient(135deg, rgba(224, 122, 95, 0.05) 0%, rgba(224, 122, 95, 0.02) 100%);
+  border-color: rgba(224, 122, 95, 0.3);
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(224, 122, 95, 0.08);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1),
+              0 15px 30px rgba(224, 122, 95, 0.12);
 }
 
 /* Custom back to top button */
@@ -214,29 +218,28 @@ body {
 .hc-sticky-note {
   position: absolute;
   width: 170px;
-  background: rgba(255, 255, 255, 0.02) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(224, 122, 95, 0.18) !important;
-  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5),
-              inset 0 0 15px rgba(224, 122, 95, 0.05) !important;
+  background: linear-gradient(145deg, rgba(224, 122, 95, 0.05) 0%, rgba(18, 9, 23, 0.8) 100%) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(224, 122, 95, 0.25) !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7),
+              inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
   padding: 1.1rem 0.9rem 0.9rem !important;
   transform: rotate(4deg);
   transition: var(--transition-smooth);
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.85) !important;
   text-align: left;
   z-index: 30;
   border-radius: 12px !important;
 }
 
 .hc-sticky-note:hover {
-  transform: rotate(2deg) scale(1.05) !important;
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(224, 122, 95, 0.35) !important;
-  box-shadow: 0 20px 40px -5px rgba(224, 122, 95, 0.12),
-              inset 0 0 20px rgba(224, 122, 95, 0.1) !important;
+  transform: rotate(1deg) scale(1.06) !important;
+  border-color: rgba(224, 122, 95, 0.45) !important;
+  box-shadow: 0 25px 50px -10px rgba(224, 122, 95, 0.15),
+              inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
 }
 
 .sticky-tape {
@@ -266,4 +269,13 @@ body {
 .sticky-text {
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Premium section dividers */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(224, 122, 95, 0.18), transparent);
+  border: none;
+  margin: 0;
 }

@@ -86,12 +86,12 @@ function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#16161a] text-[#9ca3af] font-['Outfit'] overflow-x-hidden selection:bg-orange-500/30 selection:text-white pb-12">
+    <div className="relative min-h-screen bg-[var(--bg)] text-[#9ca3af] font-['Outfit'] overflow-x-hidden selection:bg-orange-500/30 selection:text-white pb-12">
       {/* Background Mesh Orbs */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-[20%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(251,146,60,0.03)_0%,transparent_70%)]" />
-        <div className="absolute top-[35%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.01)_0%,transparent_70%)]" />
-        <div className="absolute bottom-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(251,146,60,0.02)_0%,transparent_70%)]" />
+        <div className="absolute -top-[20%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(224,122,95,0.04)_0%,transparent_70%)]" />
+        <div className="absolute top-[35%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(224,122,95,0.02)_0%,transparent_70%)]" />
+        <div className="absolute bottom-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(224,122,95,0.03)_0%,transparent_70%)]" />
       </div>
 
       {/* Back to top button */}
@@ -102,7 +102,7 @@ function Home() {
       )}
 
       {/* Header Navigation */}
-      <header className="fixed top-0 left-0 w-full z-40 bg-[#16161a]/70 backdrop-blur-md border-b border-white/[0.06]">
+      <header className="fixed top-0 left-0 w-full z-40 bg-[var(--bg)]/70 backdrop-blur-md border-b border-orange-400/10">
         <div className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-5 flex justify-between items-center">
           <div className="font-mono font-semibold text-xs tracking-[0.15em] text-white uppercase select-none">
             srishti mishra
@@ -248,13 +248,13 @@ function Home() {
             </div>
 
             {/* Floating Stat Chips */}
-            <div className="absolute top-[8%] left-[0px] px-3 py-1.5 bg-[#16161a]/95 border border-white/[0.06] rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300">
+            <div className="absolute top-[8%] left-[0px] px-3 py-1.5 bg-[var(--bg)]/95 border border-orange-400/15 rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300">
               6+ projects
             </div>
-            <div className="absolute bottom-[35%] left-[-15px] px-3 py-1.5 bg-[#16161a]/95 border border-white/[0.06] rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300 z-10">
+            <div className="absolute bottom-[35%] left-[-15px] px-3 py-1.5 bg-[var(--bg)]/95 border border-orange-400/15 rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300 z-10">
               UI/UX · AI · NLP
             </div>
-            <div className="absolute bottom-[4%] right-[-10px] px-3 py-1.5 bg-[#16161a]/95 border border-white/[0.06] rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300">
+            <div className="absolute bottom-[4%] right-[-10px] px-3 py-1.5 bg-[var(--bg)]/95 border border-orange-400/15 rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300">
               creative dev
             </div>
           </div>
@@ -263,7 +263,8 @@ function Home() {
       </section>
 
       {/* About Section - Editorial Layout */}
-      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 border-t border-white/[0.06] relative z-10" id="about">
+      <hr className="section-divider" />
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="about">
         <div className="flex flex-col gap-8 text-left w-full">
           <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">01 — about me</div>
           <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
@@ -321,7 +322,8 @@ function Home() {
       </section>
 
       {/* Projects Section */}
-      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 border-t border-white/[0.06] relative z-10" id="projects">
+      <hr className="section-divider" />
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="projects">
         <div className="flex flex-col gap-8 text-left w-full">
           <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">02 — projects</div>
           <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
@@ -479,7 +481,8 @@ function Home() {
       </section>
 
       {/* Skills Section */}
-      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 border-t border-white/[0.06] relative z-10" id="toolkit">
+      <hr className="section-divider" />
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="toolkit">
         <div className="flex flex-col gap-8 text-left w-full">
           <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">03 — toolkit</div>
           <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
@@ -522,7 +525,8 @@ function Home() {
       </section>
 
       {/* Creative Corner */}
-      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 border-t border-white/[0.06] relative z-10" id="creative">
+      <hr className="section-divider" />
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="creative">
         <div className="flex flex-col gap-8 text-left w-full">
           <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">04 — creative corner</div>
           <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
@@ -558,42 +562,109 @@ function Home() {
       </section>
 
       {/* Future Vision */}
-      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 border-t border-white/[0.06] relative z-10" id="vision">
-        <div className="flex flex-col gap-8 text-left w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
-            <div className="lg:col-span-8 flex flex-col gap-6">
-              <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">05 — future vision</div>
-              <h2 className="font-['Playfair_Display'] text-4xl md:text-5xl font-normal leading-[1.2] tracking-tight text-white">
-                I want to build things that <span className="italic font-light text-orange-400">feel human<span className="text-white">.</span></span>
-              </h2>
-              <p className="text-gray-400 text-base md:text-lg leading-relaxed max-w-[620px]">
-                I want to create digital experiences that feel artistic, immersive, and emotionally memorable — blending technology, design, AI, interaction, and visual creativity into something meaningful and human.
-              </p>
+      <hr className="section-divider" />
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-20 md:py-28 relative z-10" id="vision">
+        <div className="flex flex-col gap-12 text-left w-full">
+          {/* Header */}
+          <div className="flex flex-col items-center text-center gap-2 mx-auto w-full max-w-[850px]">
+            <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">05 — future vision</div>
+            <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.1] tracking-tight text-white">
+              I want to build things that <span className="italic font-light text-orange-400">feel human<span className="text-white">.</span></span>
+            </h2>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-[700px] mt-2">
+              I believe software should be more than just utility. It should be an experience — blending visual aesthetics, intuitive machine intelligence, and atmospheric design to create a deeper digital connection.
+            </p>
+          </div>
+
+          {/* Grid Layout: Pillars on Left, Contact Widget on Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {/* Left: 3 Vision Pillars */}
+            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              {/* Pillar 1: Immersive Interaction */}
+              <div className="glass-card p-6 flex flex-col justify-between gap-6 hover:border-orange-400/35 transition-all duration-500 group relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex flex-col gap-3">
+                  <div className="w-10 h-10 rounded-full bg-orange-400/10 flex items-center justify-center text-orange-400 border border-orange-400/20 group-hover:scale-110 transition-transform">
+                    <i className="bi bi-hand-index-thumb text-base"></i>
+                  </div>
+                  <h3 className="font-['Playfair_Display'] text-xl font-normal text-white">Immersive Interaction</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">
+                    Pioneering touchless web controls using real-time hand-gesture tracking (Google MediaPipe), shifting interfaces from rigid clicks to spatial human movements.
+                  </p>
+                </div>
+                <span className="font-mono text-[9px] text-orange-400/50 uppercase tracking-widest">01 / spatial</span>
+              </div>
+
+              {/* Pillar 2: Creative AI */}
+              <div className="glass-card p-6 flex flex-col justify-between gap-6 hover:border-orange-400/35 transition-all duration-500 group relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex flex-col gap-3">
+                  <div className="w-10 h-10 rounded-full bg-orange-400/10 flex items-center justify-center text-orange-400 border border-orange-400/20 group-hover:scale-110 transition-transform">
+                    <i className="bi bi-cpu text-base"></i>
+                  </div>
+                  <h3 className="font-['Playfair_Display'] text-xl font-normal text-white">Creative AI</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">
+                    Integrating intelligence directly into layouts. Moving beyond simple text prompts to design layouts that actively respond, learn, and co-create with users.
+                  </p>
+                </div>
+                <span className="font-mono text-[9px] text-orange-400/50 uppercase tracking-widest">02 / intelligence</span>
+              </div>
+
+              {/* Pillar 3: Cinematic Feel */}
+              <div className="glass-card p-6 flex flex-col justify-between gap-6 hover:border-orange-400/35 transition-all duration-500 group relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex flex-col gap-3">
+                  <div className="w-10 h-10 rounded-full bg-orange-400/10 flex items-center justify-center text-orange-400 border border-orange-400/20 group-hover:scale-110 transition-transform">
+                    <i className="bi bi-palette text-base"></i>
+                  </div>
+                  <h3 className="font-['Playfair_Display'] text-xl font-normal text-white">Cinematic Feel</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">
+                    Infusing analog atmosphere—ambient lofi sounds, particle weather systems, custom cursors, and glass panels—to make digital canvases feel tactile and alive.
+                  </p>
+                </div>
+                <span className="font-mono text-[9px] text-orange-400/50 uppercase tracking-widest">03 / atmosphere</span>
+              </div>
+
             </div>
 
-            <div className="lg:col-span-4 glass-card p-8 flex flex-col gap-6 text-center lg:text-left relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(251,146,60,0.06)_0%,transparent_70%)] pointer-events-none" />
-              <h3 className="font-['Playfair_Display'] text-2xl font-normal text-white">let's connect</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Whether it’s technology, design, films, music, creativity, or interesting ideas — I’m always open to meaningful conversations.
-              </p>
-              <a href="mailto:srishti@email.com" className="w-full py-3 bg-orange-400 text-[#121216] font-semibold text-center rounded-full hover:bg-orange-300 hover:shadow-[0_0_20px_rgba(251,146,60,0.25)] transition-all text-xs tracking-wider uppercase">
-                let's talk →
-              </a>
-              <div className="flex justify-center lg:justify-between items-center gap-4 font-mono text-[10px] uppercase text-gray-500 tracking-widest mt-2">
-                <a href="#" className="hover:text-orange-400 transition-colors">github</a>
-                <a href="#" className="hover:text-orange-400 transition-colors">linkedin</a>
-                <a href="#" className="hover:text-orange-400 transition-colors">instagram</a>
+            {/* Right: Refined Contact Card */}
+            <div className="lg:col-span-4 glass-card p-6 flex flex-col justify-between gap-6 relative overflow-hidden group hover:border-orange-400/40">
+              {/* Inner ambient glow */}
+              <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-orange-400/5 filter blur-3xl pointer-events-none group-hover:bg-orange-400/10 transition-colors" />
+              
+              <div className="flex flex-col gap-4">
+                <div className="font-mono text-[9px] tracking-widest text-orange-400/70 uppercase">available for projects</div>
+                <h3 className="font-['Playfair_Display'] text-3xl font-normal text-white leading-none">let's talk</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Whether it’s custom web design, AI integration, design concepts, or simply sharing cinema playlists and interesting ideas—my inbox is always open.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-4 mt-2">
+                <a 
+                  href="mailto:srishti@email.com" 
+                  className="w-full py-3.5 bg-orange-400 text-[#121216] font-semibold text-center rounded-full hover:bg-orange-300 hover:shadow-[0_0_25px_rgba(224,122,95,0.35)] transition-all text-xs tracking-wider uppercase"
+                >
+                  let's connect →
+                </a>
+                
+                <div className="flex justify-between items-center px-2 font-mono text-[9px] uppercase text-gray-500 tracking-widest">
+                  <a href="#" className="hover:text-orange-400 transition-colors">github</a>
+                  <span className="w-1 h-1 rounded-full bg-white/10" />
+                  <a href="#" className="hover:text-orange-400 transition-colors">linkedin</a>
+                  <span className="w-1 h-1 rounded-full bg-white/10" />
+                  <a href="#" className="hover:text-orange-400 transition-colors">instagram</a>
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 pt-16 border-t border-white/[0.06] relative z-10 flex flex-col md:flex-row justify-between gap-6">
+      <hr className="section-divider" />
+      <footer className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 pt-16 relative z-10 flex flex-col md:flex-row justify-between gap-6">
         <div className="flex flex-col gap-1 text-left">
           <span className="font-mono font-semibold text-xs tracking-widest text-orange-300 uppercase">srishti mishra</span>
           <span className="text-gray-500 text-[11px] font-mono italic">lovingly crafted with code, cold coffee &amp; late-night lofi playlists.</span>
@@ -751,7 +822,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/creative" element={
-            <div className="flex flex-col items-center justify-center min-h-screen text-center bg-[#121216] relative overflow-hidden">
+            <div className="flex flex-col items-center justify-center min-h-screen text-center bg-[var(--bg)] relative overflow-hidden">
               {/* Background mesh */}
               <div className="absolute inset-0 pointer-events-none z-0">
                 <div className="absolute top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(251,146,60,0.05)_0%,transparent_70%)]" />

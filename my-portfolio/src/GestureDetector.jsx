@@ -251,15 +251,10 @@ export default function GestureDetector() {
             setTimeout(() => { cooldownRef.current = false; }, 1500);
         } else if (gesture === "rock_on") {
             setIsMusicPlaying(false);
-            setIsRainActive(false);
             cooldownRef.current = true;
             setTimeout(() => { cooldownRef.current = false; }, 1500);
         } else if (gesture === "open_palm") {
-            setIsRainActive(true);
-            // Let the rain fade out after 5s if music is paused
-            setTimeout(() => {
-                if (!isMusicPlaying) setIsRainActive(false);
-            }, 5000);
+            // Rain is permanently active, no deactivation timer needed
         } else if (gesture === "bye_bye") {
             // Turn off Aanya and stream
             setIsAgentActive(false);

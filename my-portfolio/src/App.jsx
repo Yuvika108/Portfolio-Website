@@ -611,7 +611,7 @@ function Home() {
 function App() {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isAgentActive, setIsAgentActive] = useState(false);
-  const [isRainActive, setIsRainActive] = useState(false);
+  const [isRainActive, setIsRainActive] = useState(true);
   const [gesture, setGesture] = useState("");
 
   const audioRef = useRef(null);
@@ -620,10 +620,8 @@ function App() {
     if (audioRef.current) {
       if (isMusicPlaying) {
         audioRef.current.play().catch((err) => console.log("Audio play failed:", err));
-        setIsRainActive(true);
       } else {
         audioRef.current.pause();
-        setIsRainActive(false);
       }
     }
   }, [isMusicPlaying]);

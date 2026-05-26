@@ -317,13 +317,11 @@ function initMusic() {
       audio.play();
       btn.classList.add('playing');
       btn.querySelector('.music-label').textContent = 'playing';
-      if (rainCanvas) rainCanvas.style.opacity = '1';
       animateVisualizer();
     } else {
       audio.pause();
       btn.classList.remove('playing');
       btn.querySelector('.music-label').textContent = 'music player';
-      if (rainCanvas) rainCanvas.style.opacity = '0.25';
     }
     playing = !playing;
   });
@@ -498,8 +496,8 @@ function initAgent() {
   const cursorTrail = document.getElementById('cursorTrail');
   const musicToggle = document.getElementById('musicToggle');
 
-  // Set rain to soft cozy lofi background opacity by default
-  rainCanvas.style.opacity = '0.25';
+  // Rain effect is always visible in the background
+  rainCanvas.style.opacity = '1';
   rainCanvas.style.transition = 'opacity 1s ease';
 
   let agentActive = false;
@@ -714,18 +712,13 @@ function initAgent() {
               audio.play().catch(() => { });
               musicToggle.classList.add('playing');
               musicToggle.querySelector('.music-label').textContent = 'playing';
-              rainCanvas.style.opacity = '1';
             } else if (finalGesture === "rock_on") {
               audio.pause();
               musicToggle.classList.remove('playing');
               musicToggle.querySelector('.music-label').textContent = 'music player';
-              rainCanvas.style.opacity = '0.25';
             } else if (finalGesture === "bye_bye") {
               statusElement.textContent = 'BYE BYE!';
               setTimeout(() => { closeBtn.click(); }, 800);
-            } else if (finalGesture === "open_palm") {
-              rainCanvas.style.opacity = '1';
-              setTimeout(() => { if (audio.paused) rainCanvas.style.opacity = '0.25'; }, 5000);
             }
 
             if (finalGesture !== "open_palm") {

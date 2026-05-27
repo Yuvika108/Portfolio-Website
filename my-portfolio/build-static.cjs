@@ -6,9 +6,14 @@ const destDir = path.join(__dirname, 'dist');
 
 console.log('Cleaning my-portfolio/dist directory...');
 if (fs.existsSync(destDir)) {
-  fs.rmSync(destDir, { recursive: true, force: true });
+  const files = fs.readdirSync(destDir);
+  for (const file of files) {
+    const filePath = path.join(destDir, file);
+    fs.rmSync(filePath, { recursive: true, force: true });
+  }
+} else {
+  fs.mkdirSync(destDir, { recursive: true });
 }
-fs.mkdirSync(destDir, { recursive: true });
 
 const filesToCopy = [
   'index.html',

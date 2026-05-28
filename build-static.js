@@ -20,6 +20,7 @@ const filesToCopy = [
   'style.css',
   'script.js',
   'admin.html',
+  'creative.html',
   'bg-music.mp3',
   'img1.webp',
   'hero_bg.png',

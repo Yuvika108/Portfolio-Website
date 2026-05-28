@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateTime();
   initAgent();
   initTextScrollAnimation();
+  initTelemetrySimulation();
 });
 
 function initSmoothScroll() {
@@ -139,12 +140,12 @@ function initStars() {
   draw();
 }
 
-// Generative Art Background (Interactive Sakura Petals & Leaves)
+// Generative Art Background (Interactive Neural Network / AI connection design)
 function initRain() {
   const canvas = document.getElementById('rainCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let w, h, sakuraPetals = [];
+  let w, h, nodes = [];
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -164,88 +165,95 @@ function initRain() {
     mouse.y = null;
   });
 
-  // Init sakura petals (cherry blossom particles & green leaves)
-  const numSakura = 80;
-  for (let i = 0; i < numSakura; i++) {
-    const isLeaf = Math.random() < 0.25; // 25% Japanese green leaves, 75% pink petals
-    sakuraPetals.push({
+  // Spawn neural nodes
+  const numNodes = 75;
+  for (let i = 0; i < numNodes; i++) {
+    nodes.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      radiusX: Math.random() * 6 + 4,
-      radiusY: Math.random() * 3 + 2,
-      vx: (Math.random() * 0.4) + 0.15, // Drift slowly to the right
-      vy: (Math.random() * 0.8) + 0.6,  // Fall slowly down
-      angle: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.012,
-      opacity: Math.random() * 0.4 + 0.25,
-      type: isLeaf ? 'leaf' : 'petal'
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      radius: Math.random() * 1.5 + 1.2,
+      pulseSpeed: Math.random() * 0.05 + 0.02,
+      pulseAngle: Math.random() * Math.PI,
+      baseOpacity: Math.random() * 0.35 + 0.25
     });
   }
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
 
-    // Draw sakura petals & leaves
-    for (let i = 0; i < sakuraPetals.length; i++) {
-      let p = sakuraPetals[i];
-      
-      // Update position with a gentle horizontal wind sway (sine wave)
-      p.y += p.vy;
-      p.x += p.vx + Math.sin(p.y * 0.01) * 0.35;
-      p.angle += p.rotationSpeed;
+    // Update and draw nodes
+    for (let i = 0; i < nodes.length; i++) {
+      let n = nodes[i];
+      n.x += n.vx;
+      n.y += n.vy;
+      n.pulseAngle += n.pulseSpeed;
 
-      // Mouse wind gust repulsion!
-      if (mouse.x != null && mouse.y != null) {
-        let dx = mouse.x - p.x;
-        let dy = mouse.y - p.y;
+      // Bounce boundaries
+      if (n.x < 0 || n.x > w) n.vx = -n.vx;
+      if (n.y < 0 || n.y > h) n.vy = -n.vy;
+
+      // Draw node dot
+      const opacity = n.baseOpacity + Math.sin(n.pulseAngle) * 0.15;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(196, 181, 253, ${opacity})`; // Soft violet nodes
+      ctx.fill();
+
+      // Node subtle glow
+      if (n.radius > 2) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(196, 181, 253, ${opacity * 0.15})`;
+        ctx.fill();
+      }
+    }
+
+    // Draw synapse lines (connections)
+    for (let i = 0; i < nodes.length; i++) {
+      let nA = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        let nB = nodes[j];
+        let dx = nA.x - nB.x;
+        let dy = nA.y - nB.y;
         let dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          let force = (1 - dist / 150) * 1.2;
-          p.x -= (dx / dist) * force;
-          p.y -= (dy / dist) * force;
+
+        if (dist < 110) {
+          let alpha = (1 - dist / 110) * 0.12;
+          ctx.beginPath();
+          ctx.moveTo(nA.x, nA.y);
+          ctx.lineTo(nB.x, nB.y);
+          ctx.strokeStyle = `rgba(224, 122, 95, ${alpha})`; // sunset orange connections
+          ctx.lineWidth = 0.65;
+          ctx.stroke();
         }
       }
 
-      // Draw sakura petal/leaf as filled ellipse with details
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.angle);
-      
-      ctx.beginPath();
-      ctx.ellipse(0, 0, p.radiusX, p.radiusY, 0, 0, Math.PI * 2);
-      
-      // Color coding: pink petals vs soft green leaves
-      if (p.type === 'leaf') {
-        ctx.fillStyle = `rgba(143, 168, 130, ${p.opacity})`; // Cozy Japanese Sage Green leaf
-      } else {
-        ctx.fillStyle = `rgba(240, 162, 142, ${p.opacity})`; // Soft Pink Sakura petal
-      }
-      ctx.fill();
-
-      // CREASE LINE for extra realism and design
-      if (p.type === 'leaf') {
-        ctx.strokeStyle = `rgba(110, 130, 99, ${p.opacity * 0.4})`;
-      } else {
-        ctx.strokeStyle = `rgba(224, 122, 95, ${p.opacity * 0.4})`;
-      }
-      ctx.lineWidth = 0.6;
-      ctx.beginPath();
-      ctx.moveTo(-p.radiusX, 0);
-      ctx.lineTo(p.radiusX, 0);
-      ctx.stroke();
-
-      ctx.restore();
-
-      // Reset when off bottom or sides
-      if (p.y > h + 10 || p.x > w + 10 || p.x < -10) {
-        p.y = -15;
-        p.x = Math.random() * w;
-        p.opacity = Math.random() * 0.4 + 0.25;
+      // Draw mouse connection
+      if (mouse.x !== null && mouse.y !== null) {
+        let dx = nA.x - mouse.x;
+        let dy = nA.y - mouse.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          let alpha = (1 - dist / 140) * 0.28;
+          ctx.beginPath();
+          ctx.moveTo(nA.x, nA.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(196, 181, 253, ${alpha})`; // violet mouse connection
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+          
+          // Gentle attraction force to mouse
+          nA.x -= dx * 0.005;
+          nA.y -= dy * 0.005;
+        }
       }
     }
 
     requestAnimationFrame(draw);
   }
+
   draw();
 }
 
@@ -253,6 +261,7 @@ function initRain() {
 function initTerminal() {
   const text = "init creative_process.sh";
   const typedSpan = document.querySelector('.typed-text');
+  if (!typedSpan) return;
   let i = 0;
 
   function type() {
@@ -277,13 +286,11 @@ function initRoleTypewriter() {
   if (!el) return;
 
   const roles = [
-    'build immersive UIs',
-    'explore AI & ML',
-    'design with intention',
-    'write creative code',
-    'love cinema & art',
-    'love cinema & AI',
-    'love cinema & design',
+    'develop machine learning models',
+    'fine-tune neural networks',
+    'design intelligent systems',
+    'visualize complex data',
+    'architect deep learning pipelines'
   ];
 
   let roleIndex = 0;
@@ -899,4 +906,121 @@ if (viewMoreArtBtn && artWallContainer) {
       artWallContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
+}
+
+// Telemetry Simulation (AI/ML training session)
+function initTelemetrySimulation() {
+  const epochEl = document.getElementById('telemetryEpoch');
+  const lossEl = document.getElementById('telemetryLoss');
+  const accEl = document.getElementById('telemetryAcc');
+  const lrEl = document.getElementById('telemetryLR');
+  const progressBar = document.getElementById('telemetryProgressBar');
+  const percentEl = document.getElementById('telemetryPercent');
+  const terminalBody = document.getElementById('telemetryTerminalBody');
+
+  const chartPath = document.getElementById('telemetryChartPath');
+  const chartArea = document.getElementById('telemetryChartArea');
+  const chartVal = document.getElementById('telemetryChartVal');
+
+  if (!epochEl || !lossEl || !accEl || !lrEl || !progressBar || !terminalBody) return;
+
+  let epoch = 1;
+  let loss = 0.654;
+  let accuracy = 72.4;
+  let learningRate = 1e-4;
+  let progressPercent = 0;
+  let chartPoints = [];
+
+  function addTerminalLine(text, styleClass = 'system-line') {
+    const p = document.createElement('p');
+    p.className = `term-line ${styleClass}`;
+    p.textContent = text;
+    terminalBody.appendChild(p);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+    
+    // Limit terminal logs to 15 lines to avoid memory creep
+    while (terminalBody.childElementCount > 15) {
+      terminalBody.removeChild(terminalBody.firstChild);
+    }
+  }
+
+  function updateChart() {
+    if (!chartPath || !chartArea) return;
+    
+    if (epoch === 1) {
+      chartPoints = [{ x: 0, y: 55 }];
+    }
+    
+    const x = (epoch / 100) * 200;
+    // Map loss (0.654 -> y=55, 0.012 -> y=7)
+    const y = 55 - ((0.654 - loss) / 0.654) * 48;
+    chartPoints.push({ x, y });
+
+    let pathD = `M ${chartPoints[0].x},${chartPoints[0].y}`;
+    for (let i = 1; i < chartPoints.length; i++) {
+      pathD += ` L ${chartPoints[i].x},${chartPoints[i].y}`;
+    }
+    chartPath.setAttribute('d', pathD);
+
+    const areaD = pathD + ` L ${x},58 L 0,58 Z`;
+    chartArea.setAttribute('d', areaD);
+
+    if (chartVal) {
+      chartVal.textContent = loss.toFixed(4);
+    }
+  }
+
+  // Draw initial point
+  updateChart();
+
+  // Simulated training timer
+  setInterval(() => {
+    // 1. Advance training percent
+    progressPercent += Math.floor(Math.random() * 5) + 3;
+    if (progressPercent >= 100) {
+      progressPercent = 0;
+      
+      // Advance Epoch
+      epoch++;
+      if (epoch > 100) epoch = 1;
+      
+      // Converge Loss and improve accuracy
+      if (epoch === 1) {
+        loss = 0.654;
+        accuracy = 72.4;
+        learningRate = 1e-4;
+      } else {
+        loss = Math.max(0.012, loss - (loss * 0.08) - (Math.random() * 0.005));
+        accuracy = Math.min(99.8, accuracy + ((100 - accuracy) * 0.06) + (Math.random() * 0.1));
+      }
+      
+      // Decay learning rate
+      if (epoch === 30) learningRate = 5e-5;
+      if (epoch === 60) learningRate = 1e-5;
+      if (epoch === 85) learningRate = 1e-6;
+
+      // Update UI elements
+      epochEl.textContent = `${epoch}/100`;
+      lossEl.textContent = loss.toFixed(4);
+      accEl.textContent = `${accuracy.toFixed(1)}%`;
+      lrEl.textContent = learningRate.toExponential(0);
+
+      // Update SVG chart
+      updateChart();
+
+      // Terminal print epoch summary
+      const val_loss = (loss * 1.05 + Math.random() * 0.002).toFixed(4);
+      addTerminalLine(`[METRIC] Epoch ${epoch}/100 finished. Loss: ${loss.toFixed(4)} | Acc: ${accuracy.toFixed(1)}% | Val Loss: ${val_loss}`, 'metric-line');
+    }
+
+    progressBar.style.width = `${progressPercent}%`;
+    if (percentEl) percentEl.textContent = `${progressPercent}%`;
+
+    // 2. Randomly print intermediate batch training logs
+    if (Math.random() < 0.25) {
+      const batch = Math.floor(Math.random() * 468) + 1;
+      const batchLoss = (loss + (Math.random() * 0.04 - 0.02)).toFixed(4);
+      addTerminalLine(`[TRAIN] Batch ${batch}/468 - loss: ${batchLoss}`, 'system-line');
+    }
+  }, 450);
 }

@@ -17,6 +17,7 @@ if (fs.existsSync(destDir)) {
 
 const filesToCopy = [
   'index.html',
+  'creative.html',
   'style.css',
   'script.js',
   'admin.html',

@@ -1,5 +1,5 @@
 {
-  "cleanUrls": true,
-  "buildCommand": "node build-static.cjs",
-  "outputDirectory": "dist"
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

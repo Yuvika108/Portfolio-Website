@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creative Corner — Srishti Mishra</title>
+  <meta name="description" content="Artworks and creative expressions of Srishti Mishra." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- MediaPipe AI Agent Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+  </div>
+
+  <!-- Grain & Lofi Overlays -->
+  <div class="grain-overlay"></div>
+  <div class="vignette"></div>
+  <div class="scanlines"></div>
+  <canvas class="rain-canvas" id="rainCanvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        Srishti <span class="nav-logo-bold">Mishra</span><span class="logo-dot">.</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html#about" class="nav-link">About</a>
+        <a href="index.html#projects" class="nav-link">Projects</a>
+        <a href="index.html#experience" class="nav-link">Experience</a>
+        <a href="index.html#skills" class="nav-link">Skills</a>
+        <a href="creative.html" class="nav-link active">Creative</a>
+        <a href="index.html#vision" class="nav-link">Vision</a>
+        <a href="index.html#contact" class="nav-link nav-link--cta">Contact</a>
+      </div>
+      <div class="nav-music">
+        <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
+          <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
+          <span class="music-label">music player</span>
+          <div class="visualizer" id="visualizer">
+            <span class="v-bar bar-1"></span>
+            <span class="v-bar bar-2"></span>
+            <span class="v-bar bar-3"></span>
+            <span class="v-bar bar-4"></span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Creative Corner Section -->
+  <section class="section creative-section" id="creative" style="padding-top: 8rem; min-height: 90vh;">
+    <div class="section-inner">
+      <div class="section-label">05 — Creative Corner</div>
+      <h2 class="section-heading text-scroll-anim ts-variant-3">
+        Experiments &amp; Aesthetics
+      </h2>
+      <div class="art-wall-container" id="artWallContainer">
+        <div class="art-wall" id="artSlider">
+
+          <!-- Artwork 1 -->
+          <div class="polaroid-card pc-1">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448140274.png" alt="Flute with Mandala" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Flute with Mandala</p>
+          </div>
+          <!-- Artwork 2 -->
+          <div class="polaroid-card pc-2">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448217961.png" alt="Random Thoughts" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Random Thoughts</p>
+          </div>
+          <!-- Artwork 3 -->
+          <div class="polaroid-card pc-3">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448366112.png" alt="Capturing Moments" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Capturing Moments</p>
+          </div>
+          <!-- Artwork 4 -->
+          <div class="polaroid-card pc-4">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448386801.png" alt="Cherry Cherry Lady" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Cherry Cherry Lady</p>
+          </div>
+          <!-- Artwork 5 -->
+          <div class="polaroid-card pc-5">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448497928.png" alt="Petals of joy" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Petals of joy</p>
+          </div>
+          <!-- Artwork 6 -->
+          <div class="polaroid-card pc-1">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448532515.png" alt="Eyes & Ink" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Eyes & Ink</p>
+          </div>
+          <!-- Artwork 7 -->
+          <div class="polaroid-card pc-2">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448556843.png" alt="Colourful Chess" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Colourful Chess</p>
+          </div>
+          <!-- Artwork 8 -->
+          <div class="polaroid-card pc-3">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448583814.png" alt="Just a sketch" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Just a sketch</p>
+          </div>
+          <!-- Artwork 9 -->
+          <div class="polaroid-card pc-4">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448615894.png" alt="Flowers & Butterfly" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Flowers & Butterfly</p>
+          </div>
+          <!-- Artwork 10 -->
+          <div class="polaroid-card pc-5">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448632865.png" alt="Oil Pastel Art" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Oil Pastel Art</p>
+          </div>
+          <!-- Artwork 11 -->
+          <div class="polaroid-card pc-1">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448653396.png" alt="Pal Pal Pal Har Pal !!!" class="polaroid-img"
+                loading="lazy">
+            </div>
+            <p class="polaroid-label">Pal Pal Pal Har Pal !!!</p>
+          </div>
+          <!-- Artwork 12 -->
+          <div class="polaroid-card pc-2">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448689803.png" alt="Arrows & Art" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Arrows & Art</p>
+          </div>
+          <!-- Artwork 13 -->
+          <div class="polaroid-card pc-3">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448719679.png" alt="Just Me" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Just Me</p>
+          </div>
+          <!-- Artwork 14 -->
+          <div class="polaroid-card pc-4">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448753463.png" alt="A Colourful Fly" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">A Colourful Fly</p>
+          </div>
+          <!-- Artwork 15 -->
+          <div class="polaroid-card pc-5">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448775013.png" alt="Time & Art" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">Time & Art</p>
+          </div>
+          <!-- Artwork 16 -->
+          <div class="polaroid-card pc-1">
+            <div class="polaroid-img-wrap">
+              <img src="uploads/art-1779448811710.png" alt="A Whole New World" class="polaroid-img" loading="lazy">
+            </div>
+            <p class="polaroid-label">A Whole New World</p>
+          </div>
+        </div>
+        <div class="art-wall-fade"></div>
+      </div>
+
+      <div class="view-more-container">
+        <button id="viewMoreArtBtn" class="btn-view-more">
+          <span class="btn-text">View More</span>
+          <i class="bi bi-chevron-down btn-icon"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-name">srishti <span class="nav-logo-bold">mishra</span><span class="logo-dot">.</span></span>
+        <span class="footer-copy"
+          style="font-family: var(--font-mono); font-style: italic; font-size: 11px; opacity: 0.85;">lovingly crafted
+          with code, math &amp; neural network training loops.</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-note">continuous training, model optimization &amp; predictive insights.</span>
+        <span class="footer-time" id="footerTime"></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" title="Back to Top"><i class="bi bi-chevron-up"></i></button>
+
+  <!-- AI Agent: Aanya -->
+  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars"
+      style="margin-right: 6px;"></i> Aanya</button>
+
+  <div class="agent-ui hidden" id="agentUi">
+    <div class="agent-header">
+      <span>Aanya — AI Assistant</span>
+      <button id="agentClose">✕</button>
+    </div>
+    <video class="agent-video" id="agentVideo" autoPlay playsInline muted></video>
+    <div class="agent-status" id="agentStatus">Awaiting AI...</div>
+    <div class="agent-instructions">
+      <small><strong>Gestures:</strong></small>
+      <ul>
+        <li>✌️ Select / Click</li>
+        <li>👍 Scroll Up</li>
+        <li>👎 Scroll Down</li>
+        <li>👌 Play Music</li>
+        <li>🤘 Stop Music</li>
+        <li>👋 Wave to Close</li>
+      </ul>
+    </div>
+  </div>
+
+  <audio id="ambientAudio" loop>
+    <source src="bg-music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- GSAP & Lenis -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

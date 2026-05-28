@@ -1,15 +1,371 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import './App.css'
+import GestureDetector from "./GestureDetector";
 
 export const PortfolioContext = createContext(null);
-import GestureDetector from "./GestureDetector";
+
+function TelemetryPanel() {
+  const [epoch, setEpoch] = useState(1);
+  const [loss, setLoss] = useState(0.654);
+  const [accuracy, setAccuracy] = useState(72.4);
+  const [learningRate, setLearningRate] = useState(1e-4);
+  const [progressPercent, setProgressPercent] = useState(0);
+  const [chartPoints, setChartPoints] = useState([{ x: 0, y: 55 }]);
+  const [terminalLogs, setTerminalLogs] = useState([
+    { text: "[SYSTEM] Initializing training pipeline...", type: "system-line" },
+    { text: "[SYSTEM] Loaded dataset shape: [60000, 28, 28]", type: "system-line" },
+    { text: "[SYSTEM] Model compilation successful.", type: "system-line" }
+  ]);
+
+  const terminalEndRef = useRef(null);
+
+  const stateRef = useRef({
+    epoch: 1,
+    loss: 0.654,
+    accuracy: 72.4,
+    learningRate: 1e-4,
+    progressPercent: 0,
+    chartPoints: [{ x: 0, y: 55 }]
+  });
+
+  useEffect(() => {
+    if (terminalEndRef.current) {
+      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [terminalLogs]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const state = stateRef.current;
+      
+      // 1. Advance progress
+      let nextProgress = state.progressPercent + Math.floor(Math.random() * 5) + 3;
+      
+      if (nextProgress >= 100) {
+        state.progressPercent = 0;
+        state.epoch += 1;
+        if (state.epoch > 100) {
+          state.epoch = 1;
+          state.loss = 0.654;
+          state.accuracy = 72.4;
+          state.learningRate = 1e-4;
+          state.chartPoints = [{ x: 0, y: 55 }];
+        } else {
+          state.loss = Math.max(0.012, state.loss - (state.loss * 0.08) - (Math.random() * 0.005));
+          state.accuracy = Math.min(99.8, state.accuracy + ((100 - state.accuracy) * 0.06) + (Math.random() * 0.1));
+          
+          if (state.epoch === 30) state.learningRate = 5e-5;
+          else if (state.epoch === 60) state.learningRate = 1e-5;
+          else if (state.epoch === 85) state.learningRate = 1e-6;
+        }
+        
+        // Calculate new chart point
+        const x = (state.epoch / 100) * 200;
+        const y = 55 - ((0.654 - state.loss) / 0.654) * 48;
+        state.chartPoints.push({ x, y });
+        
+        // Push terminal log
+        const val_loss = (state.loss * 1.05 + Math.random() * 0.002).toFixed(4);
+        setTerminalLogs(prevLogs => {
+          const newLog = {
+            text: `[METRIC] Epoch ${state.epoch}/100 finished. Loss: ${state.loss.toFixed(4)} | Acc: ${state.accuracy.toFixed(1)}% | Val Loss: ${val_loss}`,
+            type: "metric-line"
+          };
+          return [...prevLogs, newLog].slice(-15);
+        });
+        
+        // Update React states
+        setEpoch(state.epoch);
+        setLoss(state.loss);
+        setAccuracy(state.accuracy);
+        setLearningRate(state.learningRate);
+        setChartPoints([...state.chartPoints]);
+      } else {
+        state.progressPercent = nextProgress;
+      }
+      
+      setProgressPercent(state.progressPercent);
+      
+      // Random batch logs
+      if (Math.random() < 0.25) {
+        const batch = Math.floor(Math.random() * 468) + 1;
+        const batchLoss = (state.loss + (Math.random() * 0.04 - 0.02)).toFixed(4);
+        setTerminalLogs(prevLogs => {
+          const newLog = {
+            text: `[TRAIN] Batch ${batch}/468 - loss: ${batchLoss}`,
+            type: "system-line"
+          };
+          return [...prevLogs, newLog].slice(-15);
+        });
+      }
+    }, 450);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  const getPathD = () => {
+    if (chartPoints.length === 0) return "M 0,55 L 0,55";
+    let d = `M ${chartPoints[0].x},${chartPoints[0].y}`;
+    for (let i = 1; i < chartPoints.length; i++) {
+      d += ` L ${chartPoints[i].x},${chartPoints[i].y}`;
+    }
+    return d;
+  };
+
+  const getAreaD = () => {
+    const pathD = getPathD();
+    if (chartPoints.length === 0) return "M 0,55 L 0,55 L 0,58 L 0,58 Z";
+    const lastPoint = chartPoints[chartPoints.length - 1];
+    return `${pathD} L ${lastPoint.x},58 L 0,58 Z`;
+  };
+
+  return (
+    <div className="telemetry-panel">
+      {/* Telemetry Header (Operator Info) */}
+      <div className="telemetry-header">
+        <div className="hc-portrait animate-pulse" style={{ width: "75px", height: "75px", margin: "0", flexShrink: "0" }}>
+          <div className="portrait-glow"></div>
+          <div className="portrait-inner">
+            <div className="portrait-initials" style={{ fontSize: "1.1rem", lineHeight: "75px", color: "var(--accent-soft)" }}>SM</div>
+            <div className="portrait-ring ring-1"></div>
+            <div className="portrait-ring ring-2"></div>
+          </div>
+        </div>
+        
+        <div className="telemetry-operator-info">
+          <p className="operator-title">OPERATOR ID</p>
+          <p className="operator-name">SRISHTI_MISHRA.EXE</p>
+          <p className="operator-status"><span className="status-bulb blinking-green"></span> SYSTEM ONLINE</p>
+        </div>
+      </div>
+
+      {/* Telemetry Hardware Diagnostics Bar */}
+      <div className="telemetry-hw-bar">
+        <div className="hw-item">
+          <span className="hw-dot"></span>
+          <span>CUDA: <span className="hw-val">ACTIVE</span></span>
+        </div>
+        <div className="hw-item">
+          <span className="hw-dot"></span>
+          <span>GPU TEMP: <span className="hw-val">68°C</span></span>
+        </div>
+        <div className="hw-item">
+          <span className="hw-dot"></span>
+          <span>OPT: <span className="hw-val">ADAMW</span></span>
+        </div>
+      </div>
+      
+      {/* Telemetry Stats Grid */}
+      <div className="telemetry-stats">
+        <div className="t-stat">
+          <span className="t-stat-label">EPOCH</span>
+          <span className="t-stat-value">{epoch}/100</span>
+        </div>
+        <div className="t-stat">
+          <span className="t-stat-label">LOSS</span>
+          <span className="t-stat-value">{loss.toFixed(4)}</span>
+        </div>
+        <div className="t-stat">
+          <span className="t-stat-label">ACCURACY</span>
+          <span className="t-stat-value">{accuracy.toFixed(1)}%</span>
+        </div>
+        <div className="t-stat">
+          <span className="t-stat-label">LEARNING RATE</span>
+          <span className="t-stat-value">{learningRate.toExponential(0)}</span>
+        </div>
+      </div>
+
+      {/* Loss Convergence Chart */}
+      <div className="telemetry-chart">
+        <div className="chart-header">
+          <span>LOSS CONVERGENCE</span>
+          <span className="chart-val">{loss.toFixed(4)}</span>
+        </div>
+        <svg className="chart-svg" viewBox="0 0 200 60">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--accent-soft)" stopOpacity="0.25"></stop>
+              <stop offset="100%" stopColor="var(--accent-soft)" stopOpacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <path className="chart-area" d={getAreaD()} fill="url(#chartGrad)"></path>
+          <path className="chart-path" d={getPathD()} stroke="var(--accent-soft)" strokeWidth="1.5" fill="none" strokeLinecap="round"></path>
+        </svg>
+      </div>
+      
+      {/* Telemetry Progress Bar */}
+      <div className="telemetry-progress-container">
+        <div className="t-progress-labels">
+          <span>Training Progress</span>
+          <span>{progressPercent}%</span>
+        </div>
+        <div className="telemetry-progress-bar-wrap">
+          <div className="telemetry-progress-bar" style={{ width: `${progressPercent}%` }}></div>
+        </div>
+      </div>
+      
+      {/* Live Terminal Output */}
+      <div className="telemetry-terminal">
+        <div className="terminal-header">
+          <span className="term-dot dot-red"></span>
+          <span className="term-dot dot-yellow"></span>
+          <span className="term-dot dot-green"></span>
+          <span className="term-title">training_session.sh</span>
+        </div>
+        <div className="terminal-body font-mono text-[9px] h-[95px] overflow-y-auto">
+          {terminalLogs.map((log, idx) => (
+            <p key={idx} className={`term-line ${log.type}`}>{log.text}</p>
+          ))}
+          <div ref={terminalEndRef} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CreativeCorner() {
+  const { isMusicPlaying, setIsMusicPlaying } = useContext(PortfolioContext);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Footer active time (IST)
+  const [timeStr, setTimeStr] = useState("");
+  useEffect(() => {
+    const updateTime = () => {
+      const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+      const formatter = new Intl.DateTimeFormat([], options);
+      setTimeStr(formatter.format(new Date()) + " IST");
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const artworks = [
+    { id: 1, src: "/uploads/art-1779448140274.png", label: "Flute with Mandala" },
+    { id: 2, src: "/uploads/art-1779448217961.png", label: "Random Thoughts" },
+    { id: 3, src: "/uploads/art-1779448366112.png", label: "Capturing Moments" },
+    { id: 4, src: "/uploads/art-1779448386801.png", label: "Cherry Cherry Lady" },
+    { id: 5, src: "/uploads/art-1779448497928.png", label: "Petals of joy" },
+    { id: 6, src: "/uploads/art-1779448532515.png", label: "Eyes & Ink" },
+    { id: 7, src: "/uploads/art-1779448556843.png", label: "Colourful Chess" },
+    { id: 8, src: "/uploads/art-1779448583814.png", label: "Just a sketch" },
+    { id: 9, src: "/uploads/art-1779448615894.png", label: "Flowers & Butterfly" },
+    { id: 10, src: "/uploads/art-1779448632865.png", label: "Oil Pastel Art" },
+    { id: 11, src: "/uploads/art-1779448653396.png", label: "Pal Pal Pal Har Pal !!!" },
+    { id: 12, src: "/uploads/art-1779448689803.png", label: "Arrows & Art" },
+    { id: 13, src: "/uploads/art-1779448719679.png", label: "Just Me" },
+    { id: 14, src: "/uploads/art-1779448753463.png", label: "A Colourful Fly" },
+    { id: 15, src: "/uploads/art-1779448775013.png", label: "Time & Art" },
+    { id: 16, src: "/uploads/art-1779448811710.png", label: "A Whole New World" }
+  ];
+
+  return (
+    <div className="relative min-h-screen bg-[var(--bg)] text-[#9ca3af] font-['Outfit'] overflow-x-hidden pb-12">
+      {/* Header Navigation */}
+      <header className="fixed top-0 left-0 w-full z-40 bg-[var(--bg)]/70 backdrop-blur-md border-b border-orange-400/10">
+        <div className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-5 flex justify-between items-center">
+          <div className="nav-logo select-none">
+            srishti <span className="nav-logo-bold">mishra</span><span className="logo-dot">.</span>
+          </div>
+          <nav className="hidden md:flex gap-8 items-center">
+            <Link to="/#about" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">about</Link>
+            <Link to="/#projects" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">projects</Link>
+            <Link to="/#toolkit" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">toolkit</Link>
+            <Link to="/creative" className="font-mono text-[10px] tracking-[0.15em] uppercase text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-1">creative</Link>
+            
+            {/* Ambient Music Toggle with Eq Visualizer */}
+            <button 
+              onClick={() => setIsMusicPlaying(!isMusicPlaying)} 
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-full font-mono text-[9px] tracking-[0.12em] uppercase transition-all duration-300 cursor-pointer ${
+                isMusicPlaying 
+                  ? 'border-orange-400/40 bg-orange-400/10 text-white shadow-[0_0_15px_rgba(251,146,60,0.15)]' 
+                  : 'border-white/[0.08] bg-white/[0.02] text-gray-400 hover:text-white hover:border-orange-400/30 hover:bg-orange-400/5'
+              }`}
+              title="Toggle Ambient Soundtrack"
+            >
+              <i className="bi bi-music-note-beamed text-[10px]"></i>
+              <span>{isMusicPlaying ? 'playing' : 'ambient music'}</span>
+              
+              <div className="flex items-end gap-[1.5px] h-[9px] w-[13px] mb-[1px]">
+                {[1, 2, 3, 4, 5].map((bar) => (
+                  <span 
+                    key={bar}
+                    className={`w-[1.5px] rounded-[0.5px] bg-orange-400 transition-all duration-150 ${isMusicPlaying ? 'animate-[barPulse_0.6s_infinite_ease-in-out]' : 'h-[2px]'}`}
+                    style={{ 
+                      animationDelay: `${bar * 0.1}s`,
+                      height: isMusicPlaying ? undefined : '2px'
+                    }} 
+                  />
+                ))}
+              </div>
+            </button>
+
+            <a href="mailto:srishti@email.com" className="px-4 py-2 border border-orange-400/30 rounded-full font-mono text-[10px] tracking-[0.15em] uppercase text-orange-400 hover:bg-orange-400/10 transition-all">contact</a>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Section */}
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10 creative-section" id="creative">
+        <div className="flex flex-col gap-8 text-left w-full">
+          <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">05 — creative corner</div>
+          <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
+            experiments &amp; aesthetics
+          </h2>
+
+          <div className={`art-wall-container ${isExpanded ? "expanded" : ""}`}>
+            <div className="art-wall">
+
+
+              {artworks.map((art) => (
+                <div key={art.id} className="polaroid-card">
+                  <div className="polaroid-img-wrap">
+                    <img src={art.src} alt={art.label} className="polaroid-img" loading="lazy" />
+                  </div>
+                  <p className="polaroid-label">{art.label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="art-wall-fade" />
+          </div>
+
+          <div className="view-more-container">
+            <button onClick={() => setIsExpanded(!isExpanded)} className="btn-view-more">
+              <span className="btn-text">{isExpanded ? "View Less" : "View More"}</span>
+              <i className={isExpanded ? "bi bi-chevron-up btn-icon" : "bi bi-chevron-down btn-icon"}></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <hr className="section-divider" />
+      <footer className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 pt-16 relative z-10 flex flex-col md:flex-row justify-between gap-6">
+        <div className="flex flex-col gap-1 text-left">
+          <span className="footer-name">srishti <span className="nav-logo-bold">mishra</span><span className="logo-dot">.</span></span>
+          <span className="text-gray-500 text-[11px] font-mono italic">lovingly crafted with code, math &amp; neural network training loops.</span>
+        </div>
+        <div className="flex flex-col gap-1 text-left md:text-right">
+          <span className="text-gray-500 text-[11px]">continuous training, model optimization &amp; predictive insights.</span>
+          <span className="font-mono text-xs text-orange-400/90 font-medium tracking-widest">{timeStr}</span>
+        </div>
+      </footer>
+    </div>
+  );
+}
 
 function Home() {
   const { isMusicPlaying, setIsMusicPlaying } = useContext(PortfolioContext);
 
   // Role Typewriter Loop
-  const roles = ["B.Tech CSE(AI) Student", "Creative Developer", "AI Specialist", "Interaction Artist"];
+  const roles = [
+    "develop machine learning models",
+    "fine-tune neural networks",
+    "design intelligent systems",
+    "visualize complex data",
+    "architect deep learning pipelines"
+  ];
   const [roleIndex, setRoleIndex] = useState(0);
   const [roleText, setRoleText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -38,20 +394,15 @@ function Home() {
     return () => clearTimeout(timer);
   }, [roleText, isDeleting, roleIndex]);
 
-  // Terminal simulated typing
-  const [termText, setTermText] = useState("");
   useEffect(() => {
-    const fullCmd = "cat srishti.json";
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < fullCmd.length) {
-        setTermText(prev => prev + fullCmd.charAt(index));
-        index++;
-      } else {
-        clearInterval(interval);
+    if (window.location.hash) {
+      const el = document.getElementById(window.location.hash.slice(1));
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 100);
       }
-    }, 120);
-    return () => clearInterval(interval);
+    }
   }, []);
 
   // Footer active time (IST)
@@ -104,14 +455,15 @@ function Home() {
       {/* Header Navigation */}
       <header className="fixed top-0 left-0 w-full z-40 bg-[var(--bg)]/70 backdrop-blur-md border-b border-orange-400/10">
         <div className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-5 flex justify-between items-center">
-          <div className="font-mono font-semibold text-xs tracking-[0.15em] text-white uppercase select-none">
-            srishti mishra
+          <div className="nav-logo select-none">
+            srishti <span className="nav-logo-bold">mishra</span><span className="logo-dot">.</span>
           </div>
           <nav className="hidden md:flex gap-8 items-center">
             <a href="#about" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">about</a>
             <a href="#projects" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">projects</a>
+            <a href="#experience" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">experience</a>
             <a href="#toolkit" className="font-mono text-[10px] tracking-[0.15em] uppercase text-gray-400 hover:text-white transition-colors">toolkit</a>
-            <Link to="/creative" className="font-mono text-[10px] tracking-[0.15em] uppercase text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-1"><i className="bi bi-controller text-[11px]"></i>creative</Link>
+            <Link to="/creative" className="font-mono text-[10px] tracking-[0.15em] uppercase text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-1">creative</Link>
             
             {/* Ambient Music Toggle with Eq Visualizer */}
             <button 
@@ -155,7 +507,7 @@ function Home() {
             {/* Availability Badge */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-orange-400/[0.04] border border-orange-400/20 rounded-full w-fit">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
-              <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-emerald-400">available for collaboration</span>
+              <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-emerald-400">ml pipelines active</span>
             </div>
 
             {/* Greeting & Name */}
@@ -181,10 +533,11 @@ function Home() {
 
             {/* Interest Pills */}
             <div className="flex flex-wrap gap-2">
-              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">🎨 Artist at Heart</span>
-              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">🤖 AI Enthusiast</span>
-              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">⚡ Creative Coder</span>
-              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">🎬 Cinephile</span>
+              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">PyTorch</span>
+              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">TensorFlow</span>
+              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">Transformers &amp; LLMs</span>
+              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">Computer Vision</span>
+              <span className="px-3.5 py-1 bg-white/[0.02] border border-white/[0.06] rounded-full text-xs hover:bg-orange-400/10 hover:border-orange-400/30 hover:text-orange-300 transition-all cursor-default select-none">MLOps</span>
             </div>
 
             {/* Action Buttons */}
@@ -204,61 +557,10 @@ function Home() {
 
           </div>
 
-          {/* Right Column: Floating Handcrafted Setup (No rigid container box) */}
-          <div className="lg:col-span-5 flex flex-col gap-6 items-center lg:items-end relative w-full max-w-[400px] lg:max-w-none mx-auto lg:mx-0 pt-16">
-            
-            {/* Handcrafted translucent glass sticky note */}
-            <div className="hc-sticky-note absolute top-[-90px] right-[12%] lg:right-[16%] pointer-events-auto">
-              <div className="sticky-tape" />
-              <p className="sticky-title">NOTE TO SELF</p>
-              <p className="sticky-text">
-                keep coding, keep dreaming. don't forget to drink water.<br/><br/>
-                lofi beats looping.<br/>
-                rain is falling.
-              </p>
-            </div>
-
-            {/* Top Section: Portrait Initials with pulsing rings */}
-            <div className="relative w-32 h-32 rounded-full bg-orange-950/10 border border-orange-400/10 flex items-center justify-center select-none shadow-[0_0_30px_rgba(251,146,60,0.03)] backdrop-blur-sm mb-2">
-              <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(251,146,60,0.06)_0%,transparent_70%)] animate-pulse" />
-              <span className="font-['Space_Grotesk'] text-3xl font-light text-orange-300">SM</span>
-              
-              {/* Multiple animated pulsing borders */}
-              <div className="absolute w-[108%] h-[108%] rounded-full border border-orange-400/08 pulsing-ring-1" />
-              <div className="absolute w-[124%] h-[124%] rounded-full border border-orange-400/04 pulsing-ring-2" />
-            </div>
-
-            {/* Bottom Section: simulated code terminal */}
-            <div className="w-full max-w-[340px] bg-black/45 backdrop-blur-md border border-white/[0.05] rounded-2xl p-4 font-mono text-left select-none relative shadow-xl hover:border-orange-400/20 transition-all duration-300">
-              <div className="flex gap-1.5 mb-2.5 pb-2 border-b border-white/[0.06]">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
-                <span className="text-[10px] text-gray-500 ml-2">srishti.json</span>
-              </div>
-              <div className="text-[11px] leading-relaxed text-orange-300 flex flex-col gap-1">
-                <p className="text-gray-400">
-                  <span className="text-emerald-400">$</span> {termText}
-                  <span className="w-1.5 h-3.5 bg-orange-400 inline-block ml-1 animate-pulse align-middle" />
-                </p>
-                <p className="text-gray-500">// books, cinema &amp; late-night playlists</p>
-                <p className="text-gray-500">// quietly building cool things</p>
-                <p className="text-gray-500">// INTP · artist at heart</p>
-              </div>
-            </div>
-
-            {/* Floating Stat Chips */}
-            <div className="absolute top-[8%] left-[0px] px-3 py-1.5 bg-[var(--bg)]/95 border border-orange-400/15 rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300">
-              6+ projects
-            </div>
-            <div className="absolute bottom-[35%] left-[-15px] px-3 py-1.5 bg-[var(--bg)]/95 border border-orange-400/15 rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300 z-10">
-              UI/UX · AI · NLP
-            </div>
-            <div className="absolute bottom-[4%] right-[-10px] px-3 py-1.5 bg-[var(--bg)]/95 border border-orange-400/15 rounded-full font-mono text-[9px] tracking-wider uppercase text-orange-300/90 shadow-lg select-none hover:border-orange-400/30 hover:scale-105 transition-all duration-300">
-              creative dev
-            </div>
+          {/* Right Column: Telemetry Panel */}
+          <div className="lg:col-span-5 flex justify-center items-center relative w-full max-w-[440px] lg:max-w-none mx-auto lg:mx-0 pt-16">
+            <TelemetryPanel />
           </div>
-
         </div>
       </section>
 
@@ -283,16 +585,16 @@ function Home() {
               {/* Editorial details list */}
               <div className="flex flex-col gap-4 mt-6 border-t border-white/[0.06] pt-6">
                 <div className="flex justify-between items-center py-2 border-b border-white/[0.04]">
-                  <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase">persona</span>
-                  <span className="text-white text-sm font-medium">INTP / Artist at Heart</span>
+                  <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase">focus</span>
+                  <span className="text-white text-sm font-medium">AI / Machine Learning / NLP</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-white/[0.04]">
                   <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase">education</span>
                   <span className="text-white text-sm font-medium">B.Tech @ University of Lucknow</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-white/[0.04]">
-                  <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase">inspirations</span>
-                  <span className="text-white text-sm font-medium">Cinema, Late-night playlists, Visual design</span>
+                  <span className="font-mono text-[10px] tracking-widest text-gray-500 uppercase">interests</span>
+                  <span className="text-white text-sm font-medium">Neural Nets, Computer Vision, Math &amp; Algorithms</span>
                 </div>
               </div>
             </div>
@@ -324,7 +626,18 @@ function Home() {
       {/* Projects Section */}
       <hr className="section-divider" />
       <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="projects">
-        <div className="flex flex-col gap-8 text-left w-full">
+        <div className="flex flex-col gap-8 text-left w-full relative" style={{ position: 'relative' }}>
+          {/* Handcrafted lofi sticky note */}
+          <div className="hc-sticky-note" style={{ top: '-100px', right: '-20px', maxWidth: '200px', transform: 'rotate(-3deg)' }}>
+            <div className="sticky-tape"></div>
+            <p className="sticky-title">TRAINING LOG</p>
+            <p className="sticky-text">
+              train models, optimize parameters. don't forget to check learning rate.<br/><br/>
+              epochs running...<br/>
+              loss converges.
+            </p>
+          </div>
+
           <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">02 — projects</div>
           <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
             <span className="font-mono text-3xl font-light text-orange-400/80 mr-2">{"{}"}</span> selected works &amp; experiments
@@ -351,8 +664,8 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <a href="https://whatsinurchat.streamlit.app/" target="_blank" rel="noreferrer" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
-                View Project
+              <a href="https://whatsinurchat.streamlit.app/" target="_blank" rel="noreferrer" className="btn-project">
+                View Project <i className="bi bi-arrow-up-right"></i>
               </a>
             </article>
 
@@ -375,8 +688,8 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <a href="https://missbhawna.streamlit.app/" target="_blank" rel="noreferrer" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
-                View Project
+              <a href="https://missbhawna.streamlit.app/" target="_blank" rel="noreferrer" className="btn-project">
+                View Project <i className="bi bi-arrow-up-right"></i>
               </a>
             </article>
 
@@ -399,8 +712,8 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <a href="#" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
-                View Project
+              <a href="https://cinematix.streamlit.app/" target="_blank" rel="noreferrer" className="btn-project">
+                View Project <i className="bi bi-arrow-up-right"></i>
               </a>
             </article>
 
@@ -423,8 +736,8 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <a href="#" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
-                View Project
+              <a href="https://bangalorehousedata.streamlit.app/" target="_blank" rel="noreferrer" className="btn-project">
+                View Project <i className="bi bi-arrow-up-right"></i>
               </a>
             </article>
 
@@ -447,8 +760,8 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <a href="#" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
-                View Project
+              <a href="https://yuvika108-car-price-prediction-streamlit-app-y4jdhf.streamlit.app/" target="_blank" rel="noreferrer" className="btn-project">
+                View Project <i className="bi bi-arrow-up-right"></i>
               </a>
             </article>
 
@@ -471,10 +784,166 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <a href="#" className="w-fit px-5 py-1.5 border border-orange-400/30 hover:border-orange-400 text-orange-400 hover:bg-orange-400/10 transition-all font-mono text-[9px] tracking-widest uppercase rounded-full">
-                View Project
+              <a href="https://silver-manatee-592868.netlify.app/" target="_blank" rel="noreferrer" className="btn-project">
+                Play Game <i className="bi bi-arrow-up-right"></i>
               </a>
             </article>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <hr className="section-divider" />
+      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10 experience-section" id="experience">
+        <div className="section-inner relative" style={{ position: 'relative' }}>
+          {/* Handcrafted lofi sticky note */}
+          <div className="hc-sticky-note" style={{ top: '20px', right: '-60px', maxWidth: '170px', transform: 'rotate(5deg)' }}>
+            <div className="sticky-tape"></div>
+            <p className="sticky-title">NOTE TO SELF</p>
+            <p className="sticky-text">
+              keep coding, keep dreaming. don't forget to look up at the stars.
+            </p>
+          </div>
+
+          <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">03 — Experience</div>
+          <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">My Project Journey</h2>
+
+          <div className="timeline">
+            {/* Phase 3 */}
+            <div className="tl-phase-header">
+              <h3 className="tl-title">Phase 3: Interactive Dashboards &amp; Frontend Integration</h3>
+              <p className="tl-desc">Bridging algorithmic backend data models with responsive user-facing interfaces to build rich visual applications:</p>
+            </div>
+
+            <div className="tl-item tl-left">
+              <div className="tl-marker">
+                <div className="tl-dot tl-dot--active"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>Portfolio-Website</h4>
+                  <div className="tl-tech"><i className="bi bi-code-slash"></i> JavaScript, HTML, CSS</div>
+                  <p className="tl-desc">Your central front-end portal built to showcase your technical resume, host your interactive web projects, and track your software development timeline.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="tl-item tl-right">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>gdp-dashboard</h4>
+                  <div className="tl-tech"><i className="bi bi-bar-chart-line"></i> Python, Plotly / Dash or Streamlit</div>
+                  <p className="tl-desc">An analytics application designed to visualize global macroeconomic metrics, trends, and GDP distributions through dynamic data dashboards.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="tl-item tl-left">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>mediguard</h4>
+                  <div className="tl-tech"><i className="bi bi-heart-pulse"></i> JavaScript, HTML5, CSS3</div>
+                  <p className="tl-desc">A newly initiated web-based application combining client-side web architecture with a medical/healthcare tracker utility.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Phase 2 */}
+            <div className="tl-phase-header">
+              <h3 className="tl-title">Phase 2: Data Engineering &amp; Cleaning</h3>
+              <p className="tl-desc">This phase highlights your shift toward ensuring data quality and preparation before feeding data into models.</p>
+            </div>
+
+            <div className="tl-item tl-right">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>Cleaned_Bangalore_House_Data</h4>
+                  <div className="tl-tech"><i className="bi bi-database-check"></i> Python, Pandas, NumPy, Data Imputation</div>
+                  <p className="tl-desc">A comprehensive data-preprocessing pipeline focusing on data hygiene. It handles outlier removal, feature engineering, and missing value management on real estate datasets to ready them for regression models.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Phase 1 */}
+            <div className="tl-phase-header">
+              <h3 className="tl-title">Phase 1: Machine Learning &amp; NLP Core</h3>
+              <p className="tl-desc">During this phase, you focused heavily on foundational AI modeling, handling data structures for prediction, and text processing.</p>
+            </div>
+
+            <div className="tl-item tl-left">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>Cancer-Detection-Using-Deep-Learning</h4>
+                  <div className="tl-tech"><i className="bi bi-cpu"></i> Python, TensorFlow/Keras</div>
+                  <p className="tl-desc">A high-impact computer vision project utilizing deep learning architectures to process medical imagery for identifying and classifying malignant cellular patterns.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="tl-item tl-right">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>Placement_Prediction_using_Logistic_Regression</h4>
+                  <div className="tl-tech"><i className="bi bi-graph-up-arrow"></i> Python, Scikit-Learn, Pandas, NumPy</div>
+                  <p className="tl-desc">A predictive classification application that processes student academic metrics, historical placement data, and skill sets to forecast campus recruitment outcomes.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="tl-item tl-left">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>MoviesRecommendationSystem</h4>
+                  <div className="tl-tech"><i className="bi bi-film"></i> Jupyter, Python, Pandas, Content-Based Filtering</div>
+                  <p className="tl-desc">An unsupervised learning project implementing recommendation system pipelines to calculate textual and metadata similarities, delivering tailored movie suggestions to users.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="tl-item tl-right">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>Sentiment_Analysis</h4>
+                  <div className="tl-tech"><i className="bi bi-chat-left-text"></i> Python, NLTK / TextBlob, Scikit-Learn</div>
+                  <p className="tl-desc">A Natural Language Processing (NLP) application engineered to clean textual corpora, parse linguistic features, and predict underlying emotional polarities or intent.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="tl-item tl-left">
+              <div className="tl-marker">
+                <div className="tl-dot"></div>
+              </div>
+              <div className="tl-content">
+                <div className="tl-project-card">
+                  <h4>WhatsApp_Chat_Analyser <span className="tl-status">Refined May 2026</span></h4>
+                  <div className="tl-tech"><i className="bi bi-whatsapp"></i> Python, Regex, Matplotlib, Seaborn, Streamlit</div>
+                  <p className="tl-desc">A data analytics utility that transforms raw, unstructured WhatsApp chat logs into interactive visual reports, showing active heatmaps, message distributions, and word frequency graphs.</p>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -484,7 +953,7 @@ function Home() {
       <hr className="section-divider" />
       <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="toolkit">
         <div className="flex flex-col gap-8 text-left w-full">
-          <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">03 — toolkit</div>
+          <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">04 — toolkit</div>
           <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
             the craft &amp; the tools
           </h2>
@@ -524,42 +993,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Creative Corner */}
-      <hr className="section-divider" />
-      <section className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 py-16 md:py-24 relative z-10" id="creative">
-        <div className="flex flex-col gap-8 text-left w-full">
-          <div className="font-mono text-[10px] tracking-[0.2em] text-orange-400 uppercase">04 — creative corner</div>
-          <h2 className="font-['Playfair_Display'] text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-white mb-4">
-            experiments &amp; aesthetics
-          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            
-            <div className="glass-card md:col-span-2 overflow-hidden flex flex-col justify-between h-[320px] relative group">
-              <div className="w-full h-1/2 bg-[linear-gradient(45deg,#1c1917,#431407,#1c1917)] flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-orange-500/10 mix-blend-overlay group-hover:scale-105 transition-all duration-700" />
-                <span className="font-mono text-[9px] tracking-widest text-orange-300 uppercase border border-orange-400/30 px-3 py-1 rounded bg-black/40 z-10 select-none">visual concepts</span>
-              </div>
-              <div className="p-6 text-left">
-                <h3 className="font-['Playfair_Display'] text-2xl font-normal text-white">Cinematic Inspirations</h3>
-                <p className="text-gray-400 text-xs mt-1.5 leading-relaxed">Visual concepts and atmospheric frames that shape the deep soul of my digital drafts.</p>
-              </div>
-            </div>
-
-            <div className="glass-card overflow-hidden flex flex-col justify-between h-[320px] relative group">
-              <div className="w-full h-1/2 bg-[linear-gradient(135deg,#78350f,#2d1b10)] flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(251,146,60,0.1)_0%,transparent_70%)] animate-pulse z-10 pointer-events-none" />
-                <span className="font-mono text-[9px] tracking-widest text-orange-300 uppercase border border-orange-400/30 px-3 py-1 rounded bg-black/40 z-10 select-none">generative art</span>
-              </div>
-              <div className="p-6 text-left">
-                <h3 className="font-['Playfair_Display'] text-2xl font-normal text-white">Aesthetic Ideas</h3>
-                <p className="text-gray-400 text-xs mt-1.5 leading-relaxed">Coding ambient generative shapes and researching smooth web physics.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* Future Vision */}
       <hr className="section-divider" />
@@ -666,11 +1100,11 @@ function Home() {
       <hr className="section-divider" />
       <footer className="w-full max-w-[1100px] mx-auto px-2 md:px-3 lg:px-4 pt-16 relative z-10 flex flex-col md:flex-row justify-between gap-6">
         <div className="flex flex-col gap-1 text-left">
-          <span className="font-mono font-semibold text-xs tracking-widest text-orange-300 uppercase">srishti mishra</span>
-          <span className="text-gray-500 text-[11px] font-mono italic">lovingly crafted with code, cold coffee &amp; late-night lofi playlists.</span>
+          <span className="footer-name">srishti <span className="nav-logo-bold">mishra</span><span className="logo-dot">.</span></span>
+          <span className="text-gray-500 text-[11px] font-mono italic">lovingly crafted with code, math &amp; neural network training loops.</span>
         </div>
         <div className="flex flex-col gap-1 text-left md:text-right">
-          <span className="text-gray-500 text-[11px]">late-night ideas, soft music &amp; visual creativity.</span>
+          <span className="text-gray-500 text-[11px]">continuous training, model optimization &amp; predictive insights.</span>
           <span className="font-mono text-xs text-orange-400/90 font-medium tracking-widest">{timeStr}</span>
         </div>
       </footer>
@@ -697,14 +1131,14 @@ function App() {
     }
   }, [isMusicPlaying]);
 
-  // Immersive rain canvas animation
+  // Immersive rain canvas animation (Interactive Neural Network Constellation background)
   useEffect(() => {
     const canvas = document.getElementById('rainCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let w, h;
     let animationFrameId;
-    let drops = [];
+    let nodes = [];
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -714,43 +1148,112 @@ function App() {
     window.addEventListener('resize', resize);
     resize();
 
-    // Create drops
-    for (let i = 0; i < 120; i++) {
-      drops.push({
+    let mouse = { x: null, y: null };
+    const onMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    const onMouseOut = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseout', onMouseOut);
+
+    // Spawn neural nodes
+    const numNodes = 75;
+    for (let i = 0; i < numNodes; i++) {
+      nodes.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        length: Math.random() * 25 + 15,
-        speed: Math.random() * 10 + 15,
-        opacity: Math.random() * 0.15 + 0.05
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 1.5 + 1.2,
+        pulseSpeed: Math.random() * 0.05 + 0.02,
+        pulseAngle: Math.random() * Math.PI,
+        baseOpacity: Math.random() * 0.35 + 0.25
       });
     }
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
-      ctx.lineCap = 'round';
 
-      drops.forEach(d => {
-        ctx.strokeStyle = `rgba(224, 122, 95, ${d.opacity})`;
-        ctx.lineWidth = 1;
+      // Update and draw nodes
+      for (let i = 0; i < nodes.length; i++) {
+        let n = nodes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        n.pulseAngle += n.pulseSpeed;
+
+        // Bounce boundaries
+        if (n.x < 0 || n.x > w) n.vx = -n.vx;
+        if (n.y < 0 || n.y > h) n.vy = -n.vy;
+
+        // Draw node dot
+        const opacity = n.baseOpacity + Math.sin(n.pulseAngle) * 0.15;
         ctx.beginPath();
-        ctx.moveTo(d.x, d.y);
-        ctx.lineTo(d.x + 0.5, d.y + d.length);
-        ctx.stroke();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(196, 181, 253, ${opacity})`; // Soft violet nodes
+        ctx.fill();
 
-        d.y += d.speed;
-        d.x += 0.5;
-
-        if (d.y > h) {
-          d.y = -d.length;
-          d.x = Math.random() * w;
+        // Node subtle glow
+        if (n.radius > 2) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.radius * 3, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(196, 181, 253, ${opacity * 0.15})`;
+          ctx.fill();
         }
-      });
+      }
+
+      // Draw synapse lines (connections)
+      for (let i = 0; i < nodes.length; i++) {
+        let nA = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          let nB = nodes[j];
+          let dx = nA.x - nB.x;
+          let dy = nA.y - nB.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            let alpha = (1 - dist / 110) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(nA.x, nA.y);
+            ctx.lineTo(nB.x, nB.y);
+            ctx.strokeStyle = `rgba(224, 122, 95, ${alpha})`; // sunset orange connections
+            ctx.lineWidth = 0.65;
+            ctx.stroke();
+          }
+        }
+
+        // Draw mouse connection
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = nA.x - mouse.x;
+          let dy = nA.y - mouse.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140) {
+            let alpha = (1 - dist / 140) * 0.28;
+            ctx.beginPath();
+            ctx.moveTo(nA.x, nA.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = `rgba(196, 181, 253, ${alpha})`; // violet mouse connection
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            
+            // Gentle attraction force to mouse
+            nA.x -= dx * 0.005;
+            nA.y -= dy * 0.005;
+          }
+        }
+      }
       animationFrameId = requestAnimationFrame(draw);
     }
     draw();
 
     return () => {
       window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseout', onMouseOut);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -821,26 +1324,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/creative" element={
-            <div className="flex flex-col items-center justify-center min-h-screen text-center bg-[var(--bg)] relative overflow-hidden">
-              {/* Background mesh */}
-              <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="absolute top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(251,146,60,0.05)_0%,transparent_70%)]" />
-              </div>
-
-              <div className="relative z-10 flex flex-col items-center gap-6 p-8">
-                <h1 className="font-['Playfair_Display'] text-6xl md:text-7xl font-normal leading-[1.05] tracking-tight text-white text-center">
-                  Creative <span className="italic text-orange-400 font-light">Dimension<span className="text-white">.</span></span>
-                </h1>
-                <p className="text-gray-400 text-lg md:text-xl font-light tracking-wide max-w-[500px]">
-                  You successfully navigated here using the <span className="text-orange-400 font-medium">Peace sign ✌️</span> gesture!
-                </p>
-                <Link to="/" className="mt-8 px-8 py-3.5 bg-orange-400 text-[#121216] font-semibold rounded-full hover:bg-orange-300 hover:shadow-[0_0_30px_rgba(251,146,60,0.3)] transition-all text-sm tracking-wide">
-                  ← return to reality
-                </Link>
-              </div>
-            </div>
-          } />
+          <Route path="/creative" element={<CreativeCorner />} />
         </Routes>
 
         <audio loop ref={audioRef} className="hidden" src="/music/lofi.mp3" />

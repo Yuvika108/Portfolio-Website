@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAgent();
   initTextScrollAnimation();
   initTelemetrySimulation();
+  initCodolioStats();
 });
 
 function initSmoothScroll() {
@@ -539,6 +540,22 @@ function initAgent() {
 
     statusElement.textContent = 'Loading AI...';
 
+    if (window.Hands && window.Camera) {
+      initialize();
+      return;
+    }
+
+    // Dynamic loading of MediaPipe scripts to optimize home page load speed
+    const cameraScript = document.createElement('script');
+    cameraScript.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js';
+    cameraScript.crossOrigin = 'anonymous';
+    document.head.appendChild(cameraScript);
+
+    const handsScript = document.createElement('script');
+    handsScript.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js';
+    handsScript.crossOrigin = 'anonymous';
+    document.head.appendChild(handsScript);
+
     const checkInterval = setInterval(() => {
       if (window.Hands && window.Camera) {
         clearInterval(checkInterval);
@@ -1023,4 +1040,64 @@ function initTelemetrySimulation() {
       addTerminalLine(`[TRAIN] Batch ${batch}/468 - loss: ${batchLoss}`, 'system-line');
     }
   }, 450);
+}
+
+// Fetch and update stats dynamically from Codolio and GitHub
+async function initCodolioStats() {
+  const githubEl = document.getElementById('pc-github-repos');
+  const activeDaysEl = document.getElementById('pc-active-days');
+  const projectsEl = document.getElementById('pc-projects-built');
+  const solvedEl = document.getElementById('pc-problems-solved');
+
+  // 1. Fetch Codolio user details (active days, problems solved)
+  try {
+    const res = await fetch('https://api.codolio.com/user/details?userKey=YuviGarg');
+    if (res.ok) {
+      const result = await res.json();
+      if (result && result.status && result.status.success && result.data) {
+        const cardDetails = result.data.codolioCardDetails;
+        if (cardDetails) {
+          if (solvedEl && cardDetails.totalQuestionsSolved) {
+            solvedEl.textContent = cardDetails.totalQuestionsSolved;
+          }
+          if (activeDaysEl && cardDetails.totalActiveDays) {
+            activeDaysEl.textContent = cardDetails.totalActiveDays;
+          }
+        }
+        // Note: Dynamic bio updating is disabled to preserve custom multi-line formatted list in index.html
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to fetch Codolio details:', err);
+  }
+
+  // 2. Fetch Codolio project config (projects count)
+  try {
+    const res = await fetch('https://api.codolio.com/dev/project/config?userKey=YuviGarg');
+    if (res.ok) {
+      const result = await res.json();
+      if (result && result.status && result.status.success && result.data && result.data.projectIds) {
+        if (projectsEl) {
+          projectsEl.textContent = result.data.projectIds.length;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to fetch Codolio projects:', err);
+  }
+
+  // 3. Fetch GitHub repositories count
+  try {
+    const res = await fetch('https://api.github.com/users/Yuvika108');
+    if (res.ok) {
+      const result = await res.json();
+      if (result && typeof result.public_repos !== 'undefined') {
+        if (githubEl) {
+          githubEl.textContent = result.public_repos;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to fetch GitHub profile:', err);
+  }
 }

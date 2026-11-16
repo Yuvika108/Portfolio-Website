@@ -171,6 +171,8 @@ body {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  margin-right: 2rem;
 }
 
 .nav-logo-bold {
@@ -185,7 +187,7 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 1.75rem;
+  gap: 1.25rem;
   align-items: center;
 }
 
@@ -230,6 +232,7 @@ body {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   transition: var(--transition-smooth);
+  white-space: nowrap;
 }
 
 .music-label {

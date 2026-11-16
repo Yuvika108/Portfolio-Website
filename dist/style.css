@@ -5307,6 +5307,12 @@ html[data-theme="light"] .experience-section {
   padding: 5rem 0;
 }
 
+html[data-theme="light"] .projects-section {
+  background: #FFFFFF;
+  position: relative;
+  padding: 5rem 0;
+}
+
 html[data-theme="light"] .vision-section {
   background: #FFFDF7;
   border-radius: 48px;

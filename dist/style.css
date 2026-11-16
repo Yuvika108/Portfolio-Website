@@ -162,6 +162,7 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .nav-logo {
@@ -172,7 +173,7 @@ body {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
   margin-right: 1rem;
-  max-width: 60%;
+  max-width: min(60%, 180px);
   overflow-wrap: break-word;
 }
 
@@ -1178,7 +1179,8 @@ body {
   font-family: var(--font-mono);
   color: var(--accent-soft);
   backdrop-filter: blur(8px);
-  white-space: nowrap;
+  overflow-wrap: break-word;
+  max-width: calc(100vw - 60px);
   animation: chipFloat 5s ease-in-out infinite alternate;
 }
 
@@ -6191,7 +6193,7 @@ section {
   .nav-logo {
     font-size: 0.7rem;
     margin-right: 0;
-    white-space: nowrap;
+    overflow-wrap: break-word;
   }
 
   .nav-container .nav-logo {
@@ -6445,7 +6447,7 @@ section {
   .connect-inner {
     grid-template-columns: 1fr !important;
     gap: 3rem;
-    padding: 0 1rem;
+    padding: 0 0.75rem;
   }
 
   .connect-eyebrow {

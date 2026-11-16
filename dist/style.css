@@ -185,7 +185,7 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.75rem;
   align-items: center;
 }
 
@@ -2614,6 +2614,17 @@ article.project-row:hover {
 
   .connect-form-wrap {
     padding: 2rem 1.8rem 2.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav-links {
+    gap: 1.25rem;
+  }
+
+  .nav-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
   }
 }
 

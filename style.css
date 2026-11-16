@@ -5290,13 +5290,25 @@ html[data-theme="light"] .playing-card-5 .btc-label {
 
 /* ─── Alternating Sections (Strawberry Milk, Sunny Butter, Lavender Milk) ─── */
 html[data-theme="light"] .about-section {
-  background: #FFFDF7;
+  background: rgba(240, 123, 208, 0.12);
   border-radius: 48px;
   margin: 3.5rem auto;
   max-width: 1200px;
   padding: 4.5rem 2.5rem;
   border: 1.5px solid rgba(240, 123, 208, 0.35);
   box-shadow: 0 16px 42px rgba(240, 123, 208, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .projects-section {
+  background: rgba(247, 197, 49, 0.12);
+  border-radius: 48px;
+  margin: 3.5rem auto;
+  max-width: 1200px;
+  padding: 4.5rem 2.5rem;
+  border: 1.5px solid rgba(247, 197, 49, 0.35);
+  box-shadow: 0 16px 42px rgba(247, 197, 49, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -5315,6 +5327,7 @@ html[data-theme="light"] .about-section::before {
 }
 
 html[data-theme="light"] .experience-section {
+  background: rgba(242, 107, 33, 0.1);
   position: relative;
   padding: 5rem 0;
 }
@@ -5343,14 +5356,26 @@ html[data-theme="light"] .experience-section::after {
   z-index: 1;
 }
 
-html[data-theme="light"] .vision-section {
-  background: #FFFDF7;
+html[data-theme="light"] .skills-section {
+  background: rgba(155, 123, 224, 0.12);
   border-radius: 48px;
   margin: 3.5rem auto;
   max-width: 1200px;
   padding: 4.5rem 2.5rem;
   border: 1.5px solid rgba(155, 123, 224, 0.35);
   box-shadow: 0 16px 42px rgba(155, 123, 224, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .vision-section {
+  background: #FFF6E5;
+  border-radius: 48px;
+  margin: 3.5rem auto;
+  max-width: 1200px;
+  padding: 4.5rem 2.5rem;
+  border: 1.5px solid rgba(247, 197, 49, 0.35);
+  box-shadow: 0 16px 42px rgba(247, 197, 49, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -5371,6 +5396,9 @@ html[data-theme="light"] .vision-section::before {
 
 @media (max-width: 768px) {
   html[data-theme="light"] .about-section,
+  html[data-theme="light"] .projects-section,
+  html[data-theme="light"] .experience-section,
+  html[data-theme="light"] .skills-section,
   html[data-theme="light"] .vision-section {
     border-radius: 28px;
     margin: 2rem 1rem;
@@ -5538,7 +5566,14 @@ html[data-theme="light"] .vision-heading em {
 
 /* ─── Winding Yellow Ribbon Banner (Connect Section — inspiration match) ─── */
 html[data-theme="light"] .connect-section {
-  background-color: transparent;
+  background: #FFFDF7;
+  border-radius: 48px;
+  margin: 3.5rem auto;
+  max-width: 1200px;
+  padding: 4.5rem 2.5rem;
+  border: 1.5px solid rgba(240, 123, 208, 0.35);
+  box-shadow: 0 16px 42px rgba(240, 123, 208, 0.1);
+  background-color: #FFFDF7;
   background-image: none;
 }
 

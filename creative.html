@@ -52,34 +52,43 @@
   <canvas class="rain-canvas" id="rainCanvas"></canvas>
 
   <!-- Navigation -->
-  <nav class="nav" id="nav">
+  <nav class="nav" id="nav" aria-label="Main navigation">
     <div class="nav-container">
       <div class="nav-logo">
-        Srishti <span class="nav-logo-bold">Mishra</span><span class="logo-dot">.</span>
+        Srishti <span class="nav-logo-bold"><br>Mishra</span><span class="logo-dot">.</span>
       </div>
-      <div class="nav-links">
+      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="nav-links" id="navLinks">
         <a href="index.html#about" class="nav-link">About</a>
         <a href="index.html#projects" class="nav-link">Projects</a>
-        <a href="index.html#experience" class="nav-link">Experience</a>
+        <a href="index.html#experience" class="nav-link">Journey</a>
         <a href="index.html#skills" class="nav-link">Skills</a>
         <a href="creative.html" class="nav-link active">Creative</a>
         <a href="index.html#vision" class="nav-link">Vision</a>
         <a href="index.html#contact" class="nav-link nav-link--cta">Contact</a>
       </div>
-      <div class="nav-music">
-        <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
-          <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
-          <span class="music-label">music player</span>
-          <div class="visualizer" id="visualizer">
-            <span class="v-bar bar-1"></span>
-            <span class="v-bar bar-2"></span>
-            <span class="v-bar bar-3"></span>
-            <span class="v-bar bar-4"></span>
-          </div>
-        </button>
-      </div>
     </div>
   </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="nav-mobile-menu hidden" id="navMobileMenu" role="menu" aria-modal="true" aria-label="Mobile navigation">
+    <button class="nav-mobile-close" id="navMobileClose" aria-label="Close menu">
+      <i class="bi bi-x"></i>
+    </button>
+    <ul class="nav-mobile-list">
+      <li><a href="index.html#about" class="nav-mobile-link">About</a></li>
+      <li><a href="index.html#projects" class="nav-mobile-link">Projects</a></li>
+      <li><a href="index.html#experience" class="nav-mobile-link">Journey</a></li>
+      <li><a href="index.html#skills" class="nav-mobile-link">Skills</a></li>
+      <li><a href="creative.html" class="nav-mobile-link active">Creative</a></li>
+      <li><a href="index.html#vision" class="nav-mobile-link">Vision</a></li>
+      <li><a href="index.html#contact" class="nav-mobile-link nav-mobile-link--cta">Contact</a></li>
+    </ul>
+  </div>
 
   <!-- Creative Corner Section -->
   <section class="section creative-section" id="creative" style="padding-top: 8rem; min-height: 90vh;">

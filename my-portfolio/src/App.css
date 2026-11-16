@@ -70,8 +70,8 @@ body {
   border-radius: 16px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 
-              0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    0 8px 32px 0 rgba(0, 0, 0, 0.3);
   transition: var(--transition-smooth);
 }
 
@@ -80,7 +80,7 @@ body {
   border-color: rgba(224, 122, 95, 0.3);
   transform: translateY(-5px);
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1),
-              0 15px 30px rgba(224, 122, 95, 0.12);
+    0 15px 30px rgba(224, 122, 95, 0.12);
 }
 
 /* Custom back to top button */
@@ -111,8 +111,15 @@ body {
 
 /* Animations */
 @keyframes ringPing {
-  0% { transform: scale(1); opacity: 0.8; }
-  100% { transform: scale(1.35); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
 }
 
 .pulsing-ring-1 {
@@ -124,15 +131,23 @@ body {
 }
 
 @keyframes barPulse {
-  0%, 100% { height: 2px; }
-  50% { height: 9px; }
+
+  0%,
+  100% {
+    height: 2px;
+  }
+
+  50% {
+    height: 9px;
+  }
 }
 
 /* Custom Cursor Dot Design */
 .cursor {
   width: 8px;
   height: 8px;
-  background: var(--accent); /* Solid muted orange dot */
+  background: var(--accent);
+  /* Solid muted orange dot */
   border-radius: 50%;
   position: fixed;
   top: 0;
@@ -146,7 +161,8 @@ body {
 .cursor-trail {
   width: 32px;
   height: 32px;
-  border: 1.5px solid rgba(224, 122, 95, 0.3); /* Hollow muted orange ring */
+  border: 1.5px solid rgba(224, 122, 95, 0.3);
+  /* Hollow muted orange ring */
   background: radial-gradient(circle, rgba(224, 122, 95, 0.08) 0%, transparent 80%);
   border-radius: 50%;
   position: fixed;
@@ -155,12 +171,14 @@ body {
   pointer-events: none;
   z-index: 9999;
   transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.2s, background-color 0.2s, width 0.2s, height 0.2s, margin-top 0.2s, margin-left 0.2s;
-  box-shadow: 0 0 15px rgba(224, 122, 95, 0.15); /* Soft premium glowing halo! */
+  box-shadow: 0 0 15px rgba(224, 122, 95, 0.15);
+  /* Soft premium glowing halo! */
 }
 
 /* Hover expansion active state */
 .cursor.cursor-active {
   background-color: #fff;
+  filter: blur(18px);
 }
 
 .cursor-trail.cursor-active {
@@ -189,46 +207,51 @@ body {
     margin-top: 48px;
     margin-bottom: 24px;
   }
-  
+
   .playing-card {
     position: absolute !important;
     width: 280px !important;
     height: 430px !important;
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s, border-color 0.5s, background-color 0.5s, z-index 0.5s !important;
   }
-  
+
   /* Overlapping deck coordinates with fanning rotations for tablet/medium screens (min-width: 768px) */
   .playing-card-1 {
     left: calc(50% - 340px);
     transform: rotate(-10deg) translateY(18px);
     z-index: 10;
   }
+
   .playing-card-2 {
     left: calc(50% - 260px);
     transform: rotate(-6deg) translateY(8px);
     z-index: 20;
   }
+
   .playing-card-3 {
     left: calc(50% - 180px);
     transform: rotate(-2deg) translateY(-2px);
     z-index: 30;
   }
+
   .playing-card-4 {
     left: calc(50% - 100px);
     transform: rotate(2deg) translateY(-2px);
     z-index: 40;
   }
+
   .playing-card-5 {
     left: calc(50% - 20px);
     transform: rotate(6deg) translateY(8px);
     z-index: 50;
   }
+
   .playing-card-6 {
     left: calc(50% + 60px);
     transform: rotate(10deg) translateY(18px);
     z-index: 60;
   }
-  
+
   /* Hover state: lifts up, straightens, zooms, glows, and floats to front */
   .playing-card:hover {
     transform: rotate(0deg) translateY(-32px) scale(1.05) !important;
@@ -245,22 +268,27 @@ body {
     left: calc(50% - 465px);
     transform: rotate(-10deg) translateY(18px);
   }
+
   .playing-card-2 {
     left: calc(50% - 335px);
     transform: rotate(-6deg) translateY(8px);
   }
+
   .playing-card-3 {
     left: calc(50% - 205px);
     transform: rotate(-2deg) translateY(-2px);
   }
+
   .playing-card-4 {
     left: calc(50% - 75px);
     transform: rotate(2deg) translateY(-2px);
   }
+
   .playing-card-5 {
     left: calc(50% + 55px);
     transform: rotate(6deg) translateY(8px);
   }
+
   .playing-card-6 {
     left: calc(50% + 185px);
     transform: rotate(10deg) translateY(18px);
@@ -276,7 +304,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(224, 122, 95, 0.25) !important;
   box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.6),
-              inset 0 1px 1px rgba(255, 255, 255, 0.06) !important;
+    inset 0 1px 1px rgba(255, 255, 255, 0.06) !important;
   padding: 1.3rem 1.1rem 1.1rem !important;
   transform: rotate(4deg);
   transition: var(--transition-smooth);
@@ -292,7 +320,7 @@ body {
   transform: rotate(1deg) scale(1.06) !important;
   border-color: rgba(224, 122, 95, 0.45) !important;
   box-shadow: 0 25px 50px -10px rgba(224, 122, 95, 0.15),
-              inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+    inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
 }
 
 @media (max-width: 1200px) {
@@ -613,8 +641,17 @@ body {
 }
 
 @keyframes bulbBlink {
-  0%, 100% { opacity: 0.4; box-shadow: 0 0 2px #86efac; }
-  50% { opacity: 1; box-shadow: 0 0 10px #86efac; }
+
+  0%,
+  100% {
+    opacity: 0.4;
+    box-shadow: 0 0 2px #86efac;
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 10px #86efac;
+  }
 }
 
 .telemetry-stats {
@@ -705,9 +742,17 @@ body {
   border-radius: 50%;
 }
 
-.dot-red { background: #ef4444; }
-.dot-yellow { background: #f59e0b; }
-.dot-green { background: #10b981; }
+.dot-red {
+  background: #ef4444;
+}
+
+.dot-yellow {
+  background: #f59e0b;
+}
+
+.dot-green {
+  background: #10b981;
+}
 
 .term-title {
   font-family: var(--mono);
@@ -1032,10 +1077,12 @@ body {
 }
 
 @keyframes dotPulse {
+
   0%,
   100% {
     box-shadow: 0 0 12px rgba(224, 122, 95, 0.5), 0 0 24px rgba(224, 122, 95, 0.2);
   }
+
   50% {
     box-shadow: 0 0 18px rgba(224, 122, 95, 0.8), 0 0 36px rgba(224, 122, 95, 0.35);
   }

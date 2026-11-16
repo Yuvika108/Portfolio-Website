@@ -1229,6 +1229,14 @@ body {
   letter-spacing: -0.01em;
 }
 
+.heading-line {
+  display: block;
+  white-space: nowrap;
+  margin-left: 0;
+  padding-left: 0;
+  text-indent: 0;
+}
+
 .section-heading {
   margin-bottom: 3rem;
 }

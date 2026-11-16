@@ -78,8 +78,32 @@
           </div>
         </button>
       </div>
+      <!-- Mobile Hamburger Menu -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="nav-mobile-overlay" id="navMobileOverlay" aria-hidden="true">
+    <div class="nav-mobile-content">
+      <button class="nav-mobile-close" id="navMobileClose" aria-label="Close navigation menu">
+        <i class="bi bi-x"></i>
+      </button>
+      <ul class="nav-mobile-links">
+        <li><a href="index.html#about" class="nav-mobile-link">About</a></li>
+        <li><a href="index.html#projects" class="nav-mobile-link">Projects</a></li>
+        <li><a href="index.html#experience" class="nav-mobile-link">Experience</a></li>
+        <li><a href="index.html#skills" class="nav-mobile-link">Skills</a></li>
+        <li><a href="creative.html" class="nav-mobile-link active">Creative</a></li>
+        <li><a href="index.html#vision" class="nav-mobile-link">Vision</a></li>
+        <li><a href="index.html#contact" class="nav-mobile-link nav-mobile-link--cta">Contact</a></li>
+      </ul>
+    </div>
+  </div>
 
   <!-- Creative Corner Section -->
   <section class="section creative-section" id="creative" style="padding-top: 8rem; min-height: 90vh;">

@@ -19,7 +19,6 @@ const filesToCopy = [
   'index.html',
   'style.css',
   'script.js',
-  'data.js',
   'admin.html',
   'creative.html',
   'bg-music.mp3',

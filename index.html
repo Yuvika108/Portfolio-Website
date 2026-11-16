@@ -4,30 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Srishti Mishra — AI/ML Engineer & Software Developer. B.Tech CSE (AI) from University of Lucknow (CGPA 8.93/10). Portfolio showcasing machine learning, RAG, multi-agent systems, and software engineering projects." />
-  <meta name="theme-color" content="#FFFFFF" />
-  <meta property="og:title" content="Srishti Mishra — AI/ML Engineer & Software Developer" />
-  <meta property="og:description" content="Computer Science undergraduate specializing in Artificial Intelligence, exploring machine learning, LLM-powered applications and software development." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yuvika108.github.io/Portfolio-Website/" />
-  <title>Srishti Mishra — AI/ML Engineer & Software Developer</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌱%3C/text%3E%3C/svg%3E">
-
-  <!-- Theme script runs before stylesheet to prevent FOUC -->
+  <title>Srishti — AI/ML Engineer &amp; Creative Coder</title>
+  <meta name="description"
+    content="Personal portfolio of Srishti, a B.Tech CSE(AI) student at University of Lucknow specializing in Artificial Intelligence, Machine Learning, and Interactive digital experiences." />
   <script>
     (function () {
       try {
         var savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark');
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
         } else {
           document.documentElement.setAttribute('data-theme', 'light');
         }
@@ -36,254 +21,868 @@
       }
     })();
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
 </head>
 
 <body>
-  <!-- Scroll Progress -->
-  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+  </div>
+
+  <!-- Grain & Lofi Overlays -->
+  <div class="grain-overlay"></div>
+  <div class="vignette"></div>
+  <div class="scanlines"></div>
+  <canvas class="rain-canvas" id="rainCanvas"></canvas>
 
   <!-- Navigation -->
-  <nav class="nav" id="nav" aria-label="Main navigation">
+  <nav class="nav" id="nav">
     <div class="nav-container">
-      <a href="#" class="nav-logo" aria-label="Home">
+      <div class="nav-logo">
         Srishti <span class="nav-logo-bold">Mishra</span><span class="logo-dot">.</span>
-      </a>
-      <div class="nav-links" id="navLinks">
-        <a href="#hero" class="nav-link active">Home</a>
+      </div>
+      <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#projects" class="nav-link">Projects</a>
+        <a href="#experience" class="nav-link">Journey</a>
         <a href="#skills" class="nav-link">Skills</a>
-        <a href="#experience" class="nav-link">Experience</a>
-        <a href="#achievements" class="nav-link">Achievements</a>
-        <a href="#creative" class="nav-link">Creative</a>
+        <a href="creative.html" class="nav-link">Creative</a>
+        <a href="#vision" class="nav-link">Vision</a>
         <a href="#contact" class="nav-link nav-link--cta">Contact</a>
       </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-        <span class="nav-toggle-line"></span>
-        <span class="nav-toggle-line"></span>
-        <span class="nav-toggle-line"></span>
-      </button>
-      <div class="nav-theme" id="navTheme">
-        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle theme">
-          <i class="bi bi-moon-stars"></i>
+      <div class="nav-music">
+        <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
+          <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
+          <span class="music-label">music player</span>
+          <div class="visualizer" id="visualizer">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
         </button>
       </div>
+      <!-- Mobile Hamburger Menu -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
   </nav>
 
-  <!-- 01 — HERO -->
-  <section class="hero" id="hero" aria-labelledby="hero-heading">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="hero-container">
-      <div class="hero-content">
-        <span class="hero-eyebrow">01 — First Impression</span>
-        <h1 id="hero-heading" class="hero-name">
-          Srishti <span class="hero-name-accent">Mishra.</span>
-        </h1>
-        <p class="hero-role" id="heroRole">AI/ML Engineer · Software Developer · Creative Coder</p>
-        <p class="hero-description">
-          Building intelligent systems and thoughtful digital experiences. Computer Science undergraduate
-          specializing in Artificial Intelligence, exploring machine learning, LLM-powered applications and software development.
-        </p>
+  <!-- Mobile Navigation Overlay -->
+  <div class="nav-mobile-overlay" id="navMobileOverlay" aria-hidden="true">
+    <div class="nav-mobile-content">
+      <button class="nav-mobile-close" id="navMobileClose" aria-label="Close navigation menu">
+        <i class="bi bi-x"></i>
+      </button>
+      <ul class="nav-mobile-links">
+        <li><a href="#about" class="nav-mobile-link">About</a></li>
+        <li><a href="#projects" class="nav-mobile-link">Projects</a></li>
+        <li><a href="#experience" class="nav-mobile-link">Journey</a></li>
+        <li><a href="#skills" class="nav-mobile-link">Skills</a></li>
+        <li><a href="creative.html" class="nav-mobile-link">Creative</a></li>
+        <li><a href="#vision" class="nav-mobile-link">Vision</a></li>
+        <li><a href="#contact" class="nav-mobile-link nav-mobile-link--cta">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+
+
+
+    <!-- Animated background mesh -->
+    <div class="hero-mesh">
+      <div class="mesh-orb orb-peach"></div>
+      <div class="mesh-orb orb-violet"></div>
+      <div class="mesh-orb orb-sunset"></div>
+    </div>
+
+    <!-- Floating decorative glyphs -->
+    <div class="hero-glyphs" aria-hidden="true">
+      <span class="glyph g1"><i class="bi bi-stars"></i></span>
+      <span class="glyph g2">{}</span>
+      <span class="glyph g3">⟡</span>
+      <span class="glyph g4">∿</span>
+      <span class="glyph g5">◈</span>
+      <span class="glyph sparkle twinkle-1" style="top: 25%; left: 40%;"><i class="bi bi-stars"></i></span>
+      <span class="glyph sparkle twinkle-2" style="top: 60%; right: 45%;"><i class="bi bi-stars"></i></span>
+      <span class="glyph sparkle twinkle-3" style="top: 15%; right: 25%;"><i class="bi bi-stars"></i></span>
+      <i class="bi bi-cpu glyph g-icon-1"></i>
+      <i class="bi bi-terminal glyph g-icon-2"></i>
+      <i class="bi bi-robot glyph g-icon-3"></i>
+      <i class="bi bi-database glyph g-icon-4"></i>
+      <i class="bi bi-braces glyph g-icon-5"></i>
+      <i class="bi bi-bar-chart-line glyph g-icon-6"></i>
+      <i class="bi bi-gear glyph g-icon-7"></i>
+      <i class="bi bi-infinity glyph g-icon-8"></i>
+    </div>
+
+    <div class="hero-inner">
+
+      <!-- LEFT: Text content -->
+      <div class="hero-left">
+
+        <div class="hero-badge badge-active">
+          <span class="badge-pulse ml-pulse"></span>
+          <span class="badge-text">ML Pipelines Active</span>
+        </div>
+
+        <div class="hero-name-block">
+          <p class="hero-greeting">hey there, I'm</p>
+          <h1 class="hero-name">
+            <span class="name-line">
+              SRISHTI
+            </span>
+            <span class="name-line name-last">Mishra<span class="name-dot">.</span></span>
+          </h1>
+        </div>
+
+        <div class="hero-role-line">
+          <span class="role-prefix">I </span>
+          <span class="role-typewriter" id="roleTypewriter"></span>
+          <span class="role-cursor">|</span>
+        </div>
+
+        <p class="hero-sub">B.Tech CSE(AI) student at University of Lucknow — engineering intelligence and deploying
+          robust models
+          at the intersection of mathematics, algorithms &amp; clean systems.</p>
+
+        <div class="hero-pills">
+          <span class="pill">PyTorch</span>
+          <span class="pill">TensorFlow</span>
+          <span class="pill">Transformers &amp; LLMs</span>
+          <span class="pill">Computer Vision</span>
+          <span class="pill">MLOps</span>
+        </div>
+
         <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">Explore Projects</a>
-          <a href="https://github.com/Yuvika108" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-            <span>GitHub</span> <i class="bi bi-arrow-up-right"></i>
-          </a>
+          <a href="#projects" class="btn-primary" id="hero-cta-work">view my work</a>
+          <a href="#about" class="btn-ghost" id="hero-cta-about">about me ↓</a>
         </div>
-        <div class="hero-education">
-          <span class="edu-chip">B.Tech CSE (AI)</span>
-          <span class="edu-sep">·</span>
-          <span class="edu-chip">University of Lucknow</span>
-          <span class="edu-sep">·</span>
-          <span class="edu-chip">CGPA 8.93/10</span>
+
+        <div class="hero-socials">
+          <a href="https://github.com/Yuvika108" class="hs-link" id="hero-github" target="_blank"
+            rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i> GitHub</a>
+          <span class="hs-sep"></span>
+          <a href="https://www.linkedin.com/in/mishrasrishti108/" class="hs-link" id="hero-linkedin" target="_blank"
+            rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i> LinkedIn</a>
+          <span class="hs-sep"></span>
+          <a href="mailto:mishrasrishti108@gmail.com" class="hs-link" id="hero-mail" aria-label="Email"><i
+              class="bi bi-envelope-fill"></i> Email</a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Profile Card (Codolio-style) -->
+      <div class="hero-right">
+        <div class="profile-card" id="profileCard">
+
+          <!-- Card brand label -->
+          <div class="pc-brand">
+            <span class="pc-brand-name">Portfolio<span class="pc-brand-accent">.</span></span>
+            <span class="pc-brand-tag">CARD</span>
+          </div>
+
+          <!-- Avatar -->
+          <div class="pc-avatar-wrap">
+            <div class="pc-avatar">
+              <div class="pc-avatar-ring pc-ring-1"></div>
+              <div class="pc-avatar-ring pc-ring-2"></div>
+              <div class="pc-avatar-inner">
+                <span class="pc-initials">SM</span>
+              </div>
+            </div>
+            <div class="pc-status-badge">
+              <span class="pc-status-dot"></span>
+            </div>
+          </div>
+
+          <!-- Name + Handle -->
+          <div class="pc-identity">
+            <div class="pc-name-row">
+              <span class="pc-name">Srishti Mishra</span>
+              <svg class="pc-verified" viewBox="0 0 20 20" fill="none" aria-label="Verified">
+                <circle cx="10" cy="10" r="9" fill="var(--accent)" opacity="0.15" />
+                <circle cx="10" cy="10" r="9" stroke="var(--accent)" stroke-width="1.5" />
+                <path d="M6.5 10l2.5 2.5 4.5-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="pc-handle">@YuviGarg</div>
+            <div class="pc-role-tag">AI / ML Engineer</div>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="pc-stats">
+            <div class="pc-stat">
+              <span class="pc-stat-label">GitHub Repos</span>
+              <span class="pc-stat-value" id="pc-github-repos">42</span>
+            </div>
+            <div class="pc-stat">
+              <span class="pc-stat-label">Problems Solved</span>
+              <span class="pc-stat-value" id="pc-problems-solved">680</span>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="pc-divider"></div>
+
+          <!-- Short Intro (Bio) -->
+          <div class="pc-bio-wrap">
+            <p class="pc-bio-header">B.Tech Student at the University of Lucknow</p>
+            <ul class="pc-bio-list">
+              <li class="pc-bio-item">Passionate about technology, innovation, and continuous learning.</li>
+              <li class="pc-bio-item">Strong interest in problem-solving, creativity, and personal growth.</li>
+              <li class="pc-bio-item">Enthusiastic about art, literature, music, and cinema.</li>
+              <li class="pc-bio-item">Exploring opportunities to learn, build, and create meaningful impact.</li>
+            </ul>
+          </div>
+
+          <!-- Skill Tags -->
+          <div class="pc-tags">
+            <span class="pc-tag">#PyTorch</span>
+            <span class="pc-tag">#NLP</span>
+            <span class="pc-tag">#ComputerVision</span>
+            <span class="pc-tag">#MLOps</span>
+            <span class="pc-tag">#DSA</span>
+            <span class="pc-tag">#Python</span>
+          </div>
+
         </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="avatar-card">
-          <div class="avatar-ring"></div>
-          <div class="avatar-inner">SM</div>
-          <span class="avatar-status"></span>
-        </div>
-        <p class="avatar-caption">Building with code, math & neural networks</p>
-      </div>
+
+
     </div>
+
+
   </section>
 
-  <!-- 02 — ABOUT -->
-  <section class="section about-section" id="about" aria-labelledby="about-heading">
+
+  <!-- About Section - Editorial Layout -->
+  <section class="section about-section" id="about">
     <div class="section-inner">
-      <div class="section-header">
-        <span class="section-eyebrow">02 — About Me</span>
-        <h2 id="about-heading" class="section-title">Who I am</h2>
-      </div>
-      <div class="about-grid">
-        <div class="about-text">
-          <p class="about-lead">Bachelor of Technology in Computer Science (Artificial Intelligence), focused on developing intelligent systems and data-driven solutions for real-world challenges.</p>
+      <div class="section-label">01 — About Me</div>
+      <h2 class="section-heading text-scroll-anim ts-variant-1">Technology as a Form<br>of Creativity</h2>
+
+      <div class="about-editorial">
+        <div class="ae-text">
+          <p class="ae-lead">Bachelor of Technology in Computer Science (Artificial Intelligence), focused on developing intelligent systems and data-driven solutions for real-world challenges.</p>
           <p>I specialize in building predictive models, optimizing machine learning pipelines, and creating applications that blend advanced AI capabilities with user-centered design. My work bridges the gap between technical depth and accessible, intuitive experiences.</p>
-          <div class="about-details">
-            <div class="about-detail">
-              <span class="detail-label">focus</span>
-              <span class="detail-value">Artificial Intelligence & Machine Learning</span>
+
+          <div class="ae-details">
+            <div class="ae-detail">
+              <span class="ae-label">focus</span>
+              <span class="ae-value">Artificial Intelligence &amp; Machine Learning</span>
             </div>
-            <div class="about-detail">
-              <span class="detail-label">education</span>
-              <span class="detail-value">B.Tech, Computer Science & Engineering (AI)</span>
+            <div class="ae-detail">
+              <span class="ae-label">education</span>
+              <span class="ae-value">B.Tech, Computer Science &amp; Engineering (AI)</span>
             </div>
-            <div class="about-detail">
-              <span class="detail-label">cgpa</span>
-              <span class="detail-value">8.93/10</span>
-            </div>
-            <div class="about-detail">
-              <span class="detail-label">university</span>
-              <span class="detail-value">University of Lucknow</span>
-            </div>
-            <div class="about-detail">
-              <span class="detail-label">interests</span>
-              <span class="detail-value">Neural Networks, Computer Vision, Algorithms & Applied Mathematics</span>
+            <div class="ae-detail">
+              <span class="ae-label">interests</span>
+              <span class="ae-value">Neural Networks, Computer Vision, Algorithms &amp; Applied Mathematics</span>
             </div>
           </div>
         </div>
-        <div class="about-visual">
-          <div class="about-card">
-            <div class="card-icon">🎯</div>
-            <div class="card-title">AI/ML Engineer</div>
-            <div class="card-desc">Building predictive models and intelligent systems</div>
+        <div class="ae-visuals">
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-cpu text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Systems</span>
           </div>
-          <div class="about-card">
-            <div class="card-icon">💻</div>
-            <div class="card-title">Software Developer</div>
-            <div class="card-desc">Full-stack development with Python, React & Streamlit</div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><span
+              style="font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #d8b4fe;">{}</span><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Engineering</span>
           </div>
-          <div class="about-card">
-            <div class="card-icon">🎨</div>
-            <div class="card-title">Creative Coder</div>
-            <div class="card-desc">Generative art, interface design, visual experiments</div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-palette text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Design</span>
           </div>
-          <div class="about-card">
-            <div class="card-icon">📚</div>
-            <div class="card-title">Currently Learning</div>
-            <div class="card-desc">LLMs, RAG, agentic workflows & MLOps</div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-compass text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Explore</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 03 — FEATURED PROJECTS -->
-  <section class="section projects-section" id="projects" aria-labelledby="projects-heading">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-eyebrow">03 — Featured Projects</span>
-        <h2 id="projects-heading" class="section-title">Featured Technical Work</h2>
-        <p class="section-description">Selected projects spanning AI/ML, Generative AI, and full-stack development. Each represents a real problem solved with code.</p>
+  <!-- Projects Section -->
+  <section class="section projects-section" id="projects">
+    <div class="section-inner" style="position: relative;">
+      <!-- Handcrafted lofi sticky note -->
+      <div class="hc-sticky-note" style="top: -100px; right: -20px; max-width: 200px; transform: rotate(-3deg);">
+        <div class="sticky-tape"></div>
+        <p class="sticky-title">TRAINING LOG</p>
+        <p class="sticky-text">
+          train models, optimize parameters. don't forget to check learning rate.<br><br>
+          epochs running...<br>
+          loss converges.
+        </p>
       </div>
-      <div class="projects-grid" id="projectsGrid">
-        <!-- Project cards injected by script.js from data.js -->
+
+      <div class="section-header-row">
+        <div class="section-label">02 — Projects</div>
+        <h2 class="section-heading text-scroll-anim ts-variant-3">
+          Selected Works &amp; Experiments
+        </h2>
+      </div>
+
+      <div class="cards-deck-container">
+
+        <article class="project-row playing-card playing-card-1" id="proj-1">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">01</span>
+              <span class="pr-stack">Python / NLP</span>
+            </div>
+            <h3 class="pr-title">WhatsApp Chat Analyser</h3>
+            <p class="pr-desc">Transforms raw chat exports into beautiful, artistic visualizations. Features activity
+              heatmaps, word clouds, and emoji tracking.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"I wanted to see if our digital conversations had a visible rhythm. The challenge was mapping messy
+                human chat data into something that felt like art."</p>
+            </div>
+            <a href="https://whatsinurchat.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-2" id="proj-2">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">02</span>
+              <span class="pr-stack">Machine Learning</span>
+            </div>
+            <h3 class="pr-title">Sentiment Analysis</h3>
+            <p class="pr-desc">An NLP-based system identifying emotions from textual data using machine learning
+              techniques.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Behind the neural network is a desire to decode human sentiment. I built this to explore the subtlety
+                of language and emotion."</p>
+            </div>
+            <a href="https://missbhawna.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-3" id="proj-3">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">03</span>
+              <span class="pr-stack">Python</span>
+            </div>
+            <h3 class="pr-title">Movie Recommendations</h3>
+            <p class="pr-desc">A cinemaphile's companion tool that suggests films based on similarity patterns and user
+              preferences.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Every movie recommend is a vector match in a high-dimensional space. I wanted to build a portal that
+                maps a cinephile's soul."</p>
+            </div>
+            <a href="https://cinematix.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-4" id="proj-4">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">04</span><span class="pr-stack">Data Science</span></div>
+            <h3 class="pr-title">House Data Cleaning</h3>
+            <p class="pr-desc">Cleaning and preprocessing Bangalore housing datasets for predictive modeling.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Data is chaotic before cleaning. I designed this to reveal the clean, underlying geometry of
+                real-estate pricing dynamics."</p>
+            </div>
+            <a href="https://bangalorehousedata.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-5" id="proj-5">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">05</span><span class="pr-stack">Frontend</span></div>
+            <h3 class="pr-title">Rock-Paper-Scissor</h3>
+            <p class="pr-desc">Interactive game focused on frontend interaction and smooth user experience.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"A simple childhood game rebuilt to focus on tactile feedback and fluid motion. The magic is making the
+                mundane feel extremely responsive."</p>
+            </div>
+            <a href="https://silver-manatee-592868.netlify.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">Play Game <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <!-- 04 — TECHNICAL SKILLS -->
-  <section class="section skills-section" id="skills" aria-labelledby="skills-heading">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-eyebrow">04 — Technical Skills</span>
-        <h2 id="skills-heading" class="section-title">The Craft & The Tools</h2>
-        <p class="section-description">Technical capabilities organized by domain. Each represents hands-on project experience.</p>
+  <!-- Experience Section -->
+  <section class="section experience-section" id="experience">
+    <div class="section-inner" style="position: relative;">
+      <!-- Handcrafted lofi sticky note -->
+      <div class="hc-sticky-note" style="top: 20px; right: -60px; max-width: 170px; transform: rotate(5deg);">
+        <div class="sticky-tape"></div>
+        <p class="sticky-title">NOTE TO SELF</p>
+        <p class="sticky-text">
+          keep coding, keep dreaming. don't forget to look up at the stars.
+        </p>
       </div>
-      <div class="skills-grid" id="skillsGrid">
-        <!-- Skill categories injected by script.js from data.js -->
-      </div>
-      <div class="skills-learning">
-        <h3 class="skills-learning-title">Currently Exploring</h3>
-        <div class="learning-list" id="learningList">
-          <!-- Injected by script.js -->
+
+      <div class="section-label">03 — Journey </div>
+      <h2 class="section-heading text-scroll-anim ts-variant-2">My Project Journey</h2>
+
+      <div class="timeline">
+        <!-- Phase 3 -->
+        <div class="tl-phase-header">
+          <h3 class="tl-title">Phase 3: Interactive Dashboards & Frontend Integration</h3>
+          <p class="tl-desc">Bridging algorithmic backend data models with responsive user-facing interfaces to build
+            rich visual applications:</p>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot tl-dot--active"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Portfolio-Website
+              </h4>
+              <div class="tl-tech"><i class="bi bi-code-slash"></i> JavaScript, HTML, CSS</div>
+              <p class="tl-desc">Your central front-end portal built to showcase your technical resume, host your
+                interactive web projects, and track your software development timeline.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                gdp-dashboard
+              </h4>
+              <div class="tl-tech"><i class="bi bi-bar-chart-line"></i> Python, Plotly / Dash or Streamlit</div>
+              <p class="tl-desc">An analytics application designed to visualize global macroeconomic metrics, trends,
+                and GDP distributions through dynamic data dashboards.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                mediguard
+              </h4>
+              <div class="tl-tech"><i class="bi bi-heart-pulse"></i> JavaScript, HTML5, CSS3</div>
+              <p class="tl-desc">A newly initiated web-based application combining client-side web architecture with a
+                medical/healthcare tracker utility.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="tl-phase-header">
+          <h3 class="tl-title">Phase 2: Data Engineering & Cleaning</h3>
+          <p class="tl-desc">This phase highlights your shift toward ensuring data quality and preparation before
+            feeding data into models.</p>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Cleaned_Bangalore_House_Data
+              </h4>
+              <div class="tl-tech"><i class="bi bi-database-check"></i> Python, Pandas, NumPy, Data Imputation</div>
+              <p class="tl-desc">A comprehensive data-preprocessing pipeline focusing on data hygiene. It handles
+                outlier removal, feature engineering, and missing value management on real estate datasets to ready them
+                for regression models.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="tl-phase-header">
+          <h3 class="tl-title">Phase 1: Machine Learning & NLP Core</h3>
+          <p class="tl-desc">During this phase, you focused heavily on foundational AI modeling, handling data
+            structures for prediction, and text processing.</p>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Cancer-Detection-Using-Deep-Learning
+              </h4>
+              <div class="tl-tech"><i class="bi bi-cpu"></i> Python, TensorFlow/Keras</div>
+              <p class="tl-desc">A high-impact computer vision project utilizing deep learning architectures to process
+                medical imagery for identifying and classifying malignant cellular patterns.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Placement_Prediction_using_Logistic_Regression
+              </h4>
+              <div class="tl-tech"><i class="bi bi-graph-up-arrow"></i> Python, Scikit-Learn, Pandas, NumPy</div>
+              <p class="tl-desc">A predictive classification application that processes student academic metrics,
+                historical placement data, and skill sets to forecast campus recruitment outcomes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                MoviesRecommendationSystem
+              </h4>
+              <div class="tl-tech"><i class="bi bi-film"></i> Jupyter, Python, Pandas, Content-Based Filtering</div>
+              <p class="tl-desc">An unsupervised learning project implementing recommendation system pipelines to
+                calculate textual and metadata similarities, delivering tailored movie suggestions to users.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Sentiment_Analysis
+              </h4>
+              <div class="tl-tech"><i class="bi bi-chat-left-text"></i> Python, NLTK / TextBlob, Scikit-Learn</div>
+              <p class="tl-desc">A Natural Language Processing (NLP) application engineered to clean textual corpora,
+                parse linguistic features, and predict underlying emotional polarities or intent.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                WhatsApp_Chat_Analyser
+                <span class="tl-status">Refined May 2026</span>
+              </h4>
+              <div class="tl-tech"><i class="bi bi-whatsapp"></i> Python, Regex, Matplotlib, Seaborn, Streamlit</div>
+              <p class="tl-desc">A data analytics utility that transforms raw, unstructured WhatsApp chat logs into
+                interactive visual reports, showing active heatmaps, message distributions, and word frequency graphs.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 05 — EXPERIENCE & LEADERSHIP -->
-  <section class="section experience-section" id="experience" aria-labelledby="experience-heading">
+  <!-- Skills Section -->
+  <section class="section skills-section" id="skills">
     <div class="section-inner">
-      <div class="section-header">
-        <span class="section-eyebrow">05 — Experience & Leadership</span>
-        <h2 id="experience-heading" class="section-title">Experience & Leadership</h2>
-        <p class="section-description">Professional experience, internships, and leadership roles in reverse chronological order.</p>
-      </div>
-      <div class="experience-timeline" id="experienceTimeline">
-        <!-- Timeline items injected by script.js -->
-      </div>
-    </div>
-  </section>
+      <div class="section-label">04 — Toolkit</div>
+      <h2 class="section-heading text-scroll-anim ts-variant-1">The Craft &amp; The Tools</h2>
 
-  <!-- 06 — ACHIEVEMENTS & LEARNING -->
-  <section class="section achievements-section" id="achievements" aria-labelledby="achievements-heading">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-eyebrow">06 — Achievements & Learning</span>
-        <h2 id="achievements-heading" class="section-title">Achievements & Learning</h2>
-        <p class="section-description">Academic recognition, technical progress, and current learning trajectories.</p>
-      </div>
-      <div class="achievements-grid" id="achievementsGrid">
-        <!-- Achievement cards injected by script.js -->
-      </div>
-      <div class="learning-explore">
-        <h3 class="explore-title">Currently Exploring</h3>
-        <div class="explore-list" id="exploreList">
-          <!-- Injected by script.js -->
+      <div class="toolkit-grid">
+        <!-- Category 1 -->
+        <div class="tk-category">
+          <h3 class="tk-heading">Core Languages</h3>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="Python" loading="lazy" />
+            <div>
+              <strong>Python</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">Data & ML</span>
+            </div>
+          </li>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="JavaScript" loading="lazy" />
+            <div>
+              <strong>JavaScript</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">Web Frontend</span>
+            </div>
+          </li>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="C++" loading="lazy" />
+            <div>
+              <strong>C / C++</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">OOP & Logic</span>
+            </div>
+          </li>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="HTML5" loading="lazy" />
+            <div>
+              <strong>HTML5 & CSS3</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">UI Layouts</span>
+            </div>
+          </li>
+          </ul>
+        </div>
+
+        <!-- Category 2 -->
+        <div class="tk-category">
+          <h3 class="tk-heading">Frameworks & Tools</h3>
+          <ul class="tk-list">
+            <li style="align-items: flex-start;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg"
+                style="width: 1.5rem; height: 1.5rem; margin-top: 0.2rem;" alt="TensorFlow" loading="lazy" />
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">ML &
+                  NLP</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Pandas, NumPy,
+                  Scikit-Learn, TensorFlow/Keras, NLTK, TextBlob</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/plotly/plotly-original.svg"
+                style="width: 1.5rem; height: 1.5rem; margin-top: 0.2rem;" alt="Dashboards" loading="lazy" />
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Dashboards
+                  & Viz</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Streamlit, Plotly /
+                  Dash, Matplotlib, Seaborn</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
+                style="width: 1.5rem; height: 1.5rem; margin-top: 0.2rem;" alt="Git" loading="lazy" />
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Environments
+                  & Git</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Jupyter Notebook,
+                  Git, GitHub</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Category 3 -->
+        <div class="tk-category">
+          <h3 class="tk-heading">Specializations</h3>
+          <ul class="tk-list">
+            <li style="align-items: flex-start;">
+              <i class="bi bi-robot" style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">AI &
+                  Deep Learning</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Building predictive
+                  classification, NLP sentiment, and computer vision models.</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <i class="bi bi-database-check"
+                style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Data
+                  Engineering</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Text parsing via
+                  Regex, outlier handling, and pipeline data cleaning.</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <i class="bi bi-window-fullscreen"
+                style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Frontend
+                  Integration</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Connecting backend
+                  data scripts and ML logic into user-facing web interfaces.</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 07 — CREATIVE SIDE -->
-  <section class="section creative-section" id="creative" aria-labelledby="creative-heading">
+
+
+  <!-- Future Vision -->
+  <section class="section vision-section" id="vision">
     <div class="section-inner">
-      <div class="section-header">
-        <span class="section-eyebrow">06 — Creative Side</span>
-        <h2 id="creative-heading" class="section-title">Creative Coding & Visual Experiments</h2>
-        <p class="section-description">Personal creative projects, visual experiments, and interests outside of core engineering.</p>
-      </div>
-      <div class="creative-grid" id="creativeGrid">
-        <!-- Creative items injected by script.js -->
+      <div class="vision-wrapper">
+        <div class="section-label">06 — Future Vision</div>
+        <div class="vision-text-block">
+          <h2 class="vision-heading text-scroll-anim ts-variant-2">
+            I want to build <span style="display: inline-block;">things</span> that <em>feels human</em>.
+          </h2>
+          <p class="vision-body text-center">My goal is to create artistic, immersive, and memorable digital experiences
+            by blending AI, design, interaction, and visual creativity to deliver meaningful solutions that connect with
+            people.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 07 — CONTACT -->
-  <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
-    <div class="section-inner">
-      <div class="contact-wrapper">
-        <div class="contact-content">
-          <span class="contact-eyebrow">07 — Get In Touch</span>
-          <h2 id="contact-heading" class="contact-title">Let's Connect</h2>
-          <p class="contact-description">Have an interesting opportunity or project in mind? I'd love to connect.</p>
-        </div>
-        <div class="contact-links" id="contactLinks">
-          <!-- Contact tiles injected by script.js -->
-        </div>
+  <!-- Let's Connect & Contact -->
+  <section class="section connect-section" id="contact">
+    <!-- Marquee Ticker -->
+    <div class="connect-ticker">
+      <div class="ticker-track">
+        <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
+        <span>ART &amp; TECHNOLOGY • </span>
+        <span>CREATIVE DEVELOPMENT • </span>
+        <span>MACHINE LEARNING • </span>
+        <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
+        <span>ART &amp; TECHNOLOGY • </span>
+        <span>CREATIVE DEVELOPMENT • </span>
+        <span>MACHINE LEARNING • </span>
+      </div>
+    </div>
+
+    <div class="connect-inner">
+      <div>
+        <span class="connect-eyebrow">07 — Get In Touch</span>
+        <h2 class="connect-heading">
+          <span class="ch-line">LET'S</span>
+          <span class="ch-line ch-line--accent">TALK<span class="ch-dot">.</span></span>
+        </h2>
+        <p class="connect-sub">
+          Whether you want to discuss machine learning, generative art, design systems, cinematic narratives, or just
+          say hello — my inbox is always open.
+        </p>
+      </div>
+
+      <!-- Socials Grid -->
+      <div class="connect-socials">
+        <a href="https://github.com/Yuvika108" class="cs-tile">
+          <i class="bi bi-github cs-icon"></i>
+          <span class="cs-label">GitHub</span>
+          <span class="cs-handle">Srishti Mishra</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/mishrasrishti108/" class="cs-tile">
+          <i class="bi bi-linkedin cs-icon"></i>
+          <span class="cs-label">LinkedIn</span>
+          <span class="cs-handle">srishti-mishra</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
+        <a href="https://www.instagram.com/srii_mishra/" class="cs-tile">
+          <i class="bi bi-instagram cs-icon"></i>
+          <span class="cs-label">Instagram</span>
+          <span class="cs-handle">@srishti</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer" aria-label="Footer">
+  <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-name">srishti <span class="nav-logo-bold">mishra</span><span class="logo-dot">.</span></span>
-        <p class="footer-copy">Lovingly crafted with code, math & neural network training loops.</p>
+      <div class="footer-left">
+        <span class="footer-name">srishti <span class="nav-logo-bold">mishra</span><span
+            class="logo-dot">.</span></span>
+        <span class="footer-copy"
+          style="font-family: var(--font-mono); font-style: italic; font-size: 11px; opacity: 0.85;">lovingly crafted
+          with code, math &amp; neural network training loops.</span>
       </div>
-      <div class="footer-time" id="footerTime"></div>
+      <div class="footer-right">
+        <span class="footer-note">continuous training, model optimization &amp; predictive insights.</span>
+        <span class="footer-time" id="footerTime"></span>
+      </div>
     </div>
   </footer>
 
-  <!-- Back to Top -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="bi bi-chevron-up"></i></button>
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
+    <span class="theme-toggle-icon"><i class="bi bi-brightness-high"></i></span>
+    <span class="theme-toggle-text">Light</span>
+  </button>
 
-  <!-- Scripts -->
-  <script src="data.js"></script>
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" title="Back to Top"><i class="bi bi-chevron-up"></i></button>
+
+  <!-- AI Agent: Aanya -->
+  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars"
+      style="margin-right: 6px;"></i> Aanya</button>
+
+  <div class="agent-ui hidden" id="agentUi">
+    <div class="agent-header">
+      <span>Aanya — AI Assistant</span>
+      <button id="agentClose"><i class="bi bi-x"></i></button>
+    </div>
+    <video class="agent-video" id="agentVideo" autoPlay playsInline muted></video>
+    <div class="agent-status" id="agentStatus">Awaiting AI...</div>
+    <div class="agent-instructions">
+      <small><strong>Gestures:</strong></small>
+      <ul>
+        <li>✌️ Select / Click</li>
+        <li>👍 Scroll Up</li>
+        <li>👎 Scroll Down</li>
+        <li>👌 Play Music</li>
+        <li>🤘 Stop Music</li>
+        <li>👋 Wave to Close</li>
+      </ul>
+    </div>
+  </div>
+
+  <audio id="ambientAudio" loop>
+    <source src="bg-music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- GSAP & Lenis -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
 </body>
 

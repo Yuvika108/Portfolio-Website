@@ -674,6 +674,8 @@ body {
   background-clip: text;
   color: transparent;
   display: block;
+  max-width: 100%;
+  overflow-wrap: break-word;
   transition: transform 0.4s ease, filter 0.4s ease;
 }
 
@@ -1244,15 +1246,15 @@ body {
 .section-heading,
 .vision-heading {
   font-family: var(--font-editorial);
-  font-size: 3.0rem;
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.15;
   color: var(--text-primary);
   word-break: normal;
-  overflow-wrap: normal;
+  overflow-wrap: break-word;
   white-space: normal;
-  hyphens: none;
+  hyphens: auto;
 }
 
 .section-heading {
@@ -1287,7 +1289,7 @@ body {
 }
 
 .ae-lead {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
   font-family: var(--font-editorial);
   color: var(--text-primary);
   line-height: 1.4;
@@ -1406,7 +1408,7 @@ article.project-row:hover {
 
 .pr-title {
   font-family: var(--font-editorial);
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
@@ -1469,7 +1471,7 @@ article.project-row:hover {
 
 .tk-heading {
   font-family: var(--font-editorial);
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
   color: var(--text-primary);
   margin-bottom: 1.8rem;
   position: relative;
@@ -1941,7 +1943,7 @@ article.project-row:hover {
 
 @media (max-width: 968px) {
   .vision-heading {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
   }
 }
 
@@ -2233,7 +2235,7 @@ article.project-row:hover {
 
 .tl-title {
   font-family: var(--font-editorial);
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.25rem);
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
@@ -3194,6 +3196,8 @@ article.project-row:hover {
   color: #fff;
   display: flex;
   flex-direction: column;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .connect-heading .ch-line {

@@ -16,166 +16,83 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
 });
 
+/* ─── helpers ─── */
+const q = s => document.querySelector(s);
+const qa = s => Array.from(document.querySelectorAll(s));
+const scrollTo = (id, lenis) => {
+  const el = q(id);
+  if (el) lenis ? lenis.scrollTo(el, { offset: 0, duration: 1.5 }) : el.scrollIntoView({ behavior: 'smooth' });
+};
+const tween = (t) => 1 - Math.pow(1 - t, 4);
+
+/* ── Smooth Scroll ── */
 function initSmoothScroll() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const links = qa('a[href^="#"]');
+  const hasLenis = typeof Lenis !== 'undefined';
 
-  if (typeof Lenis === 'undefined') {
-    console.warn('Lenis library not loaded. Falling back to native scrolling.');
-    let _scrollActive = true;
-    Object.defineProperty(window, '_smoothScrollActive', {
-      get: () => _scrollActive,
-      set: (val) => { _scrollActive = val; }
-    });
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        const id = link.getAttribute('href');
-        if (id === '#') return;
-        const el = document.querySelector(id);
-        if (el) {
-          e.preventDefault();
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
+  if (!hasLenis) {
+    links.forEach(l => l.addEventListener('click', e => {
+      const id = l.getAttribute('href');
+      if (id !== '#') { e.preventDefault(); scrollTo(id); }
+    }));
     return;
   }
 
   const lenis = new Lenis({
-    duration: 0.6,
-    easing: (t) => 1 - Math.pow(1 - t, 4), /* Snappier cubic out curve */
-    smoothWheel: true,
-    wheelMultiplier: 1.2, /* Slightly faster wheel response */
-    touchMultiplier: 2,
-    infinite: false,
+    duration: 0.6, easing: tween, smoothWheel: true,
+    wheelMultiplier: 1.2, touchMultiplier: 2, infinite: false
   });
-
   window.lenis = lenis;
 
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
     lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
   } else {
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
   }
 
-  let _scrollActive = true;
+  let active = true;
   Object.defineProperty(window, '_smoothScrollActive', {
-    get: () => _scrollActive,
-    set: (val) => {
-      _scrollActive = val;
-      if (val) lenis.start();
-      else lenis.stop();
-    }
+    get: () => active,
+    set: v => { active = v; v ? lenis.start() : lenis.stop(); }
   });
 
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const id = link.getAttribute('href');
-      if (id === '#') return;
-      const el = document.querySelector(id);
-      if (el) {
-        e.preventDefault();
-        lenis.scrollTo(el, { offset: 0, duration: 1.5 });
-      }
-    });
-  });
+  links.forEach(l => l.addEventListener('click', e => {
+    const id = l.getAttribute('href');
+    if (id !== '#') { e.preventDefault(); scrollTo(id, lenis); }
+  }));
 }
 
-// Custom Cursor
+/* ── Custom Cursor ── */
 function initCursor() {
-
-  const cursor = document.getElementById('cursor');
-  const trail = document.getElementById('cursorTrail');
-
-  window.addEventListener('mousemove', (e) => {
+  const cursor = q('#cursor'), trail = q('#cursorTrail');
+  window.addEventListener('mousemove', e => {
     cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    setTimeout(() => {
-      trail.style.transform = `translate(${e.clientX - 16}px, ${e.clientY - 16}px)`;
-    }, 50);
+    setTimeout(() => trail.style.transform = `translate(${e.clientX - 16}px, ${e.clientY - 16}px)`, 50);
   });
 }
 
-// Starfield Background
-function initStars() {
-  const canvas = document.getElementById('starCanvas');
-  const ctx = canvas.getContext('2d');
-  let w, h, stars = [];
-
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-
-  window.addEventListener('resize', resize);
-  resize();
-
-  for (let i = 0; i < 150; i++) {
-    stars.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      size: Math.random() * 1.5,
-      opacity: Math.random(),
-      speed: 0.05 + Math.random() * 0.1
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    stars.forEach(s => {
-      ctx.fillStyle = `rgba(229, 231, 235, ${s.opacity})`;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-      ctx.fill();
-
-      s.opacity += s.speed * 0.01;
-      if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-// Generative Art Background (Interactive Neural Network / AI connection design)
+/* ── Neural Network Canvas ── */
 function initRain() {
-  const canvas = document.getElementById('rainCanvas');
+  const canvas = q('#rainCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let w, h, nodes = [];
+  let w, h, nodes = [], mouse = { x: null, y: null };
 
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-
+  const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
   window.addEventListener('resize', resize);
   resize();
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
-  let mouse = { x: null, y: null };
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-  window.addEventListener('mouseout', () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-
-  // Spawn neural nodes
-  const numNodes = 75;
-  for (let i = 0; i < numNodes; i++) {
+  for (let i = 0; i < 75; i++) {
     nodes.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
       radius: Math.random() * 1.5 + 1.2,
       pulseSpeed: Math.random() * 0.05 + 0.02,
       pulseAngle: Math.random() * Math.PI,
@@ -183,111 +100,68 @@ function initRain() {
     });
   }
 
-  function draw() {
+  const draw = () => {
     ctx.clearRect(0, 0, w, h);
-
-    // Update and draw nodes
     for (let i = 0; i < nodes.length; i++) {
-      let n = nodes[i];
-      n.x += n.vx;
-      n.y += n.vy;
-      n.pulseAngle += n.pulseSpeed;
-
-      // Bounce boundaries
+      const n = nodes[i];
+      n.x += n.vx; n.y += n.vy; n.pulseAngle += n.pulseSpeed;
       if (n.x < 0 || n.x > w) n.vx = -n.vx;
       if (n.y < 0 || n.y > h) n.vy = -n.vy;
 
-      // Draw node dot
       const opacity = n.baseOpacity + Math.sin(n.pulseAngle) * 0.15;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(196, 181, 253, ${opacity})`; // Soft violet nodes
-      ctx.fill();
-
-      // Node subtle glow
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(196, 181, 253, ${opacity})`; ctx.fill();
       if (n.radius > 2) {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.radius * 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(196, 181, 253, ${opacity * 0.15})`;
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.radius * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(196, 181, 253, ${opacity * 0.15})`; ctx.fill();
       }
-    }
 
-    // Draw synapse lines (connections)
-    for (let i = 0; i < nodes.length; i++) {
-      let nA = nodes[i];
       for (let j = i + 1; j < nodes.length; j++) {
-        let nB = nodes[j];
-        let dx = nA.x - nB.x;
-        let dy = nA.y - nB.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-
+        const m = nodes[j], dx = n.x - m.x, dy = n.y - m.y, dist = Math.hypot(dx, dy);
         if (dist < 110) {
-          let alpha = (1 - dist / 110) * 0.12;
-          ctx.beginPath();
-          ctx.moveTo(nA.x, nA.y);
-          ctx.lineTo(nB.x, nB.y);
-          ctx.strokeStyle = `rgba(224, 122, 95, ${alpha})`; // sunset orange connections
-          ctx.lineWidth = 0.65;
-          ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y);
+          ctx.strokeStyle = `rgba(224, 122, 95, ${(1 - dist / 110) * 0.12})`;
+          ctx.lineWidth = 0.65; ctx.stroke();
         }
-      }
-
-      // Draw mouse connection
-      if (mouse.x !== null && mouse.y !== null) {
-        let dx = nA.x - mouse.x;
-        let dy = nA.y - mouse.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 140) {
-          let alpha = (1 - dist / 140) * 0.28;
-          ctx.beginPath();
-          ctx.moveTo(nA.x, nA.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(196, 181, 253, ${alpha})`; // violet mouse connection
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-          
-          // Gentle attraction force to mouse
-          nA.x -= dx * 0.005;
-          nA.y -= dy * 0.005;
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx2 = n.x - mouse.x, dy2 = n.y - mouse.y, dist2 = Math.hypot(dx2, dy2);
+          if (dist2 < 140) {
+            ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = `rgba(196, 181, 253, ${(1 - dist2 / 140) * 0.28})`;
+            ctx.lineWidth = 0.8; ctx.stroke();
+            n.x -= dx2 * 0.005; n.y -= dy2 * 0.005;
+          }
         }
       }
     }
-
     requestAnimationFrame(draw);
-  }
-
+  };
   draw();
 }
 
-// Terminal Typing
+/* ── Terminal Typing ── */
 function initTerminal() {
+  const el = q('.typed-text');
+  if (!el) return;
   const text = "init creative_process.sh";
-  const typedSpan = document.querySelector('.typed-text');
-  if (!typedSpan) return;
   let i = 0;
-
-  function type() {
+  const type = () => {
     if (i < text.length) {
-      typedSpan.textContent += text.charAt(i);
-      i++;
+      el.textContent += text.charAt(i++);
       setTimeout(type, 100);
     } else {
       setTimeout(() => {
-        document.querySelectorAll('.t-output').forEach((el, idx) => {
-          setTimeout(() => el.classList.add('visible'), idx * 500);
-        });
+        qa('.t-output').forEach((el2, idx) => setTimeout(() => el2.classList.add('visible'), idx * 500));
       }, 1000);
     }
-  }
+  };
   setTimeout(type, 1500);
 }
 
-// Role Typewriter for Hero
+/* ── Hero Role Typewriter ── */
 function initRoleTypewriter() {
-  const el = document.getElementById('roleTypewriter');
+  const el = q('#roleTypewriter');
   if (!el) return;
-
   const roles = [
     'develop machine learning models',
     'fine-tune neural networks',
@@ -295,53 +169,39 @@ function initRoleTypewriter() {
     'visualize complex data',
     'architect deep learning pipelines'
   ];
+  let roleIndex = 0, charIndex = 0, deleting = false;
 
-  let roleIndex = 0;
-  let charIndex = 0;
-  let deleting = false;
-  const typingSpeed = 80;
-  const erasingSpeed = 40;
-  const pauseAfterType = 1800;
-  const pauseAfterErase = 400;
-
-  function tick() {
+  const tick = () => {
     const current = roles[roleIndex];
-
     if (!deleting) {
       el.textContent = current.substring(0, charIndex + 1);
-      charIndex++;
-      if (charIndex === current.length) {
+      if (++charIndex === current.length) {
         deleting = true;
-        setTimeout(tick, pauseAfterType);
-        return;
+        return setTimeout(tick, 1800);
       }
-      setTimeout(tick, typingSpeed);
-    } else {
-      el.textContent = current.substring(0, charIndex - 1);
-      charIndex--;
-      if (charIndex === 0) {
-        deleting = false;
-        roleIndex = (roleIndex + 1) % roles.length;
-        setTimeout(tick, pauseAfterErase);
-        return;
-      }
-      setTimeout(tick, erasingSpeed);
+      return setTimeout(tick, 80);
     }
-  }
-
+    el.textContent = current.substring(0, charIndex - 1);
+    if (--charIndex === 0) {
+      deleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+      return setTimeout(tick, 400);
+    }
+    setTimeout(tick, 40);
+  };
   setTimeout(tick, 800);
 }
 
-// Music Player Logic
+/* ── Music Player ── */
 function initMusic() {
-  const btn = document.getElementById('musicToggle');
-  const audio = document.getElementById('ambientAudio');
-  const rainCanvas = document.getElementById('rainCanvas');
-  const visualizerBars = document.querySelectorAll('.visualizer span');
+  const btn = q('#musicToggle');
+  const audio = q('#ambientAudio');
+  const bars = qa('.visualizer span');
   let playing = false;
 
   btn.addEventListener('click', () => {
-    if (!playing) {
+    playing = !playing;
+    if (playing) {
       audio.play();
       btn.classList.add('playing');
       btn.querySelector('.music-label').textContent = 'playing';
@@ -351,183 +211,137 @@ function initMusic() {
       btn.classList.remove('playing');
       btn.querySelector('.music-label').textContent = 'music player';
     }
-    playing = !playing;
   });
 
-  function animateVisualizer() {
+  const animateVisualizer = () => {
     if (!playing) return;
-    visualizerBars.forEach(bar => {
-      const height = Math.random() * 8 + 4;
-      bar.style.height = `${height}px`;
-    });
+    bars.forEach(b => b.style.height = `${Math.random() * 8 + 4}px`);
     setTimeout(animateVisualizer, 150);
-  }
+  };
 }
 
-// Scroll Effects (Progress, Back to Top, Reveal via GSAP)
+/* ── Scroll Effects ── */
 function initScrollEffects() {
-  const progressBar = document.getElementById('scrollProgress');
-  const backToTop = document.getElementById('backToTop');
+  const progressBar = q('#scrollProgress');
+  const backToTop = q('#backToTop');
 
   if (progressBar && window.gsap && window.ScrollTrigger) {
-    gsap.to(progressBar, {
-      width: "100%",
-      ease: "none",
-      scrollTrigger: {
-        scrub: 0.3
-      }
-    });
+    gsap.to(progressBar, { width: '100%', ease: 'none', scrollTrigger: { scrub: 0.3 } });
   }
 
   if (backToTop) {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 500) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
+      backToTop.classList.toggle('visible', window.scrollY > 500);
     });
     backToTop.addEventListener('click', () => {
       window.lenis ? window.lenis.scrollTo(0, { duration: 1.5 }) : window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
-  if (window.gsap && window.ScrollTrigger) {
-    // Add load animation to cinematic hero elements
-    const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-glow');
-    heroElements.forEach(el => el.style.transition = 'none');
-    
-    gsap.fromTo(heroElements, 
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.3, 
-        onComplete: () => heroElements.forEach(el => { el.style.transition = ''; gsap.set(el, { clearProps: "transform" }); }) 
+  if (!(window.gsap && window.ScrollTrigger)) return;
+
+  const heroEls = qa('.hero-title, .hero-subtitle, .btn-glow');
+  heroEls.forEach(el => el.style.transition = 'none');
+  gsap.fromTo(heroEls,
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: 'power3.out', delay: 0.3,
+      onComplete: () => heroEls.forEach(el => { el.style.transition = ''; gsap.set(el, { clearProps: 'transform' }); }) }
+  );
+
+  const floatCards = qa('.float-card');
+  gsap.fromTo(floatCards,
+    { opacity: 0, scale: 0.8, y: 50 },
+    { opacity: 1, scale: 1, y: 0, duration: 2, stagger: 0.2, ease: 'expo.out', delay: 0.6 }
+  );
+  floatCards.forEach((card, i) => {
+    gsap.to(card, {
+      y: (i % 2 === 0) ? -15 : 15,
+      rotation: (i % 2 === 0) ? 2 : -2,
+      duration: 4 + i, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 2
+    });
+  });
+
+  const revealEls = qa('section:not(.hero), .bento-item, .creative-card, .project-row, .tk-category, .ae-card');
+  revealEls.forEach(el => {
+    el.style.transition = 'none';
+    gsap.fromTo(el,
+      { opacity: 0, y: 80 },
+      {
+        opacity: 1, y: 0, duration: 1.2, ease: 'expo.out',
+        scrollTrigger: {
+          trigger: el, start: 'top 85%', toggleActions: 'play none none reverse'
+        },
+        onComplete: () => { el.style.transition = ''; gsap.set(el, { clearProps: 'transform' }); }
       }
     );
-    
-    // Animate float cards entering
-    const floatCards = document.querySelectorAll('.float-card');
-    gsap.fromTo(floatCards,
-      { opacity: 0, scale: 0.8, y: 50 },
-      { opacity: 1, scale: 1, y: 0, duration: 2, stagger: 0.2, ease: "expo.out", delay: 0.6 }
-    );
-    
-    // Continuous subtle floating animation for cards
-    floatCards.forEach((card, i) => {
-      gsap.to(card, {
-        y: (i % 2 === 0) ? -15 : 15,
-        rotation: (i % 2 === 0) ? 2 : -2,
-        duration: 4 + i,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        delay: 2
-      });
-    });
-
-    
-    // Smooth reveal for sections and cards
-    const revealElements = document.querySelectorAll('section:not(.hero), .bento-item, .creative-card, .project-row, .tk-category, .ae-card');
-    revealElements.forEach(el => {
-      // Disable CSS transitions during setup to prevent conflicting with GSAP's initial state
-      el.style.transition = 'none';
-      
-      gsap.fromTo(el, 
-        { opacity: 0, y: 80 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 1.2, 
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none reverse"
-          },
-          onComplete: () => {
-            el.style.transition = '';
-            gsap.set(el, { clearProps: "transform" });
-          }
-        }
-      );
-    });
-  }
+  });
 }
 
-// Wave Animation for Creative Corner
+/* ── Wave Animation ── */
 function initWave() {
-  const canvas = document.getElementById('waveCanvas');
+  const canvas = q('#waveCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let phase = 0;
 
-  function resize() {
+  const resize = () => {
     canvas.width = canvas.parentElement.offsetWidth;
     canvas.height = canvas.parentElement.offsetHeight;
-  }
+  };
   window.addEventListener('resize', resize);
   resize();
 
-  function draw() {
+  const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = 'rgba(224, 122, 95, 0.3)';
     ctx.lineWidth = 2;
-
     ctx.beginPath();
     for (let x = 0; x < canvas.width; x++) {
       const y = canvas.height / 2 + Math.sin(x * 0.05 + phase) * 15;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.stroke();
-
     phase += 0.03;
     requestAnimationFrame(draw);
-  }
+  };
   draw();
 }
 
-// Footer Time
+/* ── Footer Time ── */
 function updateTime() {
-  const el = document.getElementById('footerTime');
+  const el = q('#footerTime');
   const update = () => {
     const now = new Date();
     el.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' LOCAL TIME';
   };
   setInterval(update, 1000);
-  update(); // Call update immediately instead of recursing
+  update();
 }
 
-// AI Agent Implementation
+/* ── AI Agent ── */
 function initAgent() {
-  const toggleBtn = document.getElementById('agentToggle');
-  const agentUi = document.getElementById('agentUi');
-  const closeBtn = document.getElementById('agentClose');
-  const videoElement = document.getElementById('agentVideo');
-  const statusElement = document.getElementById('agentStatus');
-  const audio = document.getElementById('ambientAudio');
-  const rainCanvas = document.getElementById('rainCanvas');
-  const cursor = document.getElementById('cursor');
-  const cursorTrail = document.getElementById('cursorTrail');
-  const musicToggle = document.getElementById('musicToggle');
+  const toggleBtn = q('#agentToggle');
+  const agentUi = q('#agentUi');
+  const closeBtn = q('#agentClose');
+  const videoElement = q('#agentVideo');
+  const statusElement = q('#agentStatus');
+  const audio = q('#ambientAudio');
+  const rainCanvas = q('#rainCanvas');
+  const cursor = q('#cursor');
+  const cursorTrail = q('#cursorTrail');
+  const musicToggle = q('#musicToggle');
 
-  // Rain effect is always visible in the background
   rainCanvas.style.opacity = '1';
   rainCanvas.style.transition = 'opacity 1s ease';
 
-  let agentActive = false;
-  let hands = null;
-  let camera = null;
-  let cooldown = false;
-  let waveHistory = [];
-  let lastPinchTime = 0;
-  let isPinching = false;
+  let agentActive = false, hands = null, camera = null, cooldown = false;
+  let waveHistory = [], lastPinchTime = 0, isPinching = false;
 
   toggleBtn.addEventListener('click', () => {
     agentUi.classList.remove('hidden');
     agentActive = true;
     startMediaPipe();
   });
-
   closeBtn.addEventListener('click', () => {
     agentUi.classList.add('hidden');
     agentActive = false;
@@ -535,32 +349,20 @@ function initAgent() {
   });
 
   function startMediaPipe() {
-    if (hands) {
-      camera.start();
-      return;
-    }
-
+    if (hands) { camera.start(); return; }
     statusElement.textContent = 'Loading AI...';
+    if (window.Hands && window.Camera) { initialize(); return; }
 
-    if (window.Hands && window.Camera) {
-      initialize();
-      return;
-    }
+    ['camera_utils', 'hands'].forEach(name => {
+      const s = document.createElement('script');
+      s.src = `https://cdn.jsdelivr.net/npm/@mediapipe/${name}@0.3.1640029074/${name === 'camera_utils' ? 'camera_utils' : 'hands'}.js`;
+      s.crossOrigin = 'anonymous';
+      document.head.appendChild(s);
+    });
 
-    // Dynamic loading of MediaPipe scripts to optimize home page load speed
-    const cameraScript = document.createElement('script');
-    cameraScript.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js';
-    cameraScript.crossOrigin = 'anonymous';
-    document.head.appendChild(cameraScript);
-
-    const handsScript = document.createElement('script');
-    handsScript.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js';
-    handsScript.crossOrigin = 'anonymous';
-    document.head.appendChild(handsScript);
-
-    const checkInterval = setInterval(() => {
+    const check = setInterval(() => {
       if (window.Hands && window.Camera) {
-        clearInterval(checkInterval);
+        clearInterval(check);
         initialize();
       }
     }, 100);
@@ -568,211 +370,146 @@ function initAgent() {
 
   function initialize() {
     hands = new window.Hands({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/${file}`
+      locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/${f}`
     });
-
     hands.setOptions({
-      maxNumHands: 2,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.7,
-      minTrackingConfidence: 0.7
+      maxNumHands: 2, modelComplexity: 1,
+      minDetectionConfidence: 0.7, minTrackingConfidence: 0.7
     });
-
     hands.onResults(onResults);
 
     camera = new window.Camera(videoElement, {
       onFrame: async () => {
-        if (agentActive) {
-          await hands.send({ image: videoElement });
-        }
+        if (agentActive) await hands.send({ image: videoElement });
       },
-      width: 640,
-      height: 480
+      width: 640, height: 480
     });
-
     camera.start();
     statusElement.textContent = 'Awaiting Gesture...';
   }
 
   function onResults(results) {
     if (!agentActive) return;
-
-    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-      let currentGestures = [];
-      let pinchPoint = null;
-
-      results.multiHandLandmarks.forEach((landmarks, index) => {
-        const thumbTip = landmarks[4];
-        const indexTip = landmarks[8];
-        const middleTip = landmarks[12];
-        const ringTip = landmarks[16];
-        const pinkyTip = landmarks[20];
-
-        let gesture = "";
-
-        // Thumbs Up
-        if (thumbTip.y < indexTip.y && thumbTip.y < landmarks[3].y && indexTip.y > landmarks[5].y) {
-          gesture = "thumbs_up";
-        }
-        // Thumbs Down
-        else if (thumbTip.y > indexTip.y && thumbTip.y > landmarks[3].y && indexTip.y > landmarks[5].y) {
-          gesture = "thumbs_down";
-        }
-        // Open Palm OR Waving (Bye Bye)
-        else if (
-          indexTip.y < landmarks[6].y &&
-          middleTip.y < landmarks[10].y &&
-          ringTip.y < landmarks[14].y &&
-          pinkyTip.y < landmarks[18].y
-        ) {
-          // Waving logic (using index 0 for simplicity)
-          if (index === 0) {
-            waveHistory.push(indexTip.x);
-            if (waveHistory.length > 45) waveHistory.shift();
-            let directionChanges = 0;
-            let totalMovement = 0;
-            for (let i = 2; i < waveHistory.length; i++) {
-              totalMovement += Math.abs(waveHistory[i] - waveHistory[i-1]);
-              const prevDiff = waveHistory[i-1] - waveHistory[i-2];
-              const currDiff = waveHistory[i] - waveHistory[i-1];
-              if (prevDiff * currDiff < 0 && Math.abs(currDiff) > 0.005) directionChanges++;
-            }
-            if (directionChanges >= 2 && totalMovement > 0.2) gesture = "bye_bye";
-            else gesture = "open_palm";
-          } else {
-            gesture = "open_palm";
-          }
-        }
-        // Two Fingers -> Peace (Click)
-        else if (
-          indexTip.y < landmarks[6].y &&
-          middleTip.y < landmarks[10].y &&
-          ringTip.y > landmarks[14].y &&
-          pinkyTip.y > landmarks[18].y
-        ) {
-          gesture = "peace";
-        }
-        else if (
-          indexTip.y < landmarks[6].y &&
-          middleTip.y > landmarks[10].y &&
-          ringTip.y > landmarks[14].y &&
-          pinkyTip.y < landmarks[18].y
-        ) {
-          gesture = "rock_on";
-        }
-        // OK Sign (O symbol)
-        else if (
-          Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y) < 0.06 &&
-          middleTip.y < landmarks[9].y &&
-          ringTip.y < landmarks[13].y
-        ) {
-          gesture = "ok_sign";
-        }
-
-        currentGestures.push({ type: gesture, landmarks, indexTip });
-      });
-
-      // Handle Logic
-      const mainGesture = currentGestures[0];
-      let finalGesture = mainGesture.type;
-      
-      // If any hand shows rock_on, stop everything
-      if (currentGestures.some(g => g.type === "rock_on")) finalGesture = "rock_on";
-
-      if (finalGesture !== "open_palm" && finalGesture !== "bye_bye") {
-        waveHistory = [];
-      }
-
-      // Always update cursor position smoothly
-      const indexTip = mainGesture.indexTip;
-      const targetX = (1 - indexTip.x) * window.innerWidth;
-      const targetY = indexTip.y * window.innerHeight;
-
-      if (!window.cursorX) { window.cursorX = targetX; window.cursorY = targetY; }
-      window.cursorX += (targetX - window.cursorX) * 0.3; // Smooth interpolation
-      window.cursorY += (targetY - window.cursorY) * 0.3;
-
-      cursor.style.transform = `translate(${window.cursorX}px, ${window.cursorY}px)`;
-      cursor.classList.add('active');
-      cursorTrail.style.transform = `translate(${window.cursorX - 16}px, ${window.cursorY - 16}px)`;
-
-      // Handle continuous actions (Scrolling)
-      if (finalGesture === "thumbs_up") {
-        window._smoothScrollActive = false;
-        statusElement.textContent = '👍 SCROLL UP';
-        window.scrollBy(0, -30);
-      } else if (finalGesture === "thumbs_down") {
-        window._smoothScrollActive = false;
-        statusElement.textContent = '👎 SCROLL DOWN';
-        window.scrollBy(0, 30);
-      } else {
-        window._smoothScrollActive = true; // Restore smooth scroll
-      }
-
-      // Handle discrete actions (Clicking)
-      if (finalGesture === "peace") {
-        statusElement.textContent = '✌️ CLICKING';
-        if (!isPinching) {
-          isPinching = true; // reusing isPinching flag for click cooldown
-          const now = Date.now();
-          const el = document.elementFromPoint(window.cursorX, window.cursorY);
-          
-          if (now - lastPinchTime < 500) {
-            statusElement.textContent = 'DOUBLE CLICK!';
-            if (el) {
-              el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window }));
-              el.click();
-            }
-            lastPinchTime = 0;
-          } else {
-            if (el) el.click();
-            lastPinchTime = now;
-          }
-        }
-      } else {
-        isPinching = false;
-      }
-
-      // Handle single-fire actions (Thumbs up/down, etc)
-      if (finalGesture && !["thumbs_up", "thumbs_down", "peace", "open_palm"].includes(finalGesture)) {
-        statusElement.textContent = finalGesture.replace('_', ' ').toUpperCase();
-
-          if (!cooldown || finalGesture === "bye_bye") {
-            if (finalGesture === "ok_sign") {
-              audio.play().catch(() => { });
-              musicToggle.classList.add('playing');
-              musicToggle.querySelector('.music-label').textContent = 'playing';
-            } else if (finalGesture === "rock_on") {
-              audio.pause();
-              musicToggle.classList.remove('playing');
-              musicToggle.querySelector('.music-label').textContent = 'music player';
-            } else if (finalGesture === "bye_bye") {
-              statusElement.textContent = 'BYE BYE!';
-              setTimeout(() => { closeBtn.click(); }, 800);
-            }
-
-            if (finalGesture !== "open_palm") {
-              cooldown = true;
-              setTimeout(() => { 
-                cooldown = false; 
-                if (!agentActive) statusElement.textContent = 'READY';
-              }, 1500);
-            }
-          }
-        }
-    } else {
+    if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
       if (agentActive) statusElement.textContent = 'AWAITING GESTURE...';
       cursor.classList.remove('active');
       cursor.style.background = '';
       window.lastScrollY = null;
       isPinching = false;
+      return;
+    }
+
+    let currentGestures = [], pinchPoint = null;
+    results.multiHandLandmarks.forEach((landmarks, index) => {
+      const [thumbTip, indexTip, middleTip, ringTip, pinkyTip] = [landmarks[4], landmarks[8], landmarks[12], landmarks[16], landmarks[20]];
+      let gesture = '';
+
+      if (thumbTip.y < indexTip.y && thumbTip.y < landmarks[3].y && indexTip.y > landmarks[5].y) gesture = 'thumbs_up';
+      else if (thumbTip.y > indexTip.y && thumbTip.y > landmarks[3].y && indexTip.y > landmarks[5].y) gesture = 'thumbs_down';
+      else if (indexTip.y < landmarks[6].y && middleTip.y < landmarks[10].y && ringTip.y < landmarks[14].y && pinkyTip.y < landmarks[18].y) {
+        if (index === 0) {
+          waveHistory.push(indexTip.x);
+          if (waveHistory.length > 45) waveHistory.shift();
+          let directionChanges = 0, totalMovement = 0;
+          for (let i = 2; i < waveHistory.length; i++) {
+            totalMovement += Math.abs(waveHistory[i] - waveHistory[i - 1]);
+            const prevDiff = waveHistory[i - 1] - waveHistory[i - 2];
+            const currDiff = waveHistory[i] - waveHistory[i - 1];
+            if (prevDiff * currDiff < 0 && Math.abs(currDiff) > 0.005) directionChanges++;
+          }
+          gesture = (directionChanges >= 2 && totalMovement > 0.2) ? 'bye_bye' : 'open_palm';
+        } else gesture = 'open_palm';
+      } else if (indexTip.y < landmarks[6].y && middleTip.y < landmarks[10].y && ringTip.y > landmarks[14].y && pinkyTip.y > landmarks[18].y) {
+        gesture = 'peace';
+      } else if (indexTip.y < landmarks[6].y && middleTip.y > landmarks[10].y && ringTip.y > landmarks[14].y && pinkyTip.y < landmarks[18].y) {
+        gesture = 'rock_on';
+      } else if (Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y) < 0.06 && middleTip.y < landmarks[9].y && ringTip.y < landmarks[13].y) {
+        gesture = 'ok_sign';
+      }
+
+      currentGestures.push({ type: gesture, landmarks, indexTip });
+    });
+
+    const mainGesture = currentGestures[0];
+    let finalGesture = mainGesture.type;
+    if (currentGestures.some(g => g.type === 'rock_on')) finalGesture = 'rock_on';
+    if (finalGesture !== 'open_palm' && finalGesture !== 'bye_bye') waveHistory = [];
+
+    const indexTip = mainGesture.indexTip;
+    const targetX = (1 - indexTip.x) * window.innerWidth;
+    const targetY = indexTip.y * window.innerHeight;
+    if (!window.cursorX) { window.cursorX = targetX; window.cursorY = targetY; }
+    window.cursorX += (targetX - window.cursorX) * 0.3;
+    window.cursorY += (targetY - window.cursorY) * 0.3;
+
+    cursor.style.transform = `translate(${window.cursorX}px, ${window.cursorY}px)`;
+    cursor.classList.add('active');
+    cursorTrail.style.transform = `translate(${window.cursorX - 16}px, ${window.cursorY - 16}px)`;
+
+    if (finalGesture === 'thumbs_up') {
+      window._smoothScrollActive = false;
+      statusElement.textContent = '👍 SCROLL UP';
+      window.scrollBy(0, -30);
+    } else if (finalGesture === 'thumbs_down') {
+      window._smoothScrollActive = false;
+      statusElement.textContent = '👎 SCROLL DOWN';
+      window.scrollBy(0, 30);
+    } else {
+      window._smoothScrollActive = true;
+    }
+
+    if (finalGesture === 'peace') {
+      statusElement.textContent = '✌️ CLICKING';
+      if (!isPinching) {
+        isPinching = true;
+        const now = Date.now();
+        const el = document.elementFromPoint(window.cursorX, window.cursorY);
+        if (now - lastPinchTime < 500) {
+          statusElement.textContent = 'DOUBLE CLICK!';
+          if (el) {
+            el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window }));
+            el.click();
+          }
+          lastPinchTime = 0;
+        } else {
+          if (el) el.click();
+          lastPinchTime = now;
+        }
+      }
+    } else {
+      isPinching = false;
+    }
+
+    if (finalGesture && !['thumbs_up', 'thumbs_down', 'peace', 'open_palm'].includes(finalGesture)) {
+      statusElement.textContent = finalGesture.replace('_', ' ').toUpperCase();
+      if (!cooldown || finalGesture === 'bye_bye') {
+        if (finalGesture === 'ok_sign') {
+          audio.play().catch(() => {});
+          musicToggle.classList.add('playing');
+          musicToggle.querySelector('.music-label').textContent = 'playing';
+        } else if (finalGesture === 'rock_on') {
+          audio.pause();
+          musicToggle.classList.remove('playing');
+          musicToggle.querySelector('.music-label').textContent = 'music player';
+        } else if (finalGesture === 'bye_bye') {
+          statusElement.textContent = 'BYE BYE!';
+          setTimeout(() => closeBtn.click(), 800);
+        }
+        if (finalGesture !== 'open_palm') {
+          cooldown = true;
+          setTimeout(() => {
+            cooldown = false;
+            if (!agentActive) statusElement.textContent = 'READY';
+          }, 1500);
+        }
+      }
     }
   }
 }
 
-// Text Scroll Animation (Parallax Variants)
+/* ── Text Scroll Animation ── */
 function initTextScrollAnimation() {
-  const elements = document.querySelectorAll('.text-scroll-anim');
+  const elements = qa('.text-scroll-anim');
   if (!elements.length) return;
 
   elements.forEach(el => {
@@ -780,11 +517,10 @@ function initTextScrollAnimation() {
     if (el.classList.contains('ts-variant-2')) variant = 2;
     if (el.classList.contains('ts-variant-3')) variant = 3;
 
-    function splitTextNodes(node) {
+    const splitTextNodes = (node) => {
       if (node.nodeType === 3) {
         const text = node.textContent;
-        if (!text.trim() && text.length < 2) return; 
-
+        if (!text.trim() && text.length < 2) return;
         const fragment = document.createDocumentFragment();
         for (let i = 0; i < text.length; i++) {
           const charSpan = document.createElement('span');
@@ -796,30 +532,22 @@ function initTextScrollAnimation() {
           fragment.appendChild(charSpan);
         }
         node.parentNode.replaceChild(fragment, node);
-      } else if (node.nodeType === 1) {
-        if (node.classList.contains('ts-icon')) {
-          // Add basic styles to icons if not present
-          node.style.display = 'inline-block';
-          node.style.willChange = 'transform, opacity, filter';
-          return;
-        }
-        if (!node.classList.contains('ts-char')) {
-          Array.from(node.childNodes).forEach(child => splitTextNodes(child));
-        }
+      } else if (node.nodeType === 1 && !node.classList.contains('ts-char') && !node.classList.contains('ts-icon')) {
+        Array.from(node.childNodes).forEach(child => splitTextNodes(child));
+      } else if (node.nodeType === 1 && node.classList.contains('ts-icon')) {
+        node.style.display = 'inline-block';
+        node.style.willChange = 'transform, opacity, filter';
       }
-    }
-    
+    };
+
     if (!el.querySelector('.ts-char')) {
       Array.from(el.childNodes).forEach(child => splitTextNodes(child));
     }
-    
-    // We want to animate both characters AND icons
-    const animateItems = el.querySelectorAll('.ts-char, .ts-icon');
 
+    const animateItems = el.querySelectorAll('.ts-char, .ts-icon');
     const updateAnimation = () => {
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
       let progress = (windowHeight - rect.top) / (windowHeight / 1.5);
       progress = Math.max(0, Math.min(1, progress));
 
@@ -828,10 +556,7 @@ function initTextScrollAnimation() {
         const delay = index * 0.015;
         let itemProgress = (progress - delay) * 2;
         itemProgress = Math.max(0, Math.min(1, itemProgress));
-
         const easeProgress = 1 - Math.pow(1 - itemProgress, 3);
-        
-        // Multipliers for icons to make them more "dynamic"
         const moveMult = isIcon ? 2 : 1;
         const rotateMult = isIcon ? 2.5 : 1;
         const scaleMult = isIcon ? 1.5 : 1;
@@ -856,178 +581,95 @@ function initTextScrollAnimation() {
       });
     };
 
-    window.addEventListener('scroll', () => {
-      requestAnimationFrame(updateAnimation);
-    });
-    
+    window.addEventListener('scroll', () => requestAnimationFrame(updateAnimation));
     updateAnimation();
   });
 }
 
-// Artwork Slider Logic
-const artSlider = document.getElementById('artSlider');
-const artPrevBtn = document.getElementById('artPrevBtn');
-const artNextBtn = document.getElementById('artNextBtn');
-
-async function loadArtworksIntoSlider() {
-  if (!artSlider) return;
-  
-  try {
-    const res = await fetch('/api/artworks').catch(() => fetch('assets/artworks.json'));
-    if (res.ok) {
-      const artworks = await res.json();
-      if (artworks && artworks.length > 0) {
-        artSlider.innerHTML = ''; // clear static ones
-        artworks.forEach((art, index) => {
-          const div = document.createElement('div');
-          const tiltClass = `pc-${(index % 5) + 1}`;
-          div.className = `polaroid-card ${tiltClass}`;
-          div.innerHTML = `
-            <div class="polaroid-img-wrap">
-              <img src="${art.filename}" alt="${art.title}" class="polaroid-img" loading="lazy">
-            </div>
-            <p class="polaroid-label">${art.title}</p>
-          `;
-          artSlider.appendChild(div);
-        });
-      }
-    }
-  } catch (err) {
-    console.error('Failed to load artworks:', err);
-  }
-}
-
-if (artSlider) {
-  // loadArtworksIntoSlider(); // Disabled: Images are now hardcoded in HTML
-}
-
-const viewMoreArtBtn = document.getElementById('viewMoreArtBtn');
-const artWallContainer = document.getElementById('artWallContainer');
-
+/* ── View More Art ── */
+const viewMoreArtBtn = q('#viewMoreArtBtn');
+const artWallContainer = q('#artWallContainer');
 if (viewMoreArtBtn && artWallContainer) {
   viewMoreArtBtn.addEventListener('click', () => {
-    artWallContainer.classList.toggle('expanded');
+    const expanded = artWallContainer.classList.toggle('expanded');
     const btnText = viewMoreArtBtn.querySelector('.btn-text');
     const btnIcon = viewMoreArtBtn.querySelector('.btn-icon');
-    
-    if (artWallContainer.classList.contains('expanded')) {
+    if (expanded) {
       if (btnText) btnText.textContent = 'View Less';
-      if (btnIcon) {
-        btnIcon.classList.remove('bi-chevron-down');
-        btnIcon.classList.add('bi-chevron-up');
-      }
+      if (btnIcon) { btnIcon.classList.remove('bi-chevron-down'); btnIcon.classList.add('bi-chevron-up'); }
     } else {
       if (btnText) btnText.textContent = 'View More';
-      if (btnIcon) {
-        btnIcon.classList.remove('bi-chevron-up');
-        btnIcon.classList.add('bi-chevron-down');
-      }
+      if (btnIcon) { btnIcon.classList.remove('bi-chevron-up'); btnIcon.classList.add('bi-chevron-down'); }
       artWallContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
 }
 
-// Telemetry Simulation (AI/ML training session)
+/* ── Telemetry Simulation ── */
 function initTelemetrySimulation() {
-  const epochEl = document.getElementById('telemetryEpoch');
-  const lossEl = document.getElementById('telemetryLoss');
-  const accEl = document.getElementById('telemetryAcc');
-  const lrEl = document.getElementById('telemetryLR');
-  const progressBar = document.getElementById('telemetryProgressBar');
-  const percentEl = document.getElementById('telemetryPercent');
-  const terminalBody = document.getElementById('telemetryTerminalBody');
-
-  const chartPath = document.getElementById('telemetryChartPath');
-  const chartArea = document.getElementById('telemetryChartArea');
-  const chartVal = document.getElementById('telemetryChartVal');
+  const epochEl = q('#telemetryEpoch');
+  const lossEl = q('#telemetryLoss');
+  const accEl = q('#telemetryAcc');
+  const lrEl = q('#telemetryLR');
+  const progressBar = q('#telemetryProgressBar');
+  const percentEl = q('#telemetryPercent');
+  const terminalBody = q('#telemetryTerminalBody');
+  const chartPath = q('#telemetryChartPath');
+  const chartArea = q('#telemetryChartArea');
+  const chartVal = q('#telemetryChartVal');
 
   if (!epochEl || !lossEl || !accEl || !lrEl || !progressBar || !terminalBody) return;
 
-  let epoch = 1;
-  let loss = 0.654;
-  let accuracy = 72.4;
-  let learningRate = 1e-4;
-  let progressPercent = 0;
-  let chartPoints = [];
+  let epoch = 1, loss = 0.654, accuracy = 72.4, learningRate = 1e-4;
+  let progressPercent = 0, chartPoints = [];
 
-  function addTerminalLine(text, styleClass = 'system-line') {
+  const addTerminalLine = (text, styleClass = 'system-line') => {
     const p = document.createElement('p');
     p.className = `term-line ${styleClass}`;
     p.textContent = text;
     terminalBody.appendChild(p);
     terminalBody.scrollTop = terminalBody.scrollHeight;
-    
-    // Limit terminal logs to 15 lines to avoid memory creep
-    while (terminalBody.childElementCount > 15) {
-      terminalBody.removeChild(terminalBody.firstChild);
-    }
-  }
+    while (terminalBody.childElementCount > 15) terminalBody.removeChild(terminalBody.firstChild);
+  };
 
-  function updateChart() {
+  const updateChart = () => {
     if (!chartPath || !chartArea) return;
-    
-    if (epoch === 1) {
-      chartPoints = [{ x: 0, y: 55 }];
-    }
-    
+    if (epoch === 1) chartPoints = [{ x: 0, y: 55 }];
     const x = (epoch / 100) * 200;
-    // Map loss (0.654 -> y=55, 0.012 -> y=7)
     const y = 55 - ((0.654 - loss) / 0.654) * 48;
     chartPoints.push({ x, y });
 
     let pathD = `M ${chartPoints[0].x},${chartPoints[0].y}`;
-    for (let i = 1; i < chartPoints.length; i++) {
-      pathD += ` L ${chartPoints[i].x},${chartPoints[i].y}`;
-    }
+    for (let i = 1; i < chartPoints.length; i++) pathD += ` L ${chartPoints[i].x},${chartPoints[i].y}`;
     chartPath.setAttribute('d', pathD);
+    chartArea.setAttribute('d', pathD + ` L ${x},58 L 0,58 Z`);
+    if (chartVal) chartVal.textContent = loss.toFixed(4);
+  };
 
-    const areaD = pathD + ` L ${x},58 L 0,58 Z`;
-    chartArea.setAttribute('d', areaD);
-
-    if (chartVal) {
-      chartVal.textContent = loss.toFixed(4);
-    }
-  }
-
-  // Draw initial point
   updateChart();
 
-  // Simulated training timer
   setInterval(() => {
-    // 1. Advance training percent
     progressPercent += Math.floor(Math.random() * 5) + 3;
     if (progressPercent >= 100) {
       progressPercent = 0;
-      
-      // Advance Epoch
       epoch++;
       if (epoch > 100) epoch = 1;
-      
-      // Converge Loss and improve accuracy
       if (epoch === 1) {
-        loss = 0.654;
-        accuracy = 72.4;
-        learningRate = 1e-4;
+        loss = 0.654; accuracy = 72.4; learningRate = 1e-4;
       } else {
-        loss = Math.max(0.012, loss - (loss * 0.08) - (Math.random() * 0.005));
-        accuracy = Math.min(99.8, accuracy + ((100 - accuracy) * 0.06) + (Math.random() * 0.1));
+        loss = Math.max(0.012, loss - (loss * 0.08) - Math.random() * 0.005);
+        accuracy = Math.min(99.8, accuracy + ((100 - accuracy) * 0.06) + Math.random() * 0.1);
       }
-      
-      // Decay learning rate
       if (epoch === 30) learningRate = 5e-5;
       if (epoch === 60) learningRate = 1e-5;
       if (epoch === 85) learningRate = 1e-6;
 
-      // Update UI elements
       epochEl.textContent = `${epoch}/100`;
       lossEl.textContent = loss.toFixed(4);
       accEl.textContent = `${accuracy.toFixed(1)}%`;
       lrEl.textContent = learningRate.toExponential(0);
-
-      // Update SVG chart
       updateChart();
 
-      // Terminal print epoch summary
       const val_loss = (loss * 1.05 + Math.random() * 0.002).toFixed(4);
       addTerminalLine(`[METRIC] Epoch ${epoch}/100 finished. Loss: ${loss.toFixed(4)} | Acc: ${accuracy.toFixed(1)}% | Val Loss: ${val_loss}`, 'metric-line');
     }
@@ -1035,7 +677,6 @@ function initTelemetrySimulation() {
     progressBar.style.width = `${progressPercent}%`;
     if (percentEl) percentEl.textContent = `${progressPercent}%`;
 
-    // 2. Randomly print intermediate batch training logs
     if (Math.random() < 0.25) {
       const batch = Math.floor(Math.random() * 468) + 1;
       const batchLoss = (loss + (Math.random() * 0.04 - 0.02)).toFixed(4);
@@ -1044,182 +685,128 @@ function initTelemetrySimulation() {
   }, 450);
 }
 
-// Fetch and update stats dynamically from Codolio and GitHub
+/* ── Codolio & GitHub Stats ── */
 async function initCodolioStats() {
-  const githubEl = document.getElementById('pc-github-repos');
-  const activeDaysEl = document.getElementById('pc-active-days');
-  const projectsEl = document.getElementById('pc-projects-built');
-  const solvedEl = document.getElementById('pc-problems-solved');
+  const githubEl = q('#pc-github-repos');
+  const activeDaysEl = q('#pc-active-days');
+  const projectsEl = q('#pc-projects-built');
+  const solvedEl = q('#pc-problems-solved');
 
-  // 1. Fetch Codolio user details (active days, problems solved)
-  try {
-    const res = await fetch('https://api.codolio.com/user/details?userKey=YuviGarg');
-    if (res.ok) {
-      const result = await res.json();
-      if (result && result.status && result.status.success && result.data) {
-        const cardDetails = result.data.codolioCardDetails;
-        if (cardDetails) {
-          if (solvedEl && cardDetails.totalQuestionsSolved) {
-            solvedEl.textContent = cardDetails.totalQuestionsSolved;
-          }
-          if (activeDaysEl && cardDetails.totalActiveDays) {
-            activeDaysEl.textContent = cardDetails.totalActiveDays;
-          }
-        }
-        // Note: Dynamic bio updating is disabled to preserve custom multi-line formatted list in index.html
-      }
+  const fetchJson = async (url) => {
+    try {
+      const res = await fetch(url);
+      return res.ok ? await res.json() : null;
+    } catch (e) {
+      return null;
     }
-  } catch (err) {
-    console.warn('Failed to fetch Codolio details:', err);
+  };
+
+  const data = await fetchJson('https://api.codolio.com/user/details?userKey=YuviGarg');
+  if (data && data.status && data.status.success && data.data) {
+    const cardDetails = data.data.codolioCardDetails;
+    if (cardDetails) {
+      if (solvedEl && cardDetails.totalQuestionsSolved) solvedEl.textContent = cardDetails.totalQuestionsSolved;
+      if (activeDaysEl && cardDetails.totalActiveDays) activeDaysEl.textContent = cardDetails.totalActiveDays;
+    }
   }
 
-  // 2. Fetch Codolio project config (projects count)
-  try {
-    const res = await fetch('https://api.codolio.com/dev/project/config?userKey=YuviGarg');
-    if (res.ok) {
-      const result = await res.json();
-      if (result && result.status && result.status.success && result.data && result.data.projectIds) {
-        if (projectsEl) {
-          projectsEl.textContent = result.data.projectIds.length;
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Failed to fetch Codolio projects:', err);
+  const projectsData = await fetchJson('https://api.codolio.com/dev/project/config?userKey=YuviGarg');
+  if (projectsData && projectsData.status && projectsData.status.success && projectsData.data && projectsData.data.projectIds) {
+    if (projectsEl) projectsEl.textContent = projectsData.data.projectIds.length;
   }
 
-  // 3. Fetch GitHub repositories count
-  try {
-    const res = await fetch('https://api.github.com/users/Yuvika108');
-    if (res.ok) {
-      const result = await res.json();
-      if (result && typeof result.public_repos !== 'undefined') {
-        if (githubEl) {
-          githubEl.textContent = result.public_repos;
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Failed to fetch GitHub profile:', err);
+  const githubData = await fetchJson('https://api.github.com/users/Yuvika108');
+  if (githubData && typeof githubData.public_repos !== 'undefined') {
+    if (githubEl) githubEl.textContent = githubData.public_repos;
   }
 }
 
-// Dark / Light Theme Toggle
+/* ── Theme Toggle ── */
 function initThemeToggle() {
-  const toggleBtn = document.getElementById('themeToggle');
+  const toggleBtn = q('#themeToggle');
   if (!toggleBtn) return;
-
   const iconSpan = toggleBtn.querySelector('.theme-toggle-icon');
   const textSpan = toggleBtn.querySelector('.theme-toggle-text');
 
-  function updateToggleUI(theme) {
+  const updateToggleUI = (theme) => {
     const isLight = theme === 'light';
-    toggleBtn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+    toggleBtn.setAttribute('aria-pressed', isLight);
     toggleBtn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
     if (iconSpan) iconSpan.innerHTML = isLight ? '<i class="bi bi-moon"></i>' : '<i class="bi bi-brightness-high"></i>';
     if (textSpan) textSpan.textContent = isLight ? 'Dark' : 'Light';
-  }
+  };
 
-  // Sync initial state from html attribute or localStorage
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const currentTheme = q('html').getAttribute('data-theme') || 'light';
   updateToggleUI(currentTheme);
 
   toggleBtn.addEventListener('click', () => {
-    const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const activeTheme = q('html').getAttribute('data-theme') || 'light';
     const newTheme = activeTheme === 'light' ? 'dark' : 'light';
 
-    // Animate theme switch for ~350ms, respecting prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!prefersReducedMotion) {
-      document.documentElement.classList.add('theme-transitioning');
-      setTimeout(() => {
-        document.documentElement.classList.remove('theme-transitioning');
-      }, 350);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      q('html').classList.add('theme-transitioning');
+      setTimeout(() => q('html').classList.remove('theme-transitioning'), 350);
     }
 
-    document.documentElement.setAttribute('data-theme', newTheme);
-    try {
-      localStorage.setItem('theme', newTheme);
-    } catch (e) {
-      console.warn('Could not save theme preference to localStorage', e);
-    }
+    q('html').setAttribute('data-theme', newTheme);
+    try { localStorage.setItem('theme', newTheme); } catch (e) { console.warn('localStorage save failed', e); }
 
     updateToggleUI(newTheme);
   });
 }
 
-/* ── Mobile Navigation Menu ── */
+/* ── Mobile Navigation ── */
 function initMobileMenu() {
-  const hamburger = document.getElementById('navHamburger');
-  const closeBtn = document.getElementById('navMobileClose');
-  const overlay = document.getElementById('navMobileOverlay');
-  const mobileLinks = document.querySelectorAll('.nav-mobile-link');
+  const hamburger = q('#navHamburger');
+  const closeBtn = q('#navMobileClose');
+  const overlay = q('#navMobileOverlay');
+  const mobileLinks = qa('.nav-mobile-link');
 
   if (!hamburger || !overlay) return;
 
-  function openMenu() {
+  const lines = hamburger.querySelectorAll('.hamburger-line');
+
+  const openMenu = () => {
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.classList.add('noscroll');
-    // Animate hamburger to X
-    const lines = hamburger.querySelectorAll('.hamburger-line');
     lines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
     lines[1].style.opacity = '0';
     lines[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-  }
+  };
 
-  function closeMenu() {
+  const closeMenu = () => {
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('noscroll');
-    // Reset hamburger lines
-    const lines = hamburger.querySelectorAll('.hamburger-line');
     lines[0].style.transform = 'none';
     lines[1].style.opacity = '1';
     lines[2].style.transform = 'none';
-  }
+  };
 
-  hamburger.addEventListener('click', (e) => {
+  hamburger.addEventListener('click', e => {
     e.stopPropagation();
-    if (overlay.classList.contains('open')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
+    overlay.classList.contains('open') ? closeMenu() : openMenu();
   });
 
-  closeBtn.addEventListener('click', (e) => {
+  closeBtn.addEventListener('click', e => {
     e.stopPropagation();
     closeMenu();
   });
 
-  // Close menu when clicking any mobile nav link
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeMenu();
-    });
+  mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeMenu();
   });
 
-  // Close menu when clicking overlay background
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      closeMenu();
-    }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeMenu();
   });
 
-  // Close menu on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('open')) {
-      closeMenu();
-    }
-  });
-
-  // Reopen/reset on resize if switching from mobile to desktop
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 767 && overlay.classList.contains('open')) {
-      closeMenu();
-    }
+    if (window.innerWidth > 767 && overlay.classList.contains('open')) closeMenu();
   });
 }

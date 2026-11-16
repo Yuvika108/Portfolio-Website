@@ -3158,16 +3158,6 @@ article.project-row:hover {
   padding: 0 1rem;
 }
 
-@keyframes tickerScroll {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
 .connect-inner {
   position: relative;
   z-index: 2;

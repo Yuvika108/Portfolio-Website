@@ -161,17 +161,20 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .nav-logo {
   font-family: var(--font-mono);
   font-weight: 300;
-  font-size: 0.8rem;
+  font-size: clamp(0.65rem, 2vw, 0.8rem);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
   white-space: nowrap;
-  margin-right: 1.5rem;
+  margin-right: 1rem;
+  max-width: 60%;
+  overflow-wrap: break-word;
 }
 
 .nav-logo-bold {
@@ -188,17 +191,19 @@ body {
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .nav-link {
   text-decoration: none;
   font-family: var(--font-mono);
   color: var(--text-secondary);
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 2vw, 0.7rem);
   font-weight: 500;
   transition: var(--transition-smooth);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -1220,7 +1225,7 @@ body {
 /* Scroll hint */
 /* Sections */
 .section {
-  padding: 6rem 0;
+  padding: 4rem 0;
   position: relative;
 }
 
@@ -1252,10 +1257,11 @@ body {
   letter-spacing: -0.03em;
   line-height: 1.15;
   color: var(--text-primary);
-  word-break: normal;
+  word-break: break-word;
   overflow-wrap: break-word;
   white-space: normal;
   hyphens: auto;
+  max-width: 100%;
 }
 
 .section-heading {
@@ -1278,9 +1284,17 @@ body {
 /* About Editorial Layout */
 .about-editorial {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 1.5rem;
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .about-editorial {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
 }
 
 .ae-text {
@@ -2461,7 +2475,7 @@ article.project-row:hover {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 1.8rem 1.5rem;
+  padding: 1.4rem 1.2rem;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
@@ -2469,6 +2483,7 @@ article.project-row:hover {
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   backdrop-filter: blur(8px);
+  min-width: 0;
 }
 
 .cs-tile::before {
@@ -2478,6 +2493,7 @@ article.project-row:hover {
   background: radial-gradient(circle at top left, rgba(224, 122, 95, 0.08) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .cs-tile:hover {
@@ -2507,28 +2523,33 @@ article.project-row:hover {
 
 .cs-label {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: clamp(0.75rem, 2vw, 1rem);
   font-weight: 600;
   color: var(--text-primary);
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .cs-handle {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   letter-spacing: 0.08em;
   color: var(--text-secondary);
   opacity: 0.6;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .cs-arrow {
   position: absolute;
-  top: 1.4rem;
-  right: 1.4rem;
-  font-size: 1rem;
+  top: 1.2rem;
+  right: 1.2rem;
+  font-size: 0.9rem;
   color: var(--accent-soft);
   opacity: 0;
   transform: translate(-4px, 4px);
   transition: all 0.3s ease;
+  z-index: 2;
 }
 
 .cs-tile:hover .cs-arrow {
@@ -2646,7 +2667,13 @@ article.project-row:hover {
   }
 
   .connect-socials {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr !important;
+  }
+
+  .connect-inner {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
   }
 
   .connect-form-wrap {
@@ -6689,6 +6716,17 @@ section {
 
   .tk-category {
     padding: 1.75rem;
+  }
+
+  /* Contact Section */
+  .connect-socials {
+    grid-template-columns: 1fr !important;
+  }
+
+  .connect-inner {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
   }
 
   /* Timeline / Experience Section */

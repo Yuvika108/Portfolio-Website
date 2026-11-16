@@ -142,7 +142,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 1430px;
+  max-width: 1320px;
   z-index: 1000;
   background: rgba(18, 9, 23, 0.95);
   backdrop-filter: blur(12px);

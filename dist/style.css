@@ -1196,6 +1196,8 @@ body {
   margin: 0 auto;
   padding-top: 6rem;
   padding-bottom: 6rem;
+  position: relative;
+  z-index: 1;
 }
 
 .section-label {
@@ -1214,11 +1216,12 @@ body {
   font-size: 3.0rem;
   font-weight: 500;
   letter-spacing: -0.03em;
-  text-wrap: balance;
   line-height: 1.15;
   color: var(--text-primary);
   word-break: normal;
   overflow-wrap: normal;
+  white-space: normal;
+  hyphens: none;
 }
 
 .section-heading {

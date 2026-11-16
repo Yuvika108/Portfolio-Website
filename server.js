@@ -83,7 +83,7 @@ app.delete('/api/artworks/:id', (req, res) => {
 
 app.listen(PORT, () => {
   console.log('');
-  console.log('✅ Portfolio admin is running!');
+  console.log('<i class="bi bi-check-circle"></i> Portfolio admin is running!');
   console.log('');
   console.log(`   Portfolio  →  http://localhost:${PORT}/index.html`);
   console.log(`   Admin      →  http://localhost:${PORT}/admin.html`);

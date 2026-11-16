@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
   initSmoothScroll();
   initCursor();
   initRain();
@@ -1100,4 +1101,48 @@ async function initCodolioStats() {
   } catch (err) {
     console.warn('Failed to fetch GitHub profile:', err);
   }
+}
+
+// Dark / Light Theme Toggle
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('themeToggle');
+  if (!toggleBtn) return;
+
+  const iconSpan = toggleBtn.querySelector('.theme-toggle-icon');
+  const textSpan = toggleBtn.querySelector('.theme-toggle-text');
+
+  function updateToggleUI(theme) {
+    const isLight = theme === 'light';
+    toggleBtn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+    toggleBtn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    if (iconSpan) iconSpan.innerHTML = isLight ? '<i class="bi bi-moon"></i>' : '<i class="bi bi-brightness-high"></i>';
+    if (textSpan) textSpan.textContent = isLight ? 'Dark' : 'Light';
+  }
+
+  // Sync initial state from html attribute or localStorage
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  updateToggleUI(currentTheme);
+
+  toggleBtn.addEventListener('click', () => {
+    const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const newTheme = activeTheme === 'light' ? 'dark' : 'light';
+
+    // Animate theme switch for ~350ms, respecting prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) {
+      document.documentElement.classList.add('theme-transitioning');
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 350);
+    }
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    try {
+      localStorage.setItem('theme', newTheme);
+    } catch (e) {
+      console.warn('Could not save theme preference to localStorage', e);
+    }
+
+    updateToggleUI(newTheme);
+  });
 }

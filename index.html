@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -7,10 +7,24 @@
   <title>Srishti — AI/ML Engineer &amp; Creative Coder</title>
   <meta name="description"
     content="Personal portfolio of Srishti, a B.Tech CSE(AI) student at University of Lucknow specializing in Artificial Intelligence, Machine Learning, and Interactive digital experiences." />
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <!-- Bootstrap Icons CDN -->
@@ -76,14 +90,14 @@
 
     <!-- Floating decorative glyphs -->
     <div class="hero-glyphs" aria-hidden="true">
-      <span class="glyph g1">✦</span>
+      <span class="glyph g1"><i class="bi bi-stars"></i></span>
       <span class="glyph g2">{}</span>
       <span class="glyph g3">⟡</span>
       <span class="glyph g4">∿</span>
       <span class="glyph g5">◈</span>
-      <span class="glyph sparkle twinkle-1" style="top: 25%; left: 40%;">✦</span>
-      <span class="glyph sparkle twinkle-2" style="top: 60%; right: 45%;">✦</span>
-      <span class="glyph sparkle twinkle-3" style="top: 15%; right: 25%;">✦</span>
+      <span class="glyph sparkle twinkle-1" style="top: 25%; left: 40%;"><i class="bi bi-stars"></i></span>
+      <span class="glyph sparkle twinkle-2" style="top: 60%; right: 45%;"><i class="bi bi-stars"></i></span>
+      <span class="glyph sparkle twinkle-3" style="top: 15%; right: 25%;"><i class="bi bi-stars"></i></span>
       <i class="bi bi-cpu glyph g-icon-1"></i>
       <i class="bi bi-terminal glyph g-icon-2"></i>
       <i class="bi bi-robot glyph g-icon-3"></i>
@@ -808,6 +822,12 @@
     </div>
   </footer>
 
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
+    <span class="theme-toggle-icon"><i class="bi bi-brightness-high"></i></span>
+    <span class="theme-toggle-text">Light</span>
+  </button>
+
   <!-- Back to Top -->
   <button class="back-to-top" id="backToTop" title="Back to Top"><i class="bi bi-chevron-up"></i></button>
 
@@ -818,7 +838,7 @@
   <div class="agent-ui hidden" id="agentUi">
     <div class="agent-header">
       <span>Aanya — AI Assistant</span>
-      <button id="agentClose">✕</button>
+      <button id="agentClose"><i class="bi bi-x"></i></button>
     </div>
     <video class="agent-video" id="agentVideo" autoPlay playsInline muted></video>
     <div class="agent-status" id="agentStatus">Awaiting AI...</div>

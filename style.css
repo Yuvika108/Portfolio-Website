@@ -1787,7 +1787,7 @@ article.project-row:hover {
   position: relative;
   padding: 8rem 0;
   border-top: 1px solid var(--glass-border);
-  background: radial-gradient(circle at 80% 80%, rgba(224, 122, 95, 0.03) 0%, transparent 60%);
+  overflow: hidden;
 }
 
 .vision-wrapper {
@@ -4362,4 +4362,1443 @@ article.project-row:hover {
   0% { box-shadow: 0 0 0 0 rgba(224, 122, 95, 0.6); }
   70% { box-shadow: 0 0 0 8px rgba(224, 122, 95, 0); }
   100% { box-shadow: 0 0 0 0 rgba(224, 122, 95, 0); }
+}
+
+
+/* ==========================================================================
+   THEME TOGGLE & LIGHT MODE STYLES (Biryani warm restaurant aesthetics)
+   Dark mode = Default, 100% untouched.
+   All light mode rules scoped strictly under html[data-theme="light"].
+   ========================================================================== */
+
+/* ─── 350ms Smooth Theme Switch Transition ─── */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color 350ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 350ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 350ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 350ms cubic-bezier(0.4, 0, 0.2, 1),
+              fill 350ms cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 350ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 350ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transitioning,
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
+    transition: none !important;
+  }
+}
+
+/* ─── Floating Pill Theme Toggle Button (Bottom-Left) ─── */
+.theme-toggle {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: rgba(18, 9, 23, 0.88);
+  color: #f5deb3;
+  border: 1.5px solid rgba(224, 122, 95, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  border-color: rgba(224, 122, 95, 0.7);
+  box-shadow: 0 14px 32px rgba(224, 122, 95, 0.25);
+  color: #ffffff;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 3px;
+}
+
+.theme-toggle-icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.theme-toggle-text {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    bottom: 24px;
+    left: 20px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ─── Accessible Keyboard Focus ─── */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 3px;
+}
+
+html[data-theme="light"] button:focus-visible,
+html[data-theme="light"] a:focus-visible,
+html[data-theme="light"] input:focus-visible {
+  outline: 2px solid #5C3F24;
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   HTML[DATA-THEME="LIGHT"] PALETTE & COMPONENT RESTYLING
+   Gastro-Box Inspiration:
+   Cream #FFF9ED, Paper #FFFDF8, Strawberry Rose #FF5875, Canary Yellow #FFD233,
+   Lavender #7C6EE6, Coral #FA5E43, Mint #45B69C, Dark Chocolate #2A1810
+   ========================================================================== */
+
+html[data-theme="light"] {
+  --bg-dark: #FFF9ED;
+  --bg-surface: #FFFDF8;
+  --text-primary: #2A1810;
+  --text-secondary: #6E5547;
+  --accent-soft: #FF5875;
+  --accent-deep: #2A1810;
+  --accent-primary: #FFD233;
+  --glass-border: rgba(255, 88, 117, 0.2);
+  --glass-bg: rgba(255, 253, 248, 0.92);
+  --font-heading: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  --font-editorial: 'Syne', sans-serif;
+  --color-cream: #FFF9ED;
+  --color-paper: #FFFDF8;
+  --color-pink: #FF5875;
+  --color-pink-soft: #FFEAF0;
+  --color-yellow: #FFD233;
+  --color-yellow-light: #FFF7D6;
+  --color-lavender: #7C6EE6;
+  --color-coral: #FA5E43;
+  --color-mint: #45B69C;
+  --color-chocolate: #2A1810;
+  --color-cocoa: #6E5547;
+  background-color: #FFF9ED;
+  color: #2A1810;
+}
+
+html[data-theme="light"] body {
+  background-color: #FFF9ED;
+  color: #2A1810;
+}
+
+html[data-theme="light"] ::selection {
+  background: #FFD233;
+  color: #2A1810;
+}
+
+/* ─── Background Organic Blobs & Sand Wave ─── */
+html[data-theme="light"] body::before {
+  content: '';
+  position: fixed;
+  top: -120px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 88, 117, 0.22) 0%, rgba(255, 210, 51, 0.15) 50%, transparent 75%);
+  border-radius: 65% 35% 72% 28% / 48% 65% 35% 52%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+html[data-theme="light"] body::after {
+  content: '';
+  position: fixed;
+  bottom: -140px;
+  left: -80px;
+  width: 650px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(255, 210, 51, 0.25) 0%, rgba(255, 88, 117, 0.12) 55%, transparent 75%);
+  border-radius: 42% 58% 65% 35% / 55% 45% 55% 45%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(65px);
+}
+
+/* ─── Hide/Fade Dark-Only Decorative Effects ─── */
+html[data-theme="light"] .scanlines,
+html[data-theme="light"] .vignette,
+html[data-theme="light"] .hero-mesh,
+html[data-theme="light"] .hero-glyphs,
+html[data-theme="light"] .mesh-orb,
+html[data-theme="light"] .sparkle,
+html[data-theme="light"] .hero-bg-image,
+html[data-theme="light"] .hero-overlay {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+html[data-theme="light"] .grain-overlay {
+  opacity: 0.015 !important;
+}
+
+html[data-theme="light"] .rain-canvas {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html[data-theme="light"] .scroll-progress-bar {
+  background: #FF5875;
+  box-shadow: 0 0 10px rgba(255, 88, 117, 0.5);
+}
+
+/* Custom cursor in gastro light theme */
+html[data-theme="light"] .cursor {
+  background: #FF5875;
+  box-shadow: 0 0 10px rgba(255, 210, 51, 0.8), 0 0 20px rgba(255, 88, 117, 0.6);
+}
+
+html[data-theme="light"] .cursor.active {
+  background: #FFD233;
+  box-shadow: 0 0 15px rgba(255, 210, 51, 0.9);
+}
+
+html[data-theme="light"] .cursor-trail {
+  border: 1.5px solid rgba(255, 88, 117, 0.4);
+  background: radial-gradient(circle, rgba(255, 210, 51, 0.2) 0%, transparent 80%);
+  box-shadow: none;
+}
+
+/* ─── Light Mode Theme Toggle Button Style ─── */
+html[data-theme="light"] .theme-toggle {
+  background: #FFD233;
+  color: #2A1810;
+  border: 2px solid #2A1810;
+  box-shadow: 0 10px 25px rgba(255, 210, 51, 0.45);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .theme-toggle:hover {
+  background: #FF5875;
+  color: #FFFFFF;
+  border-color: #2A1810;
+  box-shadow: 0 14px 30px rgba(255, 88, 117, 0.4);
+}
+
+/* ─── Headings & Typography (Syne rounded geometric display) ─── */
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5,
+html[data-theme="light"] h6,
+html[data-theme="light"] .hero-name,
+html[data-theme="light"] .section-heading,
+html[data-theme="light"] .connect-heading,
+html[data-theme="light"] .vision-heading,
+html[data-theme="light"] .ae-lead,
+html[data-theme="light"] .pr-title,
+html[data-theme="light"] .tl-title,
+html[data-theme="light"] .tk-heading,
+html[data-theme="light"] .polaroid-label,
+html[data-theme="light"] .sticky-title,
+html[data-theme="light"] .cs-handle {
+  font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  color: #2A1810;
+  letter-spacing: -0.02em;
+}
+
+html[data-theme="light"] p,
+html[data-theme="light"] .hero-sub,
+html[data-theme="light"] .ae-text p,
+html[data-theme="light"] .pr-desc,
+html[data-theme="light"] .tl-desc,
+html[data-theme="light"] .connect-sub,
+html[data-theme="light"] .vision-body,
+html[data-theme="light"] .footer-copy,
+html[data-theme="light"] .footer-note,
+html[data-theme="light"] .sticky-text {
+  color: #6E5547;
+}
+
+html[data-theme="light"] strong,
+html[data-theme="light"] b {
+  color: #2A1810;
+}
+
+/* Scalloped Stamp Badge Style (like stickers in screenshot) */
+html[data-theme="light"] .section-label,
+html[data-theme="light"] .connect-eyebrow {
+  color: #FFFFFF;
+  background: #FF5875;
+  border: 2px dashed rgba(255, 255, 255, 0.85);
+  border-radius: 9999px;
+  box-shadow: 0 6px 18px rgba(255, 88, 117, 0.35);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.45rem 1.2rem;
+}
+
+/* ─── Floating Cream Translucent Navbar ─── */
+html[data-theme="light"] .nav {
+  background: rgba(255, 253, 248, 0.92);
+  border: 1.5px solid rgba(255, 88, 117, 0.22);
+  border-radius: 9999px;
+  box-shadow: 0 12px 36px rgba(255, 88, 117, 0.09), 0 2px 8px rgba(42, 24, 16, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+html[data-theme="light"] .nav-logo {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .nav-logo .nav-logo-bold {
+  color: #FF5875;
+}
+
+html[data-theme="light"] .nav-logo .logo-dot {
+  color: #FFD233;
+}
+
+html[data-theme="light"] .nav-link {
+  color: #2A1810;
+  font-weight: 600;
+}
+
+html[data-theme="light"] .nav-link:hover,
+html[data-theme="light"] .nav-link.active {
+  color: #FF5875;
+}
+
+html[data-theme="light"] .nav-link--cta {
+  background: #FFD233 !important;
+  color: #2A1810 !important;
+  border-radius: 9999px !important;
+  border: 1.5px solid #2A1810 !important;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(255, 210, 51, 0.35);
+}
+
+html[data-theme="light"] .nav-link--cta:hover {
+  background: #FF5875 !important;
+  border-color: #FF5875 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 18px rgba(255, 88, 117, 0.35);
+}
+
+/* ─── Hero Section ─── */
+html[data-theme="light"] .hero {
+  background: radial-gradient(circle at 50% -15%, rgba(255, 88, 117, 0.35) 0%, rgba(255, 117, 142, 0.18) 45%, rgba(255, 249, 237, 0) 75%);
+}
+
+html[data-theme="light"] .hero-greeting {
+  color: #FF5875;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+html[data-theme="light"] .hero-name {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: initial;
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  text-shadow: none;
+}
+
+html[data-theme="light"] .hero-name:hover {
+  filter: none;
+}
+
+html[data-theme="light"] .name-dot {
+  -webkit-text-fill-color: #FF5875;
+  color: #FF5875;
+}
+
+html[data-theme="light"] .hero-role-line,
+html[data-theme="light"] .role-prefix {
+  color: #6E5547;
+  font-family: 'Syne', sans-serif;
+}
+
+html[data-theme="light"] .role-typewriter,
+html[data-theme="light"] .role-cursor {
+  color: #FF5875;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .hero-sub {
+  background: rgba(255, 253, 248, 0.88);
+  border-left: 5px solid #FFD233;
+  border-top: 1.5px solid rgba(255, 88, 117, 0.18);
+  border-right: 1.5px solid rgba(255, 88, 117, 0.18);
+  border-bottom: 1.5px solid rgba(255, 88, 117, 0.18);
+  border-radius: 16px;
+  color: #2A1810;
+  box-shadow: 0 10px 28px rgba(255, 88, 117, 0.06);
+}
+
+html[data-theme="light"] .hero-badge {
+  background: #FFD233;
+  border: 1.5px solid #2A1810;
+  box-shadow: 0 6px 16px rgba(255, 210, 51, 0.4);
+}
+
+html[data-theme="light"] .hero-badge .badge-text {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .hero-badge .badge-pulse {
+  background: #FF5875;
+}
+
+html[data-theme="light"] .hero-pills .pill {
+  background: #FF5875;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 88, 117, 0.25);
+}
+
+html[data-theme="light"] .hero-pills .pill:hover {
+  background: #FFD233;
+  color: #2A1810;
+  transform: translateY(-2px);
+}
+
+html[data-theme="light"] .hero-socials .hs-link {
+  color: #6E5547;
+  font-weight: 600;
+}
+
+html[data-theme="light"] .hero-socials .hs-link:hover {
+  color: #FF5875;
+  text-shadow: none;
+}
+
+html[data-theme="light"] .hero-socials .hs-sep {
+  background: rgba(255, 88, 117, 0.3);
+}
+
+/* ─── Buttons: Yellow Pill Primary & Strawberry Pink Ghost ─── */
+html[data-theme="light"] .btn-primary,
+html[data-theme="light"] #hero-cta-work,
+html[data-theme="light"] .btn-project,
+html[data-theme="light"] .btn-creative-scroll {
+  background: #FFD233;
+  color: #2A1810 !important;
+  border: 2px solid #2A1810;
+  border-radius: 9999px;
+  box-shadow: 0 8px 22px rgba(255, 210, 51, 0.42);
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .btn-primary:hover,
+html[data-theme="light"] #hero-cta-work:hover,
+html[data-theme="light"] .btn-project:hover,
+html[data-theme="light"] .btn-creative-scroll:hover {
+  background: #FF5875;
+  border-color: #2A1810;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 28px rgba(255, 88, 117, 0.4);
+  transform: translateY(-3px) scale(1.02);
+}
+
+html[data-theme="light"] .btn-ghost,
+html[data-theme="light"] #hero-cta-about,
+html[data-theme="light"] .btn-secondary,
+html[data-theme="light"] .btn-outline {
+  background: rgba(255, 88, 117, 0.08);
+  color: #FF5875;
+  border: 2px solid #FF5875;
+  border-radius: 9999px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .btn-ghost:hover,
+html[data-theme="light"] #hero-cta-about:hover,
+html[data-theme="light"] .btn-secondary:hover,
+html[data-theme="light"] .btn-outline:hover {
+  background: #FF5875;
+  color: #FFFFFF;
+  box-shadow: 0 8px 22px rgba(255, 88, 117, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ─── Hero Profile Card: Rose Frame, Canary Avatar, Sticker Style ─── */
+html[data-theme="light"] .profile-card {
+  background: #FFFDF8;
+  border-radius: 36px;
+  border: 3px solid #FF5875;
+  box-shadow: 0 24px 55px rgba(255, 88, 117, 0.16), 0 4px 14px rgba(42, 24, 16, 0.05);
+}
+
+html[data-theme="light"] .profile-card:hover {
+  border-color: #FFD233;
+  box-shadow: 0 28px 65px rgba(255, 210, 51, 0.28), 0 6px 18px rgba(42, 24, 16, 0.08);
+}
+
+html[data-theme="light"] .pc-brand-name {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .pc-brand-accent {
+  color: #FF5875;
+}
+
+html[data-theme="light"] .pc-brand-tag {
+  color: #2A1810;
+  border: 1.5px solid #2A1810;
+  background: #FFD233;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .pc-avatar-inner {
+  background: #FFD233;
+  border: 3px solid #FFFDF8;
+  box-shadow: 0 8px 26px rgba(255, 210, 51, 0.5);
+}
+
+html[data-theme="light"] .pc-initials {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  text-shadow: none;
+}
+
+html[data-theme="light"] .pc-avatar-ring {
+  border-color: rgba(255, 88, 117, 0.4);
+}
+
+html[data-theme="light"] .pc-status-badge {
+  background: #FFFDF8;
+  border: 2px solid #FF5875;
+}
+
+html[data-theme="light"] .pc-status-dot {
+  background: #FF5875;
+}
+
+html[data-theme="light"] .pc-name {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .pc-verified circle {
+  fill: rgba(255, 88, 117, 0.2);
+  stroke: #FF5875;
+}
+
+html[data-theme="light"] .pc-verified path {
+  stroke: #FF5875;
+}
+
+html[data-theme="light"] .pc-handle {
+  color: #6E5547;
+}
+
+html[data-theme="light"] .pc-role-tag {
+  background: rgba(255, 88, 117, 0.12);
+  color: #FF5875;
+  border: 1px solid rgba(255, 88, 117, 0.35);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .pc-stat {
+  background: #FFF7D6;
+  border: 1.5px solid rgba(255, 210, 51, 0.6);
+  border-radius: 18px;
+}
+
+html[data-theme="light"] .pc-stat-label {
+  color: #6E5547;
+}
+
+html[data-theme="light"] .pc-stat-value {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .pc-divider {
+  background: rgba(255, 88, 117, 0.2);
+}
+
+html[data-theme="light"] .pc-bio-header {
+  color: #2A1810;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .pc-bio-item {
+  color: #6E5547;
+}
+
+html[data-theme="light"] .pc-tags .pc-tag,
+html[data-theme="light"] .tech-tag {
+  background: #FF5875;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(255, 88, 117, 0.22);
+}
+
+html[data-theme="light"] .pc-tags .pc-tag:hover,
+html[data-theme="light"] .tech-tag:hover {
+  background: #FFD233;
+  color: #2A1810;
+}
+
+/* ─── The Gastro-box Cards (Projects Section — directly matching inspiration) ─── */
+/* Card 1: Lavender / Royal Violet */
+html[data-theme="light"] #proj-1.playing-card,
+html[data-theme="light"] .playing-card-1 {
+  background: linear-gradient(155deg, #8777ED 0%, #6E5EE2 100%) !important;
+  border-radius: 28px !important;
+  border: none !important;
+  box-shadow: 0 20px 48px rgba(110, 94, 226, 0.32) !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-1 .pr-title,
+html[data-theme="light"] .playing-card-1 .pr-title {
+  color: #FFFFFF !important;
+  font-family: 'Syne', sans-serif !important;
+}
+
+html[data-theme="light"] #proj-1 .pr-desc,
+html[data-theme="light"] .playing-card-1 .pr-desc {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html[data-theme="light"] #proj-1 .pr-number,
+html[data-theme="light"] .playing-card-1 .pr-number {
+  color: #2A1810 !important;
+  background: #FFFFFF !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-1 .pr-stack,
+html[data-theme="light"] .playing-card-1 .pr-stack {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="light"] #proj-1 .behind-the-code,
+html[data-theme="light"] .playing-card-1 .behind-the-code {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-left: 3px solid #FFD233 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-1 .behind-the-code p,
+html[data-theme="light"] .playing-card-1 .behind-the-code p {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-1 .btc-label,
+html[data-theme="light"] .playing-card-1 .btc-label {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+/* Card 2: Coral / Bright Terracotta */
+html[data-theme="light"] #proj-2.playing-card,
+html[data-theme="light"] .playing-card-2 {
+  background: linear-gradient(155deg, #FF6F54 0%, #F54929 100%) !important;
+  border-radius: 28px !important;
+  border: none !important;
+  box-shadow: 0 20px 48px rgba(245, 73, 41, 0.32) !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-2 .pr-title,
+html[data-theme="light"] .playing-card-2 .pr-title {
+  color: #FFFFFF !important;
+  font-family: 'Syne', sans-serif !important;
+}
+
+html[data-theme="light"] #proj-2 .pr-desc,
+html[data-theme="light"] .playing-card-2 .pr-desc {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html[data-theme="light"] #proj-2 .pr-number,
+html[data-theme="light"] .playing-card-2 .pr-number {
+  color: #2A1810 !important;
+  background: #FFFFFF !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-2 .pr-stack,
+html[data-theme="light"] .playing-card-2 .pr-stack {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="light"] #proj-2 .behind-the-code,
+html[data-theme="light"] .playing-card-2 .behind-the-code {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-left: 3px solid #FFD233 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-2 .behind-the-code p,
+html[data-theme="light"] .playing-card-2 .behind-the-code p {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-2 .btc-label,
+html[data-theme="light"] .playing-card-2 .btc-label {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+/* Card 3: Strawberry Rose Pink */
+html[data-theme="light"] #proj-3.playing-card,
+html[data-theme="light"] .playing-card-3 {
+  background: linear-gradient(155deg, #FF7B97 0%, #F05577 100%) !important;
+  border-radius: 28px !important;
+  border: none !important;
+  box-shadow: 0 20px 48px rgba(240, 85, 119, 0.32) !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-3 .pr-title,
+html[data-theme="light"] .playing-card-3 .pr-title {
+  color: #FFFFFF !important;
+  font-family: 'Syne', sans-serif !important;
+}
+
+html[data-theme="light"] #proj-3 .pr-desc,
+html[data-theme="light"] .playing-card-3 .pr-desc {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html[data-theme="light"] #proj-3 .pr-number,
+html[data-theme="light"] .playing-card-3 .pr-number {
+  color: #2A1810 !important;
+  background: #FFFFFF !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-3 .pr-stack,
+html[data-theme="light"] .playing-card-3 .pr-stack {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="light"] #proj-3 .behind-the-code,
+html[data-theme="light"] .playing-card-3 .behind-the-code {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-left: 3px solid #FFD233 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-3 .behind-the-code p,
+html[data-theme="light"] .playing-card-3 .behind-the-code p {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-3 .btc-label,
+html[data-theme="light"] .playing-card-3 .btc-label {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+/* Card 4: Canary / Sunny Yellow */
+html[data-theme="light"] #proj-4.playing-card,
+html[data-theme="light"] .playing-card-4 {
+  background: linear-gradient(155deg, #FFE066 0%, #FFCC1A 100%) !important;
+  border-radius: 28px !important;
+  border: 2px solid #2A1810 !important;
+  box-shadow: 0 20px 48px rgba(255, 204, 26, 0.35) !important;
+  color: #2A1810 !important;
+}
+
+html[data-theme="light"] #proj-4 .pr-title,
+html[data-theme="light"] .playing-card-4 .pr-title {
+  color: #2A1810 !important;
+  font-family: 'Syne', sans-serif !important;
+}
+
+html[data-theme="light"] #proj-4 .pr-desc,
+html[data-theme="light"] .playing-card-4 .pr-desc {
+  color: #4A2E1E !important;
+}
+
+html[data-theme="light"] #proj-4 .pr-number,
+html[data-theme="light"] .playing-card-4 .pr-number {
+  color: #FFFFFF !important;
+  background: #2A1810 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-4 .pr-stack,
+html[data-theme="light"] .playing-card-4 .pr-stack {
+  color: #FF5875 !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-4 .behind-the-code,
+html[data-theme="light"] .playing-card-4 .behind-the-code {
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-left: 3px solid #2A1810 !important;
+  color: #2A1810 !important;
+}
+
+html[data-theme="light"] #proj-4 .behind-the-code p,
+html[data-theme="light"] .playing-card-4 .behind-the-code p {
+  color: #2A1810 !important;
+}
+
+html[data-theme="light"] #proj-4 .btc-label,
+html[data-theme="light"] .playing-card-4 .btc-label {
+  color: #FF5875 !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-4 .btn-project,
+html[data-theme="light"] .playing-card-4 .btn-project {
+  background: #2A1810 !important;
+  color: #FFD233 !important;
+  border-color: #2A1810 !important;
+}
+
+html[data-theme="light"] #proj-4 .btn-project:hover,
+html[data-theme="light"] .playing-card-4 .btn-project:hover {
+  background: #FF5875 !important;
+  color: #FFFFFF !important;
+  border-color: #FF5875 !important;
+}
+
+/* Card 5: Mint Fresh Basil */
+html[data-theme="light"] #proj-5.playing-card,
+html[data-theme="light"] .playing-card-5 {
+  background: linear-gradient(155deg, #4DD0B3 0%, #30A88D 100%) !important;
+  border-radius: 28px !important;
+  border: none !important;
+  box-shadow: 0 20px 48px rgba(48, 168, 141, 0.32) !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-5 .pr-title,
+html[data-theme="light"] .playing-card-5 .pr-title {
+  color: #FFFFFF !important;
+  font-family: 'Syne', sans-serif !important;
+}
+
+html[data-theme="light"] #proj-5 .pr-desc,
+html[data-theme="light"] .playing-card-5 .pr-desc {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html[data-theme="light"] #proj-5 .pr-number,
+html[data-theme="light"] .playing-card-5 .pr-number {
+  color: #2A1810 !important;
+  background: #FFFFFF !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="light"] #proj-5 .pr-stack,
+html[data-theme="light"] .playing-card-5 .pr-stack {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="light"] #proj-5 .behind-the-code,
+html[data-theme="light"] .playing-card-5 .behind-the-code {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-left: 3px solid #FFD233 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-5 .behind-the-code p,
+html[data-theme="light"] .playing-card-5 .behind-the-code p {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="light"] #proj-5 .btc-label,
+html[data-theme="light"] .playing-card-5 .btc-label {
+  color: #FFD233 !important;
+  font-weight: 700 !important;
+}
+
+/* ─── Alternating Sections (Strawberry Milk, Sunny Butter, Lavender Milk) ─── */
+html[data-theme="light"] .about-section {
+  background: #FFEAF0;
+  border-radius: 48px;
+  margin: 3.5rem auto;
+  max-width: 1200px;
+  padding: 4.5rem 2.5rem;
+  border: 1.5px solid rgba(255, 88, 117, 0.25);
+  box-shadow: 0 16px 42px rgba(255, 88, 117, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .about-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/background(pink check).jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.16;
+  z-index: 0;
+  pointer-events: none;
+}
+
+html[data-theme="light"] .experience-section {
+  position: relative;
+  background: #FFF7D9;
+  border-radius: 48px;
+  margin: 3.5rem auto;
+  max-width: 1200px;
+  padding: 4.5rem 2.5rem;
+  border: 1.5px solid rgba(255, 210, 51, 0.4);
+  box-shadow: 0 16px 42px rgba(255, 210, 51, 0.1);
+  overflow: hidden;
+}
+
+html[data-theme="light"] .experience-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('assets/journey_img.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.30;
+  border-radius: 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+html[data-theme="light"] .experience-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, #FFF7D9 0%, transparent 15%, transparent 85%, #FFF7D9 100%),
+    linear-gradient(to right, #FFF7D9 0%, transparent 10%, transparent 90%, #FFF7D9 100%);
+  border-radius: 48px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+html[data-theme="light"] .vision-section {
+  background: #F3F0FF;
+  border-radius: 48px;
+  margin: 3.5rem auto;
+  max-width: 1200px;
+  padding: 4.5rem 2.5rem;
+  border: 1.5px solid rgba(124, 110, 230, 0.25);
+  box-shadow: 0 16px 42px rgba(124, 110, 230, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .vision-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/background(pink check).jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.14;
+  border-radius: 48px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  html[data-theme="light"] .about-section,
+  html[data-theme="light"] .experience-section,
+  html[data-theme="light"] .vision-section {
+    border-radius: 28px;
+    margin: 2rem 1rem;
+    padding: 3rem 1.25rem;
+  }
+}
+
+/* ─── Cards & Surfaces ─── */
+html[data-theme="light"] .ae-card,
+html[data-theme="light"] .tk-category,
+html[data-theme="light"] .vision-wrapper,
+html[data-theme="light"] .cs-tile {
+  background: #FFFDF8;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 88, 117, 0.18);
+  box-shadow: 0 14px 34px rgba(255, 88, 117, 0.07), 0 3px 8px rgba(42, 24, 16, 0.04);
+}
+
+html[data-theme="light"] .ae-detail {
+  border-bottom: 1px solid rgba(255, 88, 117, 0.18);
+}
+
+html[data-theme="light"] .ae-label {
+  color: #FF5875;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .ae-value {
+  color: #2A1810;
+}
+
+/* Handcrafted Sticky Note (Yellow Post-It Note Style) */
+html[data-theme="light"] .hc-sticky-note,
+html[data-theme="light"] .hc-sticky-note-grid {
+  background: #FFE873;
+  border-radius: 12px;
+  border: 2px solid #2A1810;
+  box-shadow: 0 14px 32px rgba(42, 24, 16, 0.14);
+  color: #2A1810;
+}
+
+html[data-theme="light"] .hc-sticky-note .sticky-tape,
+html[data-theme="light"] .hc-sticky-note-grid .sticky-tape {
+  background: rgba(255, 88, 117, 0.7);
+  border: 1px solid #2A1810;
+}
+
+html[data-theme="light"] .hc-sticky-note .sticky-title,
+html[data-theme="light"] .hc-sticky-note-grid .sticky-title {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  border-bottom: 1.5px solid #2A1810;
+}
+
+html[data-theme="light"] .hc-sticky-note .sticky-text,
+html[data-theme="light"] .hc-sticky-note-grid .sticky-text {
+  color: #3D2214;
+}
+
+/* Timeline */
+html[data-theme="light"] .tl-marker {
+  background: rgba(255, 88, 117, 0.3);
+}
+
+html[data-theme="light"] .tl-dot {
+  background: #FFFDF8;
+  border: 2.5px solid #FF5875;
+}
+
+html[data-theme="light"] .tl-dot--active {
+  background: #FFD233;
+  border-color: #2A1810;
+  box-shadow: 0 0 14px rgba(255, 210, 51, 0.6);
+}
+
+html[data-theme="light"] .tl-dot--active + .tl-line {
+  background: linear-gradient(180deg, #FFD233 0%, rgba(255, 88, 117, 0.2) 100%);
+}
+
+html[data-theme="light"] .tl-date {
+  color: #FF5875;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .tl-org {
+  color: #2A1810;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .tl-tags .tl-tag {
+  background: #FF5875;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  border: none;
+  font-weight: 600;
+}
+
+html[data-theme="light"] .tl-project-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 88, 117, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 4px 20px rgba(42, 24, 16, 0.08);
+}
+
+html[data-theme="light"] .tl-project-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(255, 88, 117, 0.5);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 8px 25px rgba(42, 24, 16, 0.12);
+}
+
+html[data-theme="light"] .tl-project-card h4,
+html[data-theme="light"] .tl-project-card .tl-title {
+  color: #2A1810;
+}
+
+html[data-theme="light"] .tl-project-card .tl-tech {
+  color: #2A1810;
+  opacity: 0.9;
+}
+
+html[data-theme="light"] .tl-project-card .tl-tech i {
+  color: #FF5875;
+}
+
+html[data-theme="light"] .tl-project-card .tl-desc {
+  color: #2A1810;
+  opacity: 0.85;
+}
+
+html[data-theme="light"] .tl-project-card .tl-status {
+  background: rgba(255, 88, 117, 0.15);
+  border: 1px solid rgba(255, 88, 117, 0.35);
+  color: #2A1810;
+}
+
+/* Toolkit */
+html[data-theme="light"] .tk-heading {
+  border-bottom: 2px solid rgba(255, 88, 117, 0.2);
+}
+
+html[data-theme="light"] .tk-category li {
+  border-bottom: 1px solid rgba(255, 88, 117, 0.12);
+}
+
+html[data-theme="light"] .tk-category i {
+  color: #FF5875;
+}
+
+/* Vision */
+html[data-theme="light"] .vision-heading em {
+  color: #FF5875;
+  font-style: normal;
+  text-decoration: underline wavy #FFD233;
+}
+
+/* ─── Winding Yellow Ribbon Banner (Connect Section — inspiration match) ─── */
+html[data-theme="light"] .connect-section {
+  background-color: transparent;
+  background-image: none;
+}
+
+html[data-theme="light"] .connect-section::before {
+  display: none !important;
+}
+
+html[data-theme="light"] .connect-ticker {
+  background: #FFD233;
+  color: #2A1810;
+  border: 2.5px solid #2A1810;
+  border-radius: 9999px;
+  box-shadow: 0 12px 30px rgba(255, 210, 51, 0.45);
+  transform: rotate(-1.5deg);
+  margin: 3rem auto 5rem;
+  max-width: 1200px;
+  padding: 1.2rem 0;
+}
+
+html[data-theme="light"] .ticker-track {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+}
+
+html[data-theme="light"] .ticker-track em {
+  color: #FF5875;
+  font-family: 'Syne', sans-serif;
+  font-style: normal;
+  text-decoration: underline wavy #2A1810;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .connect-heading .ch-line--accent {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: initial;
+  color: #FF5875;
+  animation: none;
+}
+
+html[data-theme="light"] .ch-dot {
+  color: #FFD233;
+}
+
+html[data-theme="light"] .cs-tile {
+  border: 2px solid rgba(255, 88, 117, 0.25);
+}
+
+html[data-theme="light"] .cs-tile:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: #FF5875;
+  box-shadow: 0 22px 50px rgba(255, 88, 117, 0.2);
+}
+
+html[data-theme="light"] .cs-tile::before {
+  background: linear-gradient(to right, transparent, #FFD233, transparent);
+}
+
+html[data-theme="light"] .cs-icon {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: initial;
+  color: #FF5875;
+  filter: none;
+}
+
+html[data-theme="light"] .cs-tile:hover .cs-icon {
+  filter: none;
+  color: #FFD233;
+}
+
+html[data-theme="light"] .cs-label {
+  color: #FF5875;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .cs-arrow {
+  color: #FF5875;
+  opacity: 0.7;
+}
+
+html[data-theme="light"] .cs-tile:hover .cs-arrow {
+  color: #FFD233;
+  opacity: 1;
+}
+
+html[data-theme="light"] .footer {
+  background: #FFFDF8;
+  border-top: 2px solid rgba(255, 88, 117, 0.2);
+}
+
+html[data-theme="light"] .footer-name {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+html[data-theme="light"] .footer-name .nav-logo-bold {
+  color: #FF5875;
+}
+
+html[data-theme="light"] .footer-name .logo-dot {
+  color: #FFD233;
+}
+
+html[data-theme="light"] .footer-time {
+  color: #FF5875;
+  font-weight: 700;
+}
+
+/* ─── Music Player, Aanya Chat Widget & Gesture Panel ─── */
+html[data-theme="light"] .music-toggle {
+  background: #FFFDF8;
+  border: 2px solid #FF5875;
+  border-radius: 9999px;
+  color: #2A1810;
+  box-shadow: 0 6px 18px rgba(255, 88, 117, 0.15);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .music-toggle .music-icon {
+  color: #FF5875;
+}
+
+html[data-theme="light"] .music-toggle .music-label {
+  color: #2A1810;
+}
+
+html[data-theme="light"] .visualizer span,
+html[data-theme="light"] .visualizer .v-bar {
+  background: #FFD233;
+}
+
+html[data-theme="light"] .music-toggle:hover {
+  background: #FFD233;
+  color: #2A1810;
+  border-color: #2A1810;
+}
+
+html[data-theme="light"] .music-toggle:hover .music-icon,
+html[data-theme="light"] .music-toggle:hover .music-label {
+  color: #2A1810;
+}
+
+html[data-theme="light"] .music-toggle:hover .visualizer span,
+html[data-theme="light"] .music-toggle:hover .visualizer .v-bar {
+  background: #FF5875;
+}
+
+html[data-theme="light"] .back-to-top {
+  background: #FFD233;
+  border: 2px solid #2A1810;
+  color: #2A1810;
+  box-shadow: 0 8px 22px rgba(255, 210, 51, 0.35);
+}
+
+html[data-theme="light"] .back-to-top:hover {
+  background: #FF5875;
+  color: #FFFFFF;
+  border-color: #2A1810;
+}
+
+html[data-theme="light"] .agent-toggle {
+  background: #FFFDF8;
+  border: 2px solid #FF5875;
+  color: #FF5875;
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(255, 88, 117, 0.18);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .agent-toggle:hover {
+  background: #FF5875;
+  color: #FFFFFF;
+  border-color: #FF5875;
+}
+
+html[data-theme="light"] .agent-ui {
+  background: #FFFDF8;
+  border: 2.5px solid #FF5875;
+  border-radius: 28px;
+  box-shadow: 0 24px 55px rgba(255, 88, 117, 0.22);
+  color: #2A1810;
+}
+
+html[data-theme="light"] .agent-header {
+  background: #FF5875;
+  color: #FFFFFF;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] #agentClose {
+  color: #FFFFFF;
+}
+
+html[data-theme="light"] .agent-video {
+  border: 1.5px solid rgba(255, 88, 117, 0.3);
+  border-radius: 14px;
+}
+
+html[data-theme="light"] .agent-status {
+  background: #FFF7D6;
+  color: #2A1810;
+  border-top: 1.5px solid rgba(255, 210, 51, 0.6);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .agent-instructions {
+  background: #FFFDF8;
+  color: #6E5547;
+  border-top: 1px solid rgba(255, 88, 117, 0.2);
+}
+
+html[data-theme="light"] .agent-instructions strong {
+  color: #2A1810;
+}
+
+/* ─── Creative Page Light Mode Styles ─── */
+html[data-theme="light"] .creative-section {
+  background: transparent;
+}
+
+html[data-theme="light"] .polaroid-card {
+  background: #FFFDF8;
+  border: 2px solid rgba(255, 88, 117, 0.22);
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(255, 88, 117, 0.1);
+}
+
+html[data-theme="light"] .polaroid-card:hover {
+  border-color: #FF5875;
+  box-shadow: 0 20px 42px rgba(255, 88, 117, 0.22) !important;
+}
+
+html[data-theme="light"] .polaroid-label {
+  color: #2A1810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+html[data-theme="light"] .polaroid-img-wrap::after {
+  background: linear-gradient(135deg, rgba(255, 88, 117, 0.15) 0%, rgba(255, 210, 51, 0.12) 100%);
 }

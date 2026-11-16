@@ -5441,13 +5441,8 @@ html[data-theme="light"] .vision-heading em {
 
 /* ─── Winding Yellow Ribbon Banner (Connect Section — inspiration match) ─── */
 html[data-theme="light"] .connect-section {
-  background-color: #FFF6E5;
-  border-radius: 48px;
-  margin: 3.5rem auto;
-  max-width: 1200px;
-  padding: 4.5rem 2.5rem;
-  border: 1.5px solid rgba(242, 107, 33, 0.35);
-  box-shadow: 0 16px 42px rgba(242, 107, 33, 0.1);
+  background-color: transparent;
+  padding: 5rem 0;
   position: relative;
   overflow: hidden;
 }

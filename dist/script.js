@@ -1120,11 +1120,11 @@ function initThemeToggle() {
   }
 
   // Sync initial state from html attribute or localStorage
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
   updateToggleUI(currentTheme);
 
   toggleBtn.addEventListener('click', () => {
-    const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
     const newTheme = activeTheme === 'light' ? 'dark' : 'light';
 
     // Animate theme switch for ~350ms, respecting prefers-reduced-motion

@@ -3649,7 +3649,7 @@ article.project-row:hover {
 .profile-card {
   position: relative;
   width: 100%;
-  max-width: 320px;
+  max-width: 350px;
   background: linear-gradient(160deg, rgba(30, 14, 42, 0.92) 0%, rgba(18, 9, 23, 0.98) 100%);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);

@@ -33,816 +33,777 @@
 </head>
 
 <body>
-  <header id="site-header">
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-trail" id="cursorTrail"></div>
 
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-progress-container">
-      <div class="scroll-progress-bar" id="scrollProgress"></div>
-    </div>
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
 
-    <!-- Grain & Lofi Overlays -->
-    <div class="grain-overlay"></div>
-    <div class="vignette"></div>
-    <div class="scanlines"></div>
-    <canvas class="rain-canvas" id="rainCanvas"></canvas>
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+  </div>
 
-    <!-- Navigation -->
-    <nav class="nav" id="nav" aria-label="Main navigation">
-      <div class="nav-container">
-        <div class="nav-logo">
-          Srishti <span class="nav-logo-bold"><br>Mishra</span><span class="logo-dot">.</span>
-        </div>
-        <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
+  <!-- Grain & Lofi Overlays -->
+  <div class="grain-overlay"></div>
+  <div class="vignette"></div>
+  <div class="scanlines"></div>
+  <canvas class="rain-canvas" id="rainCanvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        Srishti <span class="nav-logo-bold"><br>Mishra</span><span class="logo-dot">.</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#experience" class="nav-link">Journey</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="creative.html" class="nav-link">Creative</a>
+        <a href="#vision" class="nav-link">Vision</a>
+        <a href="#contact" class="nav-link nav-link--cta">Contact</a>
+      </div>
+      <div class="nav-music">
+        <button class="music-toggle" id="musicToggle" title="Toggle ambient sound">
+          <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
+          <span class="music-label">music player</span>
+          <div class="visualizer" id="visualizer">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
         </button>
-        <div class="nav-links" id="navLinks">
-          <a href="#about" class="nav-link" data-scroll-spy="about">About</a>
-          <a href="#projects" class="nav-link" data-scroll-spy="projects">Projects</a>
-          <a href="#experience" class="nav-link" data-scroll-spy="experience">Journey</a>
-          <a href="#skills" class="nav-link" data-scroll-spy="skills">Skills</a>
-          <a href="creative.html" class="nav-link">Creative</a>
-          <a href="#vision" class="nav-link" data-scroll-spy="vision">Vision</a>
-          <a href="#contact" class="nav-link nav-link--cta" data-scroll-spy="contact">Contact</a>
-        </div>
-        <div class="nav-music">
-          <button class="music-toggle" id="musicToggle" title="Toggle ambient sound" aria-pressed="false">
-            <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
-            <span class="music-label">music player</span>
-          </button>
-        </div>
       </div>
-    </nav>
-
-    <!-- Mobile menu overlay -->
-    <div class="nav-mobile-menu hidden" id="navMobileMenu" role="menu" aria-modal="true" aria-label="Mobile navigation">
-      <button class="nav-mobile-close" id="navMobileClose" aria-label="Close menu">
-        <i class="bi bi-x"></i>
-      </button>
-      <ul class="nav-mobile-list">
-        <li><a href="#about" class="nav-mobile-link" data-scroll-spy="about">About</a></li>
-        <li><a href="#projects" class="nav-mobile-link" data-scroll-spy="projects">Projects</a></li>
-        <li><a href="#experience" class="nav-mobile-link" data-scroll-spy="experience">Journey</a></li>
-        <li><a href="#skills" class="nav-mobile-link" data-scroll-spy="skills">Skills</a></li>
-        <li><a href="creative.html" class="nav-mobile-link">Creative</a></li>
-        <li><a href="#vision" class="nav-mobile-link" data-scroll-spy="vision">Vision</a></li>
-        <li><a href="#contact" class="nav-mobile-link nav-mobile-link--cta" data-scroll-spy="contact">Contact</a></li>
-      </ul>
     </div>
-  </header>
+  </nav>
 
-  <main id="site-main">
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-      <!-- Animated background mesh -->
-      <div class="hero-mesh">
-        <div class="mesh-orb orb-peach"></div>
-        <div class="mesh-orb orb-violet"></div>
-        <div class="mesh-orb orb-sunset"></div>
-      </div>
 
-      <!-- Floating decorative glyphs -->
-      <div class="hero-glyphs" aria-hidden="true">
-        <span class="glyph g1"><i class="bi bi-stars"></i></span>
-        <span class="glyph g2">{}</span>
-        <span class="glyph g3">⟡</span>
-        <span class="glyph g4">∿</span>
-        <span class="glyph g5">◈</span>
-        <span class="glyph sparkle twinkle-1" style="top: 25%; left: 40%;"><i class="bi bi-stars"></i></span>
-        <span class="glyph sparkle twinkle-2" style="top: 60%; right: 45%;"><i class="bi bi-stars"></i></span>
-        <span class="glyph sparkle twinkle-3" style="top: 15%; right: 25%;"><i class="bi bi-stars"></i></span>
-        <i class="bi bi-cpu glyph g-icon-1"></i>
-        <i class="bi bi-terminal glyph g-icon-2"></i>
-        <i class="bi bi-robot glyph g-icon-3"></i>
-        <i class="bi bi-database glyph g-icon-4"></i>
-        <i class="bi bi-braces glyph g-icon-5"></i>
-        <i class="bi bi-bar-chart-line glyph g-icon-6"></i>
-        <i class="bi bi-gear glyph g-icon-7"></i>
-        <i class="bi bi-infinity glyph g-icon-8"></i>
-      </div>
 
-      <div class="hero-inner">
-        <!-- LEFT: Text content -->
-        <div class="hero-left">
-          <div class="hero-badge badge-active">
-            <span class="badge-pulse ml-pulse"></span>
-            <span class="badge-text">ML Pipelines Active</span>
-          </div>
+    <!-- Animated background mesh -->
+    <div class="hero-mesh">
+      <div class="mesh-orb orb-peach"></div>
+      <div class="mesh-orb orb-violet"></div>
+      <div class="mesh-orb orb-sunset"></div>
+    </div>
 
-          <div class="hero-name-block">
-            <p class="hero-greeting">hey there, I'm</p>
-            <h1 class="hero-name">
-              <span class="name-line">
-                SRISHTI
-              </span>
-              <span class="name-line name-last">Mishra<span class="name-dot">.</span></span>
-            </h1>
-          </div>
+    <!-- Floating decorative glyphs -->
+    <div class="hero-glyphs" aria-hidden="true">
+      <span class="glyph g1"><i class="bi bi-stars"></i></span>
+      <span class="glyph g2">{}</span>
+      <span class="glyph g3">⟡</span>
+      <span class="glyph g4">∿</span>
+      <span class="glyph g5">◈</span>
+      <span class="glyph sparkle twinkle-1" style="top: 25%; left: 40%;"><i class="bi bi-stars"></i></span>
+      <span class="glyph sparkle twinkle-2" style="top: 60%; right: 45%;"><i class="bi bi-stars"></i></span>
+      <span class="glyph sparkle twinkle-3" style="top: 15%; right: 25%;"><i class="bi bi-stars"></i></span>
+      <i class="bi bi-cpu glyph g-icon-1"></i>
+      <i class="bi bi-terminal glyph g-icon-2"></i>
+      <i class="bi bi-robot glyph g-icon-3"></i>
+      <i class="bi bi-database glyph g-icon-4"></i>
+      <i class="bi bi-braces glyph g-icon-5"></i>
+      <i class="bi bi-bar-chart-line glyph g-icon-6"></i>
+      <i class="bi bi-gear glyph g-icon-7"></i>
+      <i class="bi bi-infinity glyph g-icon-8"></i>
+    </div>
 
-          <div class="hero-role-line">
-            <span class="role-prefix">I </span>
-            <span class="role-typewriter" id="roleTypewriter" style="min-width: 22ch;"></span>
-            <span class="role-cursor">|</span>
-          </div>
+    <div class="hero-inner">
 
-          <p class="hero-sub">B.Tech CSE(AI) student at University of Lucknow — engineering intelligence and deploying
-            robust models
-            at the intersection of mathematics, algorithms &amp; clean systems.</p>
+      <!-- LEFT: Text content -->
+      <div class="hero-left">
 
-          <div class="hero-pills">
-            <span class="pill">PyTorch</span>
-            <span class="pill">TensorFlow</span>
-            <span class="pill">Transformers &amp; LLMs</span>
-            <span class="pill">Computer Vision</span>
-            <span class="pill">MLOps</span>
-          </div>
-
-          <div class="hero-actions">
-            <a href="#projects" class="btn-primary" id="hero-cta-work">view my work</a>
-            <a href="#about" class="btn-ghost" id="hero-cta-about">about me ↓</a>
-          </div>
-
-          <div class="hero-socials">
-            <a href="https://github.com/Yuvika108" class="hs-link" id="hero-github" target="_blank"
-              rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i> GitHub</a>
-            <span class="hs-sep"></span>
-            <a href="https://www.linkedin.com/in/mishrasrishti108/" class="hs-link" id="hero-linkedin" target="_blank"
-              rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i> LinkedIn</a>
-            <span class="hs-sep"></span>
-            <a href="mailto:srishti@email.com" class="hs-link" id="hero-mail" aria-label="Email"><i
-                class="bi bi-envelope-fill"></i> Email</a>
-          </div>
+        <div class="hero-badge badge-active">
+          <span class="badge-pulse ml-pulse"></span>
+          <span class="badge-text">ML Pipelines Active</span>
         </div>
 
-        <!-- RIGHT: Profile Card (Codolio-style) -->
-        <div class="hero-right">
-          <div class="profile-card" id="profileCard">
-            <!-- Card brand label -->
-            <div class="pc-brand">
-              <span class="pc-brand-name">Portfolio<span class="pc-brand-accent">.</span></span>
-              <span class="pc-brand-tag">CARD</span>
-            </div>
+        <div class="hero-name-block">
+          <p class="hero-greeting">hey there, I'm</p>
+          <h1 class="hero-name">
+            <span class="name-line">
+              SRISHTI
+            </span>
+            <span class="name-line name-last">Mishra<span class="name-dot">.</span></span>
+          </h1>
+        </div>
 
-            <!-- Avatar -->
-            <div class="pc-avatar-wrap">
-              <div class="pc-avatar">
-                <div class="pc-avatar-ring pc-ring-1"></div>
-                <div class="pc-avatar-ring pc-ring-2"></div>
-                <div class="pc-avatar-inner">
-                  <span class="pc-initials">SM</span>
-                </div>
+        <div class="hero-role-line">
+          <span class="role-prefix">I </span>
+          <span class="role-typewriter" id="roleTypewriter"></span>
+          <span class="role-cursor">|</span>
+        </div>
+
+        <p class="hero-sub">B.Tech CSE(AI) student at University of Lucknow — engineering intelligence and deploying
+          robust models
+          at the intersection of mathematics, algorithms &amp; clean systems.</p>
+
+        <div class="hero-pills">
+          <span class="pill">PyTorch</span>
+          <span class="pill">TensorFlow</span>
+          <span class="pill">Transformers &amp; LLMs</span>
+          <span class="pill">Computer Vision</span>
+          <span class="pill">MLOps</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary" id="hero-cta-work">view my work</a>
+          <a href="#about" class="btn-ghost" id="hero-cta-about">about me ↓</a>
+        </div>
+
+        <div class="hero-socials">
+          <a href="https://github.com/Yuvika108" class="hs-link" id="hero-github" target="_blank"
+            rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i> GitHub</a>
+          <span class="hs-sep"></span>
+          <a href="https://www.linkedin.com/in/mishrasrishti108/" class="hs-link" id="hero-linkedin" target="_blank"
+            rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i> LinkedIn</a>
+          <span class="hs-sep"></span>
+          <a href="mailto:srishti@email.com" class="hs-link" id="hero-mail" aria-label="Email"><i
+              class="bi bi-envelope-fill"></i> Email</a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Profile Card (Codolio-style) -->
+      <div class="hero-right">
+        <div class="profile-card" id="profileCard">
+
+          <!-- Card brand label -->
+          <div class="pc-brand">
+            <span class="pc-brand-name">Portfolio<span class="pc-brand-accent">.</span></span>
+            <span class="pc-brand-tag">CARD</span>
+          </div>
+
+          <!-- Avatar -->
+          <div class="pc-avatar-wrap">
+            <div class="pc-avatar">
+              <div class="pc-avatar-ring pc-ring-1"></div>
+              <div class="pc-avatar-ring pc-ring-2"></div>
+              <div class="pc-avatar-inner">
+                <span class="pc-initials">SM</span>
               </div>
-              <div class="pc-status-badge">
-                <span class="pc-status-dot"></span>
-              </div>
             </div>
-
-            <!-- Name + Handle -->
-            <div class="pc-identity">
-              <div class="pc-name-row">
-                <span class="pc-name">Srishti Mishra</span>
-                <svg class="pc-verified" viewBox="0 0 20 20" fill="none" aria-label="Verified">
-                  <circle cx="10" cy="10" r="9" fill="var(--accent)" opacity="0.15" />
-                  <circle cx="10" cy="10" r="9" stroke="var(--accent)" stroke-width="1.5" />
-                  <path d="M6.5 10l2.5 2.5 4.5-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </div>
-              <div class="pc-handle">@YuviGarg</div>
-              <div class="pc-role-tag">AI / ML Engineer</div>
+            <div class="pc-status-badge">
+              <span class="pc-status-dot"></span>
             </div>
+          </div>
 
-            <!-- Stats Grid -->
-            <div class="pc-stats">
-              <div class="pc-stat">
-                <span class="pc-stat-label">GitHub Repos</span>
-                <span class="pc-stat-value" id="pc-github-repos">42</span>
-              </div>
-              <div class="pc-stat">
-                <span class="pc-stat-label">Problems Solved</span>
-                <span class="pc-stat-value" id="pc-problems-solved">680</span>
-              </div>
+          <!-- Name + Handle -->
+          <div class="pc-identity">
+            <div class="pc-name-row">
+              <span class="pc-name">Srishti Mishra</span>
+              <svg class="pc-verified" viewBox="0 0 20 20" fill="none" aria-label="Verified">
+                <circle cx="10" cy="10" r="9" fill="var(--accent)" opacity="0.15" />
+                <circle cx="10" cy="10" r="9" stroke="var(--accent)" stroke-width="1.5" />
+                <path d="M6.5 10l2.5 2.5 4.5-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
             </div>
+            <div class="pc-handle">@YuviGarg</div>
+            <div class="pc-role-tag">AI / ML Engineer</div>
+          </div>
 
-            <!-- Divider -->
-            <div class="pc-divider"></div>
-
-            <!-- Short Intro (Bio) -->
-            <div class="pc-bio-wrap">
-              <p class="pc-bio-header">B.Tech Student at the University of Lucknow</p>
-              <ul class="pc-bio-list">
-                <li class="pc-bio-item">Passionate about technology, innovation, and continuous learning.</li>
-                <li class="pc-bio-item">Strong interest in problem-solving, creativity, and personal growth.</li>
-                <li class="pc-bio-item">Enthusiastic about art, literature, music, and cinema.</li>
-                <li class="pc-bio-item">Exploring opportunities to learn, build, and create meaningful impact.</li>
-              </ul>
+          <!-- Stats Grid -->
+          <div class="pc-stats">
+            <div class="pc-stat">
+              <span class="pc-stat-label">GitHub Repos</span>
+              <span class="pc-stat-value" id="pc-github-repos">42</span>
             </div>
+            <div class="pc-stat">
+              <span class="pc-stat-label">Problems Solved</span>
+              <span class="pc-stat-value" id="pc-problems-solved">680</span>
+            </div>
+          </div>
 
-            <!-- Skill Tags -->
-            <div class="pc-tags">
-              <span class="pc-tag">#PyTorch</span>
-              <span class="pc-tag">#NLP</span>
-              <span class="pc-tag">#ComputerVision</span>
-              <span class="pc-tag">#MLOps</span>
-              <span class="pc-tag">#DSA</span>
-              <span class="pc-tag">#Python</span>
+          <!-- Divider -->
+          <div class="pc-divider"></div>
+
+          <!-- Short Intro (Bio) -->
+          <div class="pc-bio-wrap">
+            <p class="pc-bio-header">B.Tech Student at the University of Lucknow</p>
+            <ul class="pc-bio-list">
+              <li class="pc-bio-item">Passionate about technology, innovation, and continuous learning.</li>
+              <li class="pc-bio-item">Strong interest in problem-solving, creativity, and personal growth.</li>
+              <li class="pc-bio-item">Enthusiastic about art, literature, music, and cinema.</li>
+              <li class="pc-bio-item">Exploring opportunities to learn, build, and create meaningful impact.</li>
+            </ul>
+          </div>
+
+          <!-- Skill Tags -->
+          <div class="pc-tags">
+            <span class="pc-tag">#PyTorch</span>
+            <span class="pc-tag">#NLP</span>
+            <span class="pc-tag">#ComputerVision</span>
+            <span class="pc-tag">#MLOps</span>
+            <span class="pc-tag">#DSA</span>
+            <span class="pc-tag">#Python</span>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </section>
+
+
+  <!-- About Section - Editorial Layout -->
+  <section class="section about-section" id="about">
+    <div class="section-inner">
+      <div class="section-label">01 — About Me</div>
+      <h2 class="section-heading text-scroll-anim ts-variant-1">
+        Technology as a Form of Creativity
+      </h2>
+
+      <div class="about-editorial">
+        <div class="ae-text">
+          <p class="ae-lead">B.Tech CSE (AI) student with a strong interest in Artificial Intelligence and Machine
+            Learning, focused on developing intelligent solutions to real-world problems.</p>
+          <p>Passionate about building predictive models, optimizing machine learning systems, and creating data-driven
+            applications that combine advanced AI capabilities with intuitive and user-focused design..</p>
+
+          <div class="ae-details">
+            <div class="ae-detail">
+              <span class="ae-label">focus</span>
+              <span class="ae-value">AI / Machine Learning / NLP</span>
+            </div>
+            <div class="ae-detail">
+              <span class="ae-label">education</span>
+              <span class="ae-value">B.Tech @ University of Lucknow</span>
+            </div>
+            <div class="ae-detail">
+              <span class="ae-label">interests</span>
+              <span class="ae-value">Neural Nets, Computer Vision, Math &amp; Algorithms</span>
             </div>
           </div>
         </div>
+        <div class="ae-visuals">
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-cpu text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Systems</span>
+          </div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><span
+              style="font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #d8b4fe;">{}</span><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Code</span>
+          </div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-palette text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Design</span>
+          </div>
+          <div class="ae-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
+              class="bi bi-compass text-2xl text-purple-300"></i><span
+              style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Explore</span>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About Section - Editorial Layout -->
-    <section class="section about-section" id="about">
-      <div class="section-inner">
-        <div class="section-label">01 — About Me</div>
-        <h2 class="section-heading text-scroll-anim ts-variant-1">
-          Technology as a Form of Creativity
+  <!-- Projects Section -->
+  <section class="section projects-section" id="projects">
+    <div class="section-inner" style="position: relative;">
+      <!-- Handcrafted lofi sticky note -->
+      <div class="hc-sticky-note" style="top: -100px; right: -20px; max-width: 200px; transform: rotate(-3deg);">
+        <div class="sticky-tape"></div>
+        <p class="sticky-title">TRAINING LOG</p>
+        <p class="sticky-text">
+          train models, optimize parameters. don't forget to check learning rate.<br><br>
+          epochs running...<br>
+          loss converges.
+        </p>
+      </div>
+
+      <div class="section-header-row">
+        <div class="section-label">02 — Projects</div>
+        <h2 class="section-heading text-scroll-anim ts-variant-3">
+          Selected Works &amp; Experiments
         </h2>
+      </div>
 
-        <div class="about-editorial">
-          <div class="ae-text">
-            <p class="ae-lead">B.Tech CSE (AI) student with a strong interest in Artificial Intelligence and Machine
-              Learning, focused on developing intelligent solutions to real-world problems.</p>
-            <p>Passionate about building predictive models, optimizing machine learning systems, and creating data-driven
-              applications that combine advanced AI capabilities with intuitive and user-focused design..</p>
+      <div class="cards-deck-container">
 
-            <div class="ae-details">
-              <div class="ae-detail">
-                <span class="ae-label">focus</span>
-                <span class="ae-value">AI / Machine Learning / NLP</span>
-              </div>
-              <div class="ae-detail">
-                <span class="ae-label">education</span>
-                <span class="ae-value">B.Tech @ University of Lucknow</span>
-              </div>
-              <div class="ae-detail">
-                <span class="ae-label">interests</span>
-                <span class="ae-value">Neural Nets, Computer Vision, Math &amp; Algorithms</span>
-              </div>
+        <article class="project-row playing-card playing-card-1" id="proj-1">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">01</span>
+              <span class="pr-stack">Python / NLP</span>
+            </div>
+            <h3 class="pr-title">WhatsApp Chat Analyser</h3>
+            <p class="pr-desc">Transforms raw chat exports into beautiful, artistic visualizations. Features activity
+              heatmaps, word clouds, and emoji tracking.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"I wanted to see if our digital conversations had a visible rhythm. The challenge was mapping messy
+                human chat data into something that felt like art."</p>
+            </div>
+            <a href="https://whatsinurchat.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-2" id="proj-2">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">02</span>
+              <span class="pr-stack">Machine Learning</span>
+            </div>
+            <h3 class="pr-title">Sentiment Analysis</h3>
+            <p class="pr-desc">An NLP-based system identifying emotions from textual data using machine learning
+              techniques.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Behind the neural network is a desire to decode human sentiment. I built this to explore the subtlety
+                of language and emotion."</p>
+            </div>
+            <a href="https://missbhawna.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-3" id="proj-3">
+          <div class="pr-content">
+            <div class="pr-meta">
+              <span class="pr-number">03</span>
+              <span class="pr-stack">Python</span>
+            </div>
+            <h3 class="pr-title">Movie Recommendations</h3>
+            <p class="pr-desc">A cinemaphile's companion tool that suggests films based on similarity patterns and user
+              preferences.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Every movie recommend is a vector match in a high-dimensional space. I wanted to build a portal that
+                maps a cinephile's soul."</p>
+            </div>
+            <a href="https://cinematix.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-4" id="proj-4">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">04</span><span class="pr-stack">Data Science</span></div>
+            <h3 class="pr-title">House Data Cleaning</h3>
+            <p class="pr-desc">Cleaning and preprocessing Bangalore housing datasets for predictive modeling.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"Data is chaotic before cleaning. I designed this to reveal the clean, underlying geometry of
+                real-estate pricing dynamics."</p>
+            </div>
+            <a href="https://bangalorehousedata.streamlit.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+        <article class="project-row playing-card playing-card-5" id="proj-5">
+          <div class="pr-content">
+            <div class="pr-meta"><span class="pr-number">05</span><span class="pr-stack">Frontend</span></div>
+            <h3 class="pr-title">Rock-Paper-Scissor</h3>
+            <p class="pr-desc">Interactive game focused on frontend interaction and smooth user experience.</p>
+            <div class="behind-the-code">
+              <span class="btc-label">behind the code</span>
+              <p>"A simple childhood game rebuilt to focus on tactile feedback and fluid motion. The magic is making the
+                mundane feel extremely responsive."</p>
+            </div>
+            <a href="https://silver-manatee-592868.netlify.app/" class="btn-project" target="_blank"
+              rel="noopener noreferrer">Play Game <i class="bi bi-arrow-up-right"></i></a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="section experience-section" id="experience">
+    <div class="section-inner" style="position: relative;">
+      <!-- Handcrafted lofi sticky note -->
+      <div class="hc-sticky-note" style="top: 20px; right: -60px; max-width: 170px; transform: rotate(5deg);">
+        <div class="sticky-tape"></div>
+        <p class="sticky-title">NOTE TO SELF</p>
+        <p class="sticky-text">
+          keep coding, keep dreaming. don't forget to look up at the stars.
+        </p>
+      </div>
+
+      <div class="section-label">03 — Journey </div>
+      <h2 class="section-heading text-scroll-anim ts-variant-2">My Project Journey</h2>
+
+      <div class="timeline">
+        <!-- Phase 3 -->
+        <div class="tl-phase-header">
+          <h3 class="tl-title">Phase 3: Interactive Dashboards & Frontend Integration</h3>
+          <p class="tl-desc">Bridging algorithmic backend data models with responsive user-facing interfaces to build
+            rich visual applications:</p>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot tl-dot--active"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Portfolio-Website
+              </h4>
+              <div class="tl-tech"><i class="bi bi-code-slash"></i> JavaScript, HTML, CSS</div>
+              <p class="tl-desc">Your central front-end portal built to showcase your technical resume, host your
+                interactive web projects, and track your software development timeline.</p>
             </div>
           </div>
-          <div class="ae-visuals">
-            <div class="ae-card"
-              style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
-                class="bi bi-cpu text-2xl text-purple-300"></i><span
-                style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Systems</span>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                gdp-dashboard
+              </h4>
+              <div class="tl-tech"><i class="bi bi-bar-chart-line"></i> Python, Plotly / Dash or Streamlit</div>
+              <p class="tl-desc">An analytics application designed to visualize global macroeconomic metrics, trends,
+                and GDP distributions through dynamic data dashboards.</p>
             </div>
-            <div class="ae-card"
-              style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><span
-                style="font-family: var(--font-mono); font-size: 16px; font-weight: bold; color: #d8b4fe;">{}</span><span
-                style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Code</span>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                mediguard
+              </h4>
+              <div class="tl-tech"><i class="bi bi-heart-pulse"></i> JavaScript, HTML5, CSS3</div>
+              <p class="tl-desc">A newly initiated web-based application combining client-side web architecture with a
+                medical/healthcare tracker utility.</p>
             </div>
-            <div class="ae-card"
-              style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
-                class="bi bi-palette text-2xl text-purple-300"></i><span
-                style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Design</span>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="tl-phase-header">
+          <h3 class="tl-title">Phase 2: Data Engineering & Cleaning</h3>
+          <p class="tl-desc">This phase highlights your shift toward ensuring data quality and preparation before
+            feeding data into models.</p>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Cleaned_Bangalore_House_Data
+              </h4>
+              <div class="tl-tech"><i class="bi bi-database-check"></i> Python, Pandas, NumPy, Data Imputation</div>
+              <p class="tl-desc">A comprehensive data-preprocessing pipeline focusing on data hygiene. It handles
+                outlier removal, feature engineering, and missing value management on real estate datasets to ready them
+                for regression models.</p>
             </div>
-            <div class="ae-card"
-              style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;"><i
-                class="bi bi-compass text-2xl text-purple-300"></i><span
-                style="font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em;">Explore</span>
+          </div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="tl-phase-header">
+          <h3 class="tl-title">Phase 1: Machine Learning & NLP Core</h3>
+          <p class="tl-desc">During this phase, you focused heavily on foundational AI modeling, handling data
+            structures for prediction, and text processing.</p>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Cancer-Detection-Using-Deep-Learning
+              </h4>
+              <div class="tl-tech"><i class="bi bi-cpu"></i> Python, TensorFlow/Keras</div>
+              <p class="tl-desc">A high-impact computer vision project utilizing deep learning architectures to process
+                medical imagery for identifying and classifying malignant cellular patterns.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Placement_Prediction_using_Logistic_Regression
+              </h4>
+              <div class="tl-tech"><i class="bi bi-graph-up-arrow"></i> Python, Scikit-Learn, Pandas, NumPy</div>
+              <p class="tl-desc">A predictive classification application that processes student academic metrics,
+                historical placement data, and skill sets to forecast campus recruitment outcomes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                MoviesRecommendationSystem
+              </h4>
+              <div class="tl-tech"><i class="bi bi-film"></i> Jupyter, Python, Pandas, Content-Based Filtering</div>
+              <p class="tl-desc">An unsupervised learning project implementing recommendation system pipelines to
+                calculate textual and metadata similarities, delivering tailored movie suggestions to users.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-right">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                Sentiment_Analysis
+              </h4>
+              <div class="tl-tech"><i class="bi bi-chat-left-text"></i> Python, NLTK / TextBlob, Scikit-Learn</div>
+              <p class="tl-desc">A Natural Language Processing (NLP) application engineered to clean textual corpora,
+                parse linguistic features, and predict underlying emotional polarities or intent.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left">
+          <div class="tl-marker">
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-project-card">
+              <h4>
+                WhatsApp_Chat_Analyser
+                <span class="tl-status">Refined May 2026</span>
+              </h4>
+              <div class="tl-tech"><i class="bi bi-whatsapp"></i> Python, Regex, Matplotlib, Seaborn, Streamlit</div>
+              <p class="tl-desc">A data analytics utility that transforms raw, unstructured WhatsApp chat logs into
+                interactive visual reports, showing active heatmaps, message distributions, and word frequency graphs.
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Projects Section -->
-    <section class="section projects-section" id="projects">
-      <div class="section-inner" style="position: relative;">
-        <!-- Handcrafted lofi sticky note -->
-        <div class="hc-sticky-note" style="top: -100px; right: -20px; max-width: 200px; transform: rotate(-3deg);">
-          <div class="sticky-tape"></div>
-          <p class="sticky-title">TRAINING LOG</p>
-          <p class="sticky-text">
-            train models, optimize parameters. don't forget to check learning rate.<br><br>
-            epochs running...<br>
-            loss converges.
-          </p>
+  <!-- Skills Section -->
+  <section class="section skills-section" id="skills">
+    <div class="section-inner">
+      <div class="section-label">04 — Toolkit</div>
+      <h2 class="section-heading text-scroll-anim ts-variant-1">The Craft &amp; The Tools</h2>
+
+      <div class="toolkit-grid">
+        <!-- Category 1 -->
+        <div class="tk-category">
+          <h3 class="tk-heading">Core Languages</h3>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="Python" loading="lazy" />
+            <div>
+              <strong>Python</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">Data & ML</span>
+            </div>
+          </li>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="JavaScript" loading="lazy" />
+            <div>
+              <strong>JavaScript</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">Web Frontend</span>
+            </div>
+          </li>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="C++" loading="lazy" />
+            <div>
+              <strong>C / C++</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">OOP & Logic</span>
+            </div>
+          </li>
+          <li>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+              style="width: 1.5rem; height: 1.5rem;" alt="HTML5" loading="lazy" />
+            <div>
+              <strong>HTML5 & CSS3</strong>
+              <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">UI Layouts</span>
+            </div>
+          </li>
+          </ul>
         </div>
 
-        <div class="section-header-row">
-          <div class="section-label">02 — Projects</div>
-          <h2 class="section-heading text-scroll-anim ts-variant-3">
-            Selected Works &amp; Experiments
+        <!-- Category 2 -->
+        <div class="tk-category">
+          <h3 class="tk-heading">Frameworks & Tools</h3>
+          <ul class="tk-list">
+            <li style="align-items: flex-start;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg"
+                style="width: 1.5rem; height: 1.5rem; margin-top: 0.2rem;" alt="TensorFlow" loading="lazy" />
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">ML &
+                  NLP</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Pandas, NumPy,
+                  Scikit-Learn, TensorFlow/Keras, NLTK, TextBlob</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/plotly/plotly-original.svg"
+                style="width: 1.5rem; height: 1.5rem; margin-top: 0.2rem;" alt="Dashboards" loading="lazy" />
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Dashboards
+                  & Viz</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Streamlit, Plotly /
+                  Dash, Matplotlib, Seaborn</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
+                style="width: 1.5rem; height: 1.5rem; margin-top: 0.2rem;" alt="Git" loading="lazy" />
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Environments
+                  & Git</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Jupyter Notebook,
+                  Git, GitHub</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Category 3 -->
+        <div class="tk-category">
+          <h3 class="tk-heading">Specializations</h3>
+          <ul class="tk-list">
+            <li style="align-items: flex-start;">
+              <i class="bi bi-robot" style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">AI &
+                  Deep Learning</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Building predictive
+                  classification, NLP sentiment, and computer vision models.</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <i class="bi bi-database-check"
+                style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Data
+                  Engineering</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Text parsing via
+                  Regex, outlier handling, and pipeline data cleaning.</span>
+              </div>
+            </li>
+            <li style="align-items: flex-start;">
+              <i class="bi bi-window-fullscreen"
+                style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
+              <div>
+                <strong
+                  style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Frontend
+                  Integration</strong>
+                <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Connecting backend
+                  data scripts and ML logic into user-facing web interfaces.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Future Vision -->
+  <section class="section vision-section" id="vision">
+    <div class="section-inner">
+      <div class="vision-wrapper">
+        <div class="section-label">06 — Future Vision</div>
+        <div class="vision-text-block">
+          <h2 class="vision-heading text-scroll-anim ts-variant-2">
+            I want to build <span style="display: inline-block;">things</span> that <em>feels human</em>.
           </h2>
-        </div>
-
-        <div class="project-grid">
-          <article class="project-card" id="proj-1">
-            <div class="pr-content">
-              <div class="pr-meta">
-                <span class="pr-number">01</span>
-                <span class="pr-stack">Python / NLP</span>
-              </div>
-              <h3 class="pr-title">WhatsApp Chat Analyser</h3>
-              <p class="pr-desc">Transforms raw chat exports into beautiful, artistic visualizations. Features activity
-                heatmaps, word clouds, and emoji tracking.</p>
-              <div class="behind-the-code collapsible">
-                <button class="btc-toggle" aria-expanded="false" aria-controls="btc-1">
-                  <span class="btc-label">behind the code</span>
-                  <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="btc-content" id="btc-1" hidden>
-                  <p>"I wanted to see if our digital conversations had a visible rhythm. The challenge was mapping messy
-                    human chat data into something that felt like art."</p>
-                </div>
-              </div>
-              <a href="https://whatsinurchat.streamlit.app/" class="btn-project" target="_blank"
-                rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
-            </div>
-          </article>
-
-          <article class="project-card" id="proj-2">
-            <div class="pr-content">
-              <div class="pr-meta">
-                <span class="pr-number">02</span>
-                <span class="pr-stack">Machine Learning</span>
-              </div>
-              <h3 class="pr-title">Sentiment Analysis</h3>
-              <p class="pr-desc">An NLP-based system identifying emotions from textual data using machine learning
-                techniques.</p>
-              <div class="behind-the-code collapsible">
-                <button class="btc-toggle" aria-expanded="false" aria-controls="btc-2">
-                  <span class="btc-label">behind the code</span>
-                  <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="btc-content" id="btc-2" hidden>
-                  <p>"Behind the neural network is a desire to decode human sentiment. I built this to explore the subtlety
-                    of language and emotion."</p>
-                </div>
-              </div>
-              <a href="https://missbhawna.streamlit.app/" class="btn-project" target="_blank"
-                rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
-            </div>
-          </article>
-
-          <article class="project-card" id="proj-3">
-            <div class="pr-content">
-              <div class="pr-meta">
-                <span class="pr-number">03</span>
-                <span class="pr-stack">Python</span>
-              </div>
-              <h3 class="pr-title">Movie Recommendations</h3>
-              <p class="pr-desc">A cinemaphile's companion tool that suggests films based on similarity patterns and user
-                preferences.</p>
-              <div class="behind-the-code collapsible">
-                <button class="btc-toggle" aria-expanded="false" aria-controls="btc-3">
-                  <span class="btc-label">behind the code</span>
-                  <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="btc-content" id="btc-3" hidden>
-                  <p>"Every movie recommend is a vector match in a high-dimensional space. I wanted to build a portal that
-                    maps a cinephile's soul."</p>
-                </div>
-              </div>
-              <a href="https://cinematix.streamlit.app/" class="btn-project" target="_blank"
-                rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
-            </div>
-          </article>
-
-          <article class="project-card" id="proj-4">
-            <div class="pr-content">
-              <div class="pr-meta"><span class="pr-number">04</span><span class="pr-stack">Data Science</span></div>
-              <h3 class="pr-title">House Data Cleaning</h3>
-              <p class="pr-desc">Cleaning and preprocessing Bangalore housing datasets for predictive modeling.</p>
-              <div class="behind-the-code collapsible">
-                <button class="btc-toggle" aria-expanded="false" aria-controls="btc-4">
-                  <span class="btc-label">behind the code</span>
-                  <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="btc-content" id="btc-4" hidden>
-                  <p>"Data is chaotic before cleaning. I designed this to reveal the clean, underlying geometry of
-                    real-estate pricing dynamics."</p>
-                </div>
-              </div>
-              <a href="https://bangalorehousedata.streamlit.app/" class="btn-project" target="_blank"
-                rel="noopener noreferrer">View Project <i class="bi bi-arrow-up-right"></i></a>
-            </div>
-          </article>
-
-          <article class="project-card" id="proj-5">
-            <div class="pr-content">
-              <div class="pr-meta"><span class="pr-number">05</span><span class="pr-stack">Frontend</span></div>
-              <h3 class="pr-title">Rock-Paper-Scissor</h3>
-              <p class="pr-desc">Interactive game focused on frontend interaction and smooth user experience.</p>
-              <div class="behind-the-code collapsible">
-                <button class="btc-toggle" aria-expanded="false" aria-controls="btc-5">
-                  <span class="btc-label">behind the code</span>
-                  <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="btc-content" id="btc-5" hidden>
-                  <p>"A simple childhood game rebuilt to focus on tactile feedback and fluid motion. The magic is making the
-                    mundane feel extremely responsive."</p>
-                </div>
-              </div>
-              <a href="https://silver-manatee-592868.netlify.app/" class="btn-project" target="_blank"
-                rel="noopener noreferrer">Play Game <i class="bi bi-arrow-up-right"></i></a>
-            </div>
-          </article>
+          <p class="vision-body text-center">My goal is to create artistic, immersive, and memorable digital experiences
+            by blending AI, design, interaction, and visual creativity to deliver meaningful solutions that connect with
+            people.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Experience Section -->
-    <section class="section experience-section" id="experience">
-      <div class="section-inner">
-        <!-- Handcrafted lofi sticky note -->
-        <div class="hc-sticky-note" style="top: 20px; right: -60px; max-width: 170px; transform: rotate(5deg);">
-          <div class="sticky-tape"></div>
-          <p class="sticky-title">NOTE TO SELF</p>
-          <p class="sticky-text">
-            keep coding, keep dreaming. don't forget to look up at the stars.
-          </p>
-        </div>
-
-        <div class="section-label">03 — Journey </div>
-        <h2 class="section-heading text-scroll-anim ts-variant-2">My Project Journey</h2>
-
-        <div class="timeline vertical-timeline">
-          <!-- Phase 3 -->
-          <div class="tl-phase accordion-phase" id="phase-3">
-            <button class="tl-phase-header phase-toggle" aria-expanded="true" aria-controls="phase-3-content">
-              <h3 class="tl-title">Phase 3: Interactive Dashboards &amp; Frontend Integration</h3>
-              <p class="tl-desc">Bridging algorithmic backend data models with responsive user-facing interfaces to build
-                rich visual applications:</p>
-              <i class="bi bi-chevron-down phase-arrow"></i>
-            </button>
-            <div class="tl-phase-content" id="phase-3-content">
-              <div class="tl-item tl-left">
-                <div class="tl-marker">
-                  <div class="tl-dot tl-dot--active"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      Portfolio-Website
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-code-slash"></i> JavaScript, HTML, CSS</div>
-                    <p class="tl-desc">Your central front-end portal built to showcase your technical resume, host your
-                      interactive web projects, and track your software development timeline.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tl-item tl-right">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      gdp-dashboard
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-bar-chart-line"></i> Python, Plotly / Dash or Streamlit</div>
-                    <p class="tl-desc">An analytics application designed to visualize global macroeconomic metrics, trends,
-                      and GDP distributions through dynamic data dashboards.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tl-item tl-left">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      mediguard
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-heart-pulse"></i> JavaScript, HTML5, CSS3</div>
-                    <p class="tl-desc">A newly initiated web-based application combining client-side web architecture with a
-                      medical/healthcare tracker utility.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phase 2 -->
-          <div class="tl-phase accordion-phase" id="phase-2">
-            <button class="tl-phase-header phase-toggle" aria-expanded="false" aria-controls="phase-2-content">
-              <h3 class="tl-title">Phase 2: Data Engineering &amp; Cleaning</h3>
-              <p class="tl-desc">This phase highlights your shift toward ensuring data quality and preparation before
-                feeding data into models.</p>
-              <i class="bi bi-chevron-down phase-arrow"></i>
-            </button>
-            <div class="tl-phase-content hidden" id="phase-2-content">
-              <div class="tl-item tl-right">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      Cleaned_Bangalore_House_Data
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-database-check"></i> Python, Pandas, NumPy, Data Imputation</div>
-                    <p class="tl-desc">A comprehensive data-preprocessing pipeline focusing on data hygiene. It handles
-                      outlier removal, feature engineering, and missing value management on real estate datasets to ready them
-                      for regression models.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phase 1 -->
-          <div class="tl-phase accordion-phase" id="phase-1">
-            <button class="tl-phase-header phase-toggle" aria-expanded="false" aria-controls="phase-1-content">
-              <h3 class="tl-title">Phase 1: Machine Learning &amp; NLP Core</h3>
-              <p class="tl-desc">During this phase, you focused heavily on foundational AI modeling, handling data
-                structures for prediction, and text processing.</p>
-              <i class="bi bi-chevron-down phase-arrow"></i>
-            </button>
-            <div class="tl-phase-content hidden" id="phase-1-content">
-              <div class="tl-item tl-left">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      Cancer-Detection-Using-Deep-Learning
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-cpu"></i> Python, TensorFlow/Keras</div>
-                    <p class="tl-desc">A high-impact computer vision project utilizing deep learning architectures to process
-                      medical imagery for identifying and classifying malignant cellular patterns.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tl-item tl-right">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      Placement_Prediction_using_Logistic_Regression
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-graph-up-arrow"></i> Python, Scikit-Learn, Pandas, NumPy</div>
-                    <p class="tl-desc">A predictive classification application that processes student academic metrics,
-                      historical placement data, and skill sets to forecast campus recruitment outcomes.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tl-item tl-left">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      MoviesRecommendationSystem
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-film"></i> Jupyter, Python, Pandas, Content-Based Filtering</div>
-                    <p class="tl-desc">An unsupervised learning project implementing recommendation system pipelines to
-                      calculate textual and metadata similarities, delivering tailored movie suggestions to users.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tl-item tl-right">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      Sentiment_Analysis
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-chat-left-text"></i> Python, NLTK / TextBlob, Scikit-Learn</div>
-                    <p class="tl-desc">A Natural Language Processing (NLP) application engineered to clean textual corpora,
-                      parse linguistic features, and predict underlying emotional polarities or intent.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tl-item tl-left">
-                <div class="tl-marker">
-                  <div class="tl-dot"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-project-card">
-                    <h4>
-                      WhatsApp_Chat_Analyser
-                      <span class="tl-status">Refined May 2026</span>
-                    </h4>
-                    <div class="tl-tech"><i class="bi bi-whatsapp"></i> Python, Regex, Matplotlib, Seaborn, Streamlit</div>
-                    <p class="tl-desc">A data analytics utility that transforms raw, unstructured WhatsApp chat logs into
-                      interactive visual reports, showing active heatmaps, message distributions, and word frequency graphs.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- Let's Connect & Contact -->
+  <section class="section connect-section" id="contact">
+    <!-- Marquee Ticker -->
+    <div class="connect-ticker">
+      <div class="ticker-track">
+        <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
+        <span>ART &amp; TECHNOLOGY • </span>
+        <span>CREATIVE DEVELOPMENT • </span>
+        <span>MACHINE LEARNING • </span>
+        <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
+        <span>ART &amp; TECHNOLOGY • </span>
+        <span>CREATIVE DEVELOPMENT • </span>
+        <span>MACHINE LEARNING • </span>
       </div>
-    </section>
+    </div>
 
-    <!-- Skills Section -->
-    <section class="section skills-section" id="skills">
-      <div class="section-inner">
-        <div class="section-label">04 — Toolkit</div>
-        <h2 class="section-heading text-scroll-anim ts-variant-1">The Craft &amp; The Tools</h2>
-
-        <div class="toolkit-grid">
-          <!-- Category 1 -->
-          <div class="tk-category">
-            <h3 class="tk-heading">Core Languages</h3>
-            <ul class="tk-list">
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
-                  width="48" height="48" alt="Python" loading="lazy" />
-                <div>
-                  <strong>Python</strong>
-                  <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">Data & ML</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
-                  width="48" height="48" alt="JavaScript" loading="lazy" />
-                <div>
-                  <strong>JavaScript</strong>
-                  <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">Web Frontend</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
-                  width="48" height="48" alt="C++" loading="lazy" />
-                <div>
-                  <strong>C / C++</strong>
-                  <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">OOP & Logic</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
-                  width="48" height="48" alt="HTML5" loading="lazy" />
-                <div>
-                  <strong>HTML5 & CSS3</strong>
-                  <span style="display: block; font-size: 0.82rem; opacity: 0.8; margin-top: 0.1rem;">UI Layouts</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Category 2 -->
-          <div class="tk-category">
-            <h3 class="tk-heading">Frameworks &amp; Tools</h3>
-            <ul class="tk-list">
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg"
-                  width="48" height="48" alt="TensorFlow" loading="lazy" style="margin-top: 0.2rem;" />
-                <div>
-                  <strong style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">ML &
-                    NLP</strong>
-                  <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Pandas, NumPy,
-                    Scikit-Learn, TensorFlow/Keras, NLTK, TextBlob</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/plotly/plotly-original.svg"
-                  width="48" height="48" alt="Dashboards" loading="lazy" style="margin-top: 0.2rem;" />
-                <div>
-                  <strong style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Dashboards
-                    & Viz</strong>
-                  <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Streamlit, Plotly /
-                    Dash, Matplotlib, Seaborn</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
-                  width="48" height="48" alt="Git" loading="lazy" style="margin-top: 0.2rem;" />
-                <div>
-                  <strong style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Environments
-                    & Git</strong>
-                  <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.45; display: block;">Jupyter Notebook,
-                    Git, GitHub</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Category 3 -->
-          <div class="tk-category">
-            <h3 class="tk-heading">Specializations</h3>
-            <ul class="tk-list">
-              <li class="tk-item">
-                <i class="bi bi-robot tk-icon" style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
-                <div>
-                  <strong
-                    style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">AI &
-                    Deep Learning</strong>
-                  <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Building predictive
-                    classification, NLP sentiment, and computer vision models.</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <i class="bi bi-database-check tk-icon"
-                  style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
-                <div>
-                  <strong
-                    style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Data
-                    Engineering</strong>
-                  <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Text parsing via
-                    Regex, outlier handling, and pipeline data cleaning.</span>
-                </div>
-              </li>
-              <li class="tk-item">
-                <i class="bi bi-window-fullscreen tk-icon"
-                  style="font-size: 1.4rem; color: var(--accent-soft); margin-top: 0.1rem;"></i>
-                <div>
-                  <strong
-                    style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Frontend
-                    Integration</strong>
-                  <span style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5; display: block;">Connecting backend
-                    data scripts and ML logic into user-facing web interfaces.</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Future Vision -->
-    <section class="section vision-section" id="vision">
-      <div class="section-inner">
-        <div class="vision-wrapper">
-          <div class="section-label">06 — Future Vision</div>
-          <div class="vision-text-block">
-            <h2 class="vision-heading text-scroll-anim ts-variant-2">
-              I want to build <span style="display: inline-block;">things</span> that <em>feels human</em>.
-            </h2>
-            <p class="vision-body text-center">My goal is to create artistic, immersive, and memorable digital experiences
-              by blending AI, design, interaction, and visual creativity to deliver meaningful solutions that connect with
-              people.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Let's Connect & Contact -->
-    <section class="section connect-section" id="contact">
-      <!-- Marquee Ticker -->
-      <div class="connect-ticker">
-        <div class="ticker-track">
-          <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
-          <span>ART &amp; TECHNOLOGY • </span>
-          <span>CREATIVE DEVELOPMENT • </span>
-          <span>MACHINE LEARNING • </span>
-          <span>LET'S BUILD SOMETHING <em>HUMAN</em> • </span>
-          <span>ART &amp; TECHNOLOGY • </span>
-          <span>CREATIVE DEVELOPMENT • </span>
-          <span>MACHINE LEARNING • </span>
-        </div>
+    <div class="connect-inner">
+      <div>
+        <span class="connect-eyebrow">07 — Get In Touch</span>
+        <h2 class="connect-heading">
+          <span class="ch-line">LET'S</span>
+          <span class="ch-line ch-line--accent">TALK<span class="ch-dot">.</span></span>
+        </h2>
+        <p class="connect-sub">
+          Whether you want to discuss machine learning, generative art, design systems, cinematic narratives, or just
+          say hello — my inbox is always open.
+        </p>
       </div>
 
-      <div class="connect-inner">
-        <div>
-          <span class="connect-eyebrow">07 — Get In Touch</span>
-          <h2 class="connect-heading">
-            <span class="ch-line">LET'S</span>
-            <span class="ch-line ch-line--accent">TALK<span class="ch-dot">.</span></span>
-          </h2>
-          <p class="connect-sub">
-            Whether you want to discuss machine learning, generative art, design systems, cinematic narratives, or just
-            say hello — my inbox is always open.
-          </p>
-        </div>
-
-        <!-- Contact CTAs -->
-        <div class="connect-ctas">
-          <a href="mailto:srishti@email.com" class="btn-email" id="contact-email" aria-label="Email me">
-            <i class="bi bi-envelope-fill"></i> LET'S TALK.
-          </a>
-          <div class="connect-socials">
-            <a href="https://github.com/Yuvika108" class="cs-tile">
-              <i class="bi bi-github cs-icon"></i>
-              <span class="cs-label">GitHub</span>
-              <span class="cs-handle">Srishti Mishra</span>
-              <i class="bi bi-arrow-up-right cs-arrow"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/mishrasrishti108/" class="cs-tile">
-              <i class="bi bi-linkedin cs-icon"></i>
-              <span class="cs-label">LinkedIn</span>
-              <span class="cs-handle">srishti-mishra</span>
-              <i class="bi bi-arrow-up-right cs-arrow"></i>
-            </a>
-            <a href="https://www.instagram.com/srii_mishra/" class="cs-tile">
-              <i class="bi bi-instagram cs-icon"></i>
-              <span class="cs-label">Instagram</span>
-              <span class="cs-handle">@srishti</span>
-              <i class="bi bi-arrow-up-right cs-arrow"></i>
-            </a>
-          </div>
-        </div>
+      <!-- Socials Grid -->
+      <div class="connect-socials">
+        <a href="https://github.com/Yuvika108" class="cs-tile">
+          <i class="bi bi-github cs-icon"></i>
+          <span class="cs-label">GitHub</span>
+          <span class="cs-handle">Srishti Mishra</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/mishrasrishti108/" class="cs-tile">
+          <i class="bi bi-linkedin cs-icon"></i>
+          <span class="cs-label">LinkedIn</span>
+          <span class="cs-handle">srishti-mishra</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
+        <a href="https://www.instagram.com/srii_mishra/" class="cs-tile">
+          <i class="bi bi-instagram cs-icon"></i>
+          <span class="cs-label">Instagram</span>
+          <span class="cs-handle">@srishti</span>
+          <i class="bi bi-arrow-up-right cs-arrow"></i>
+        </a>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -861,21 +822,18 @@
     </div>
   </footer>
 
-  <!-- Floating Widgets -->
-  <div class="floating-widgets">
-    <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
-      <span class="theme-toggle-icon"><i class="bi bi-brightness-high"></i></span>
-      <span class="theme-toggle-text">Light</span>
-    </button>
-    <button class="back-to-top" id="backToTop" title="Back to Top" hidden>
-      <i class="bi bi-chevron-up"></i>
-    </button>
-    <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars"
-        style="margin-right: 6px;"></i> Aanya</button>
-    <button class="music-toggle" id="musicToggle" title="Toggle ambient sound" aria-pressed="false">
-      <span class="music-icon"><i class="bi bi-music-note-beamed" style="margin-right: 4px;"></i></span>
-    </button>
-  </div>
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
+    <span class="theme-toggle-icon"><i class="bi bi-brightness-high"></i></span>
+    <span class="theme-toggle-text">Light</span>
+  </button>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" title="Back to Top"><i class="bi bi-chevron-up"></i></button>
+
+  <!-- AI Agent: Aanya -->
+  <button class="agent-toggle" id="agentToggle" title="Enable Aanya Gesture Agent"><i class="bi bi-stars"
+      style="margin-right: 6px;"></i> Aanya</button>
 
   <div class="agent-ui hidden" id="agentUi">
     <div class="agent-header">

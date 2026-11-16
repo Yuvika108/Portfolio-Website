@@ -13,11 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTextScrollAnimation();
   initTelemetrySimulation();
   initCodolioStats();
-  initScrollSpy();
-  initHamburgerMenu();
-  initRevealOnScroll();
-  initJourneyAccordions();
-  initMusicNoAutoplay();
 });
 
 function initSmoothScroll() {
@@ -37,9 +32,7 @@ function initSmoothScroll() {
         const el = document.querySelector(id);
         if (el) {
           e.preventDefault();
-          const navHeight = document.getElementById('nav')?.offsetHeight || 80;
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          window.scrollBy(0, -navHeight - 20);
+          el.scrollIntoView({ behavior: 'smooth' });
         }
       });
     });
@@ -89,8 +82,7 @@ function initSmoothScroll() {
       const el = document.querySelector(id);
       if (el) {
         e.preventDefault();
-        const navHeight = document.getElementById('nav')?.offsetHeight || 80;
-        lenis.scrollTo(el, { offset: -navHeight - 20, duration: 1.5 });
+        lenis.scrollTo(el, { offset: 0, duration: 1.5 });
       }
     });
   });
@@ -1153,177 +1145,4 @@ function initThemeToggle() {
 
     updateToggleUI(newTheme);
   });
-}
-
-/* ══════════════════════════════════════════════════════════════════════════
-   NEW UI/UX FUNCTIONS
-   ═════════════════════════════════════════════════════════════════════════ */
-
-/* ── Scroll-Spy: highlight active nav link ── */
-function initScrollSpy() {
-  const observerOptions = {
-    root: null,
-    rootMargin: '-100px 0% -60% 0%',
-    threshold: 0
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        if (!id) return;
-
-        // Remove active from all nav links
-        document.querySelectorAll('.nav-link, .nav-mobile-link').forEach(link => {
-          link.classList.remove('active');
-        });
-
-        // Add active to matching links
-        document.querySelectorAll(`.nav-link[data-scroll-spy="${id}"], .nav-mobile-link[data-scroll-spy="${id}"]`).forEach(link => {
-          link.classList.add('active');
-        });
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('section[id]').forEach(section => {
-    observer.observe(section);
-  });
-}
-
-/* ── Hamburger Menu with focus trap ── */
-function initHamburgerMenu() {
-  const hamburger = document.getElementById('navHamburger');
-  const mobileMenu = document.getElementById('navMobileMenu');
-  const closeBtn = document.getElementById('navMobileClose');
-  const mobileLinks = document.querySelectorAll('.nav-mobile-link');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  if (!hamburger || !mobileMenu) return;
-
-  let previousActiveElement = null;
-
-  function openMenu() {
-    previousActiveElement = document.activeElement;
-    mobileMenu.classList.remove('hidden');
-    hamburger.setAttribute('aria-expanded', 'true');
-    closeBtn.focus();
-
-    // Trap focus
-    document.addEventListener('keydown', trapFocus);
-  }
-
-  function closeMenu() {
-    mobileMenu.classList.add('hidden');
-    hamburger.setAttribute('aria-expanded', 'false');
-    document.removeEventListener('keydown', trapFocus);
-    if (previousActiveElement) {
-      previousActiveElement.focus();
-    }
-  }
-
-  function trapFocus(e) {
-    if (e.key === 'Escape') {
-      closeMenu();
-      return;
-    }
-
-    const focusable = mobileMenu.querySelectorAll('button, [href], input, select, textarea');
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.key === 'Tab') {
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    }
-  }
-
-  hamburger.addEventListener('click', openMenu);
-  closeBtn.addEventListener('click', closeMenu);
-
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
-
-  // Close menu when clicking nav links (desktop)
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      if (window.innerWidth <= 768) closeMenu();
-    });
-  });
-}
-
-/* ── Reveal-on-scroll via IntersectionObserver ── */
-function initRevealOnScroll() {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealElements = document.querySelectorAll('.reveal, section:not(.hero)');
-
-  if (prefersReduced) {
-    revealElements.forEach(el => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    root: null,
-    rootMargin: '0px 0px -80px 0px',
-    threshold: 0.1
-  });
-
-  revealElements.forEach(el => observer.observe(el));
-}
-
-/* ── Journey Phase Accordions ── */
-function initJourneyAccordions() {
-  const phaseToggles = document.querySelectorAll('.phase-toggle');
-
-  phaseToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-      const contentId = toggle.getAttribute('aria-controls');
-      const content = document.getElementById(contentId);
-      const arrow = toggle.querySelector('.phase-arrow');
-
-      toggle.setAttribute('aria-expanded', !isExpanded);
-
-      if (content) {
-        if (isExpanded) {
-          content.classList.add('hidden');
-        } else {
-          content.classList.remove('hidden');
-        }
-      }
-
-      if (arrow) {
-        arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
-      }
-    });
-  });
-}
-
-/* ── Ensure music does not autoplay ── */
-function initMusicNoAutoplay() {
-  const audio = document.getElementById('ambientAudio');
-  if (audio) {
-    audio.removeAttribute('autoplay');
-    audio.load();
-  }
 }
